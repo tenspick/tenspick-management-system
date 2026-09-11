@@ -1,0 +1,126 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'chat';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+<section class="chat-page" id="chatPage">
+    <div class="chat-layout">
+        <!-- Sidebar Conversations -->
+        <aside class="chat-sidebar">
+            <div class="chat-sidebar-header">
+                <h2>Messages</h2>
+                <span class="chat-badge" id="unreadChatCount">3 New</span>
+            </div>
+            <div class="chat-search-wrap">
+                <i class="bi bi-search"></i>
+                <input type="text" id="chatSearchInput" placeholder="Search conversations...">
+            </div>
+            <div class="chat-list" id="chatList">
+                <div class="chat-item active" data-id="1">
+                    <div class="chat-avatar">
+                        <span>MA</span>
+                        <span class="online-status online"></span>
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-item-top">
+                            <strong class="chat-name">Mahesh Babu</strong>
+                            <span class="chat-time">10:42 AM</span>
+                        </div>
+                        <p class="chat-preview">Can we check the updated project milestone?</p>
+                    </div>
+                </div>
+
+                <div class="chat-item" data-id="2">
+                    <div class="chat-avatar">
+                        <span>RK</span>
+                        <span class="online-status online"></span>
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-item-top">
+                            <strong class="chat-name">Rajesh Kumar</strong>
+                            <span class="chat-time">Yesterday</span>
+                        </div>
+                        <p class="chat-preview">Payment receipt for project #102 uploaded.</p>
+                    </div>
+                </div>
+
+                <div class="chat-item" data-id="3">
+                    <div class="chat-avatar">
+                        <span>ST</span>
+                        <span class="online-status offline"></span>
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-item-top">
+                            <strong class="chat-name">Suresh Tech Corp</strong>
+                            <span class="chat-time">Sep 10</span>
+                        </div>
+                        <p class="chat-preview">Thank you! The website looks great.</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-main">
+            <header class="chat-main-header">
+                <div class="chat-user-details">
+                    <div class="chat-avatar">
+                        <span id="activeChatInitials">MA</span>
+                        <span class="online-status online"></span>
+                    </div>
+                    <div>
+                        <h3 id="activeChatName">Mahesh Babu</h3>
+                        <span class="chat-status-text">Active Now • Client (#CL-101)</span>
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <button type="button" class="chat-action-btn" title="Call"><i class="bi bi-telephone"></i></button>
+                    <button type="button" class="chat-action-btn" title="Project Details"><i class="bi bi-folder2-open"></i></button>
+                </div>
+            </header>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-date-divider"><span>Today</span></div>
+
+                <div class="message-bubble received">
+                    <div class="message-content">
+                        Hello Tenspick team! Hope you are doing well.
+                    </div>
+                    <span class="message-time">10:38 AM</span>
+                </div>
+
+                <div class="message-bubble received">
+                    <div class="message-content">
+                        Can we check the updated project milestone status for our web app development?
+                    </div>
+                    <span class="message-time">10:42 AM</span>
+                </div>
+
+                <div class="message-bubble sent">
+                    <div class="message-content">
+                        Hi Mahesh! Absolutely. Milestone #2 (Backend Integration) is 90% complete. We will deploy the updates today.
+                    </div>
+                    <span class="message-time">10:45 AM</span>
+                </div>
+            </div>
+
+            <footer class="chat-input-area">
+                <div class="chat-target-selector" style="display: flex; gap: 8px; align-items: center; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #E2E8F0;">
+                    <label style="font-size: 11px; font-weight: 700; color: #475569;"><i class="bi bi-people-fill"></i> Send Message To:</label>
+                    <select id="chatTargetAudience" style="height: 32px; padding: 0 10px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 12px; outline: none; background: #FAF9FE; font-weight: 600; color: #4B49AC;">
+                        <option value="individual_client">Individual Client (Mahesh Babu)</option>
+                        <option value="all_clients">📢 All Clients (Broadcast Announcement)</option>
+                        <option value="individual_staff">Individual Team Member</option>
+                        <option value="all_staff">📢 All Team Members (Broadcast Announcement)</option>
+                    </select>
+                </div>
+                <form id="chatForm">
+                    <button type="button" class="chat-attach-btn" title="Attach file"><i class="bi bi-paperclip"></i></button>
+                    <input type="text" id="chatMessageInput" placeholder="Type your message or announcement..." required autocomplete="off">
+                    <button type="submit" class="chat-send-btn"><i class="bi bi-send-fill"></i> Send</button>
+                </form>
+            </footer>
+        </main>
+    </div>
+</section>

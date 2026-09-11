@@ -1,0 +1,5179 @@
+/* ============================================================
+   TENSPICK CRM
+   CLIENT PAYMENTS
+   COMPLETE CSS
+   ============================================================ */
+
+:root {
+
+    --cp-primary: #4B49AC;
+    --cp-primary-dark: #39378f;
+    --cp-primary-light: #F1F1FF;
+
+    --cp-secondary: #98BDFF;
+    --cp-support: #7DA0FA;
+    --cp-accent: #7978E9;
+    --cp-danger: #F3797E;
+
+    --cp-success: #16A34A;
+    --cp-warning: #D97706;
+
+    --cp-text-dark: #172033;
+    --cp-text: #374151;
+    --cp-text-muted: #64748B;
+
+    --cp-border: #E5E7EB;
+    --cp-border-light: #EEF0F4;
+
+    --cp-background: #F7F8FC;
+    --cp-surface: #FFFFFF;
+
+    --cp-radius-sm: 7px;
+    --cp-radius-md: 10px;
+    --cp-radius-lg: 15px;
+    --cp-radius-xl: 18px;
+
+    --cp-shadow-sm:
+        0 2px 8px rgba(15, 23, 42, 0.05);
+
+    --cp-shadow-md:
+        0 8px 25px rgba(15, 23, 42, 0.08);
+
+    --cp-shadow-lg:
+        0 22px 60px rgba(15, 23, 42, 0.18);
+
+    --cp-transition:
+        0.18s ease;
+
+}
+
+
+/* ============================================================
+   PAGE
+   ============================================================ */
+
+.client-payments-page {
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 22px;
+
+    color: var(--cp-text);
+
+    background: var(--cp-background);
+
+    box-sizing: border-box;
+
+}
+
+
+.client-payments-page *,
+.client-payments-page *::before,
+.client-payments-page *::after {
+
+    box-sizing: border-box;
+
+}
+
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+
+.client-payments-page-header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.client-payments-page-heading {
+
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+}
+
+
+.client-payments-title-icon {
+
+    width: 48px;
+    height: 48px;
+
+    flex: 0 0 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--cp-primary),
+            var(--cp-accent)
+        );
+
+    box-shadow:
+        0 8px 18px rgba(75, 73, 172, 0.20);
+
+}
+
+
+.client-payments-title-icon i {
+
+    font-size: 21px;
+
+}
+
+
+.client-payments-page-title {
+
+    margin: 0;
+
+    color: var(--cp-text-dark);
+
+    font-size: 22px;
+    font-weight: 750;
+
+    line-height: 1.25;
+
+}
+
+
+.client-payments-page-subtitle {
+
+    margin: 4px 0 0;
+
+    color: var(--cp-text-muted);
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+}
+
+
+/* ============================================================
+   HEADER ACTIONS
+   ============================================================ */
+
+.client-payments-header-actions {
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    flex-shrink: 0;
+
+}
+
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.cp-btn {
+
+    min-height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 14px;
+
+    border: 1px solid transparent;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 650;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        color var(--cp-transition),
+        background var(--cp-transition),
+        border-color var(--cp-transition),
+        box-shadow var(--cp-transition),
+        transform var(--cp-transition);
+
+}
+
+
+.cp-btn i {
+
+    font-size: 13px;
+
+}
+
+
+.cp-btn:hover:not(:disabled) {
+
+    transform: translateY(-1px);
+
+}
+
+
+.cp-btn:disabled {
+
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+}
+
+
+.cp-btn-primary {
+
+    color: #ffffff;
+
+    background: var(--cp-primary);
+
+    border-color: var(--cp-primary);
+
+}
+
+
+.cp-btn-primary:hover:not(:disabled) {
+
+    background: var(--cp-primary-dark);
+
+    border-color: var(--cp-primary-dark);
+
+    box-shadow:
+        0 7px 18px rgba(75, 73, 172, 0.20);
+
+}
+
+
+.cp-btn-secondary {
+
+    color: var(--cp-primary);
+
+    background: #ffffff;
+
+    border-color: #DCDCF1;
+
+}
+
+
+.cp-btn-secondary:hover:not(:disabled) {
+
+    color: var(--cp-primary-dark);
+
+    background: var(--cp-primary-light);
+
+    border-color: #C8C7EC;
+
+}
+
+
+.cp-btn-light {
+
+    color: #4B5563;
+
+    background: #ffffff;
+
+    border-color: var(--cp-border);
+
+}
+
+
+.cp-btn-light:hover:not(:disabled) {
+
+    color: var(--cp-text-dark);
+
+    background: #F8FAFC;
+
+    border-color: #D6DAE2;
+
+}
+
+
+.cp-btn-sm {
+
+    min-height: 34px;
+
+    padding: 0 11px;
+
+    font-size: 11px;
+
+}
+
+
+/* ============================================================
+   SUMMARY
+   ============================================================ */
+
+.client-payments-summary-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 13px;
+
+    margin-bottom: 18px;
+
+}
+
+
+.cp-summary-card {
+
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 17px;
+
+    background: var(--cp-surface);
+
+    border: 1px solid var(--cp-border-light);
+
+    border-radius: var(--cp-radius-lg);
+
+    box-shadow: var(--cp-shadow-sm);
+
+}
+
+
+.cp-summary-icon {
+
+    width: 43px;
+    height: 43px;
+
+    flex: 0 0 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+}
+
+
+.cp-summary-icon i {
+
+    font-size: 18px;
+
+}
+
+
+.cp-summary-icon-blue {
+
+    color: #2563EB;
+
+    background: #EFF6FF;
+
+}
+
+
+.cp-summary-icon-green {
+
+    color: #16A34A;
+
+    background: #ECFDF3;
+
+}
+
+
+.cp-summary-icon-orange {
+
+    color: #D97706;
+
+    background: #FFF7ED;
+
+}
+
+
+.cp-summary-icon-purple {
+
+    color: #7C3AED;
+
+    background: #F5F3FF;
+
+}
+
+
+.cp-summary-content {
+
+    min-width: 0;
+
+}
+
+
+.cp-summary-label {
+
+    display: block;
+
+    color: var(--cp-text-muted);
+
+    font-size: 10px;
+    font-weight: 600;
+
+}
+
+
+.cp-summary-value {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 18px;
+    font-weight: 750;
+
+    line-height: 1.2;
+
+}
+
+
+.cp-summary-description {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: #94A3B8;
+
+    font-size: 9px;
+
+}
+
+
+/* ============================================================
+   FILTER CARD
+   ============================================================ */
+
+.client-payments-filter-card,
+.client-payments-table-card {
+
+    background: #ffffff;
+
+    border: 1px solid var(--cp-border-light);
+
+    border-radius: var(--cp-radius-lg);
+
+    box-shadow: var(--cp-shadow-sm);
+
+}
+
+
+.client-payments-filter-card {
+
+    margin-bottom: 18px;
+
+    padding: 18px;
+
+}
+
+
+.cp-filter-header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 17px;
+
+}
+
+
+.cp-filter-heading {
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.cp-filter-title-icon {
+
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    color: var(--cp-primary);
+
+    background: var(--cp-primary-light);
+
+}
+
+
+.cp-filter-title-icon i {
+
+    font-size: 14px;
+
+}
+
+
+.cp-filter-title {
+
+    margin: 0;
+
+    color: var(--cp-text-dark);
+
+    font-size: 13px;
+    font-weight: 750;
+
+}
+
+
+.cp-filter-subtitle {
+
+    margin: 3px 0 0;
+
+    color: var(--cp-text-muted);
+
+    font-size: 10px;
+
+}
+
+
+.cp-filter-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1.7fr
+        1fr
+        1fr
+        1fr
+        0.9fr
+        0.9fr;
+
+    gap: 12px;
+
+}
+
+
+.cp-form-group {
+
+    min-width: 0;
+
+}
+
+
+.cp-form-label {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #4B5563;
+
+    font-size: 10px;
+    font-weight: 650;
+
+}
+
+
+.cp-form-control {
+
+    width: 100%;
+
+    min-height: 39px;
+
+    padding: 0 11px;
+
+    border: 1px solid #DDE1E8;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    color: var(--cp-text-dark);
+
+    background: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    transition:
+        border-color var(--cp-transition),
+        box-shadow var(--cp-transition),
+        background var(--cp-transition);
+
+}
+
+
+.cp-form-control::placeholder {
+
+    color: #A0A8B5;
+
+}
+
+
+.cp-form-control:hover {
+
+    border-color: #CBD1DA;
+
+}
+
+
+.cp-form-control:focus {
+
+    border-color: var(--cp-primary);
+
+    box-shadow:
+        0 0 0 3px rgba(75, 73, 172, 0.08);
+
+}
+
+
+.cp-form-control.cp-input-error {
+
+    border-color: #EF4444;
+
+    box-shadow:
+        0 0 0 3px rgba(239, 68, 68, 0.07);
+
+}
+
+
+.cp-input-with-icon {
+
+    position: relative;
+
+}
+
+
+.cp-input-with-icon > i {
+
+    position: absolute;
+
+    top: 50%;
+    left: 12px;
+
+    transform: translateY(-50%);
+
+    color: #9AA2AF;
+
+    font-size: 12px;
+
+    pointer-events: none;
+
+}
+
+
+.cp-input-with-icon .cp-form-control {
+
+    padding-left: 33px;
+
+}
+
+
+/* ============================================================
+   TABLE CARD
+   ============================================================ */
+
+.cp-table-header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 17px 18px;
+
+    border-bottom: 1px solid var(--cp-border-light);
+
+}
+
+
+.cp-table-heading {
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.cp-table-title-icon {
+
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    color: var(--cp-primary);
+
+    background: var(--cp-primary-light);
+
+}
+
+
+.cp-table-title-icon i {
+
+    font-size: 15px;
+
+}
+
+
+.cp-table-title {
+
+    margin: 0;
+
+    color: var(--cp-text-dark);
+
+    font-size: 13px;
+    font-weight: 750;
+
+}
+
+
+.cp-table-subtitle {
+
+    margin: 3px 0 0;
+
+    color: var(--cp-text-muted);
+
+    font-size: 10px;
+
+}
+
+
+.cp-record-count {
+
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 26px;
+
+    padding: 0 9px;
+
+    border-radius: 999px;
+
+    color: var(--cp-primary);
+
+    background: var(--cp-primary-light);
+
+    font-size: 10px;
+    font-weight: 700;
+
+}
+
+
+/* ============================================================
+   TABLE WRAPPER
+   ============================================================ */
+
+.cp-table-wrapper {
+
+    width: 100%;
+
+    overflow-x: auto;
+    overflow-y: visible;
+
+    scrollbar-width: thin;
+
+}
+
+
+.cp-payment-table {
+
+    width: 100%;
+
+    min-width: 1180px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+}
+
+
+.cp-payment-table th {
+
+    padding: 11px 13px;
+
+    color: #64748B;
+
+    background: #FAFBFD;
+
+    border-bottom: 1px solid var(--cp-border);
+
+    font-size: 9px;
+    font-weight: 750;
+
+    letter-spacing: 0.02em;
+
+    text-align: left;
+
+    white-space: nowrap;
+
+}
+
+
+.cp-payment-table td {
+
+    padding: 12px 13px;
+
+    color: var(--cp-text);
+
+    border-bottom: 1px solid #F0F2F5;
+
+    font-size: 10.5px;
+
+    vertical-align: middle;
+
+}
+
+
+.cp-payment-table tbody tr {
+
+    background: #ffffff;
+
+    transition:
+        background var(--cp-transition);
+
+}
+
+
+.cp-payment-table tbody tr:hover {
+
+    background: #FCFCFF;
+
+}
+
+
+.cp-payment-table tbody tr:last-child td {
+
+    border-bottom: 0;
+
+}
+
+
+/* ============================================================
+   PAYMENT ID
+   ============================================================ */
+
+.cp-payment-code {
+
+    color: var(--cp-primary);
+
+    font-size: 10px;
+    font-weight: 750;
+
+    white-space: nowrap;
+
+}
+
+
+/* ============================================================
+   CLIENT CELL
+   ============================================================ */
+
+.cp-client-cell {
+
+    min-width: 150px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+
+.cp-client-avatar {
+
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: var(--cp-primary);
+
+    background: var(--cp-primary-light);
+
+    font-size: 9px;
+    font-weight: 750;
+
+}
+
+
+.cp-client-cell-text {
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.cp-client-name {
+
+    max-width: 145px;
+
+    overflow: hidden;
+
+    color: var(--cp-text-dark);
+
+    font-size: 10.5px;
+    font-weight: 700;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+
+.cp-client-company {
+
+    max-width: 145px;
+
+    margin-top: 2px;
+
+    overflow: hidden;
+
+    color: #94A3B8;
+
+    font-size: 8.5px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+
+/* ============================================================
+   PROJECT CELL
+   ============================================================ */
+
+.cp-project-cell {
+
+    min-width: 130px;
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.cp-project-name {
+
+    max-width: 155px;
+
+    overflow: hidden;
+
+    color: var(--cp-text-dark);
+
+    font-size: 10px;
+    font-weight: 650;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+
+.cp-project-code {
+
+    margin-top: 2px;
+
+    color: #94A3B8;
+
+    font-size: 8.5px;
+
+}
+
+
+/* ============================================================
+   AMOUNT
+   ============================================================ */
+
+.cp-amount {
+
+    color: var(--cp-text-dark);
+
+    font-size: 10.5px;
+    font-weight: 750;
+
+    white-space: nowrap;
+
+}
+
+
+.cp-paid {
+
+    color: #16A34A;
+
+    font-weight: 750;
+
+    white-space: nowrap;
+
+}
+
+
+.cp-remaining {
+
+    color: #DC2626;
+
+    font-weight: 750;
+
+    white-space: nowrap;
+
+}
+
+
+.cp-remaining.cp-zero {
+
+    color: #16A34A;
+
+}
+
+
+/* ============================================================
+   DATE
+   ============================================================ */
+
+.cp-date {
+
+    color: #4B5563;
+
+    font-size: 10px;
+
+    white-space: nowrap;
+
+}
+
+
+/* ============================================================
+   PURPOSE
+   ============================================================ */
+
+.cp-purpose {
+
+    display: block;
+
+    max-width: 150px;
+
+    overflow: hidden;
+
+    color: #4B5563;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+
+.cp-badge {
+
+    min-height: 24px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 8px;
+
+    border-radius: 999px;
+
+    font-size: 8.5px;
+    font-weight: 750;
+
+    white-space: nowrap;
+
+}
+
+
+.cp-badge-cash {
+
+    color: #166534;
+
+    background: #DCFCE7;
+
+}
+
+
+.cp-badge-upi {
+
+    color: #1D4ED8;
+
+    background: #DBEAFE;
+
+}
+
+
+.cp-badge-bank {
+
+    color: #6D28D9;
+
+    background: #EDE9FE;
+
+}
+
+
+.cp-badge-card {
+
+    color: #9A3412;
+
+    background: #FFEDD5;
+
+}
+
+
+.cp-badge-cheque {
+
+    color: #0F766E;
+
+    background: #CCFBF1;
+
+}
+
+
+.cp-badge-other {
+
+    color: #4B5563;
+
+    background: #F3F4F6;
+
+}
+
+
+/* ============================================================
+   ADDED BY
+   ============================================================ */
+
+.cp-added-by {
+
+    max-width: 125px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+}
+
+
+.cp-added-by-avatar {
+
+    width: 27px;
+    height: 27px;
+
+    flex: 0 0 27px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: var(--cp-primary);
+
+    background: var(--cp-primary-light);
+
+    font-size: 8px;
+    font-weight: 750;
+
+}
+
+
+.cp-added-by-name {
+
+    overflow: hidden;
+
+    color: #4B5563;
+
+    font-size: 9px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+/* ============================================================
+   ACTION COLUMN
+   ============================================================ */
+
+.cp-actions-column {
+
+    width: 64px;
+
+    min-width: 64px;
+
+    text-align: center !important;
+
+}
+
+
+.cp-payment-actions-cell {
+
+    position: relative;
+
+    overflow: visible !important;
+
+}
+
+
+/* ============================================================
+   THREE DOT ACTION WRAPPER
+   ============================================================ */
+
+.cp-payment-action-wrapper {
+
+    position: relative;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+/* ============================================================
+   THREE DOT BUTTON
+   ============================================================ */
+
+.cp-payment-action-btn {
+
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid transparent;
+
+    border-radius: 8px;
+
+    color: #667085;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    transition:
+        color var(--cp-transition),
+        background var(--cp-transition),
+        border-color var(--cp-transition),
+        box-shadow var(--cp-transition);
+
+}
+
+
+.cp-payment-action-btn i {
+
+    font-size: 17px;
+
+}
+
+
+.cp-payment-action-btn:hover,
+.cp-payment-action-btn[aria-expanded="true"] {
+
+    color: var(--cp-primary);
+
+    background: var(--cp-primary-light);
+
+    border-color: #DFDFF3;
+
+}
+
+
+.cp-payment-action-btn:focus-visible {
+
+    outline: none;
+
+    color: var(--cp-primary);
+
+    background: var(--cp-primary-light);
+
+    box-shadow:
+        0 0 0 3px rgba(
+            75,
+            73,
+            172,
+            0.12
+        );
+
+}
+
+
+/* ============================================================
+   FIXED ACTION MENU
+   ============================================================ */
+
+.cp-payment-action-menu {
+
+    position: fixed !important;
+
+    top: 0;
+    left: 0;
+
+    z-index: 999999 !important;
+
+    width: 188px;
+
+    padding: 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #E3E5EA;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 18px 42px rgba(
+            15,
+            23,
+            42,
+            0.16
+        ),
+        0 4px 12px rgba(
+            15,
+            23,
+            42,
+            0.06
+        );
+
+    overflow: hidden;
+
+}
+
+
+.cp-payment-action-menu[hidden] {
+
+    display: none !important;
+
+}
+
+
+.cp-payment-action-menu.is-open {
+
+    display: block;
+
+    animation:
+        cpActionMenuIn
+        0.13s ease
+        both;
+
+}
+
+
+@keyframes cpActionMenuIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(-4px)
+            scale(0.98);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+/* ============================================================
+   ACTION MENU ITEM
+   ============================================================ */
+
+.cp-payment-action-item {
+
+    width: 100%;
+
+    min-height: 37px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 10px;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    color: #475467;
+
+    background: transparent;
+
+    font-family: inherit;
+
+    font-size: 10.5px;
+    font-weight: 600;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        color var(--cp-transition),
+        background var(--cp-transition);
+
+}
+
+
+.cp-payment-action-item i {
+
+    width: 17px;
+
+    flex: 0 0 17px;
+
+    color: #7A8391;
+
+    font-size: 13px;
+
+    text-align: center;
+
+}
+
+
+.cp-payment-action-item:hover {
+
+    color: var(--cp-primary);
+
+    background: #F5F5FF;
+
+}
+
+
+.cp-payment-action-item:hover i {
+
+    color: var(--cp-primary);
+
+}
+
+
+.cp-payment-action-item:focus-visible {
+
+    outline: none;
+
+    color: var(--cp-primary);
+
+    background: #F5F5FF;
+
+    box-shadow:
+        inset 0 0 0 1px #DFDFF3;
+
+}
+
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+.cp-loading-state {
+
+    padding: 42px 20px !important;
+
+    text-align: center;
+
+    color: var(--cp-text-muted);
+
+}
+
+
+.cp-loading-content {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    font-size: 11px;
+
+}
+
+
+.cp-loading-spinner {
+
+    width: 17px;
+    height: 17px;
+
+    display: inline-block;
+
+    border: 2px solid #E3E3F6;
+
+    border-top-color: var(--cp-primary);
+
+    border-radius: 50%;
+
+    animation:
+        cpSpin
+        0.7s linear
+        infinite;
+
+}
+
+
+@keyframes cpSpin {
+
+    to {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}
+
+
+/* ============================================================
+   EMPTY / ERROR
+   ============================================================ */
+
+.cp-empty-state,
+.cp-error-state {
+
+    min-height: 290px;
+
+    padding: 40px 20px !important;
+
+    text-align: center;
+
+}
+
+
+.cp-empty-icon,
+.cp-error-icon {
+
+    width: 52px;
+    height: 52px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+}
+
+
+.cp-empty-icon {
+
+    color: var(--cp-primary);
+
+    background: var(--cp-primary-light);
+
+}
+
+
+.cp-error-icon {
+
+    color: #DC2626;
+
+    background: #FEF2F2;
+
+}
+
+
+.cp-empty-icon i,
+.cp-error-icon i {
+
+    font-size: 20px;
+
+}
+
+
+.cp-empty-state h3,
+.cp-error-state h3 {
+
+    margin: 0;
+
+    color: var(--cp-text-dark);
+
+    font-size: 14px;
+    font-weight: 750;
+
+}
+
+
+.cp-empty-state p,
+.cp-error-state p {
+
+    max-width: 420px;
+
+    margin: 7px auto 15px;
+
+    color: var(--cp-text-muted);
+
+    font-size: 10px;
+
+    line-height: 1.6;
+
+}
+
+
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+
+.cp-pagination-container {
+
+    min-height: 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 11px 17px;
+
+    border-top: 1px solid var(--cp-border-light);
+
+}
+
+
+.cp-pagination-info {
+
+    color: var(--cp-text-muted);
+
+    font-size: 9.5px;
+
+}
+
+
+.cp-pagination {
+
+    display: flex;
+    align-items: center;
+
+    gap: 4px;
+
+}
+
+
+.cp-pagination-btn,
+.cp-pagination-page {
+
+    min-width: 29px;
+    height: 29px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 7px;
+
+    border: 1px solid #E0E3E8;
+
+    border-radius: 7px;
+
+    color: #667085;
+
+    background: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 9.5px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+}
+
+
+.cp-pagination-btn:hover:not(:disabled),
+.cp-pagination-page:hover {
+
+    color: var(--cp-primary);
+
+    background: var(--cp-primary-light);
+
+    border-color: #D7D6F0;
+
+}
+
+
+.cp-pagination-page.is-active {
+
+    color: #ffffff;
+
+    background: var(--cp-primary);
+
+    border-color: var(--cp-primary);
+
+}
+
+
+.cp-pagination-btn:disabled {
+
+    opacity: 0.45;
+
+    cursor: not-allowed;
+
+}
+
+
+.cp-pagination-ellipsis {
+
+    width: 25px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #94A3B8;
+
+    font-size: 11px;
+
+}
+
+
+/* ============================================================
+   MODAL OVERLAY
+   ============================================================ */
+
+.cp-modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 99990;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 22px;
+
+    background:
+        rgba(
+            15,
+            23,
+            42,
+            0.58
+        );
+
+    backdrop-filter:
+        blur(4px);
+
+    -webkit-backdrop-filter:
+        blur(4px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.20s ease,
+        visibility 0.20s ease;
+
+}
+
+
+.cp-modal-overlay.is-open {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+}
+
+
+.cp-modal-overlay[hidden] {
+
+    display: none !important;
+
+}
+
+
+/* ============================================================
+   MODAL DIALOG
+   ============================================================ */
+
+.cp-modal-dialog {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: 720px;
+
+    height: auto;
+
+    max-height:
+        calc(
+            100dvh - 44px
+        );
+
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 16px;
+
+    box-shadow: var(--cp-shadow-lg);
+
+    transform:
+        translateY(12px)
+        scale(0.985);
+
+    transition:
+        transform 0.20s ease;
+
+}
+
+
+.cp-modal-overlay.is-open
+.cp-modal-dialog {
+
+    transform:
+        translateY(0)
+        scale(1);
+
+}
+
+
+.cp-modal-lg {
+
+    max-width: 920px;
+
+}
+
+
+.cp-modal-xl {
+
+    max-width: 1180px;
+
+}
+
+
+.cp-modal-sm {
+
+    max-width: 460px;
+
+}
+
+
+/* ============================================================
+   MODAL HEADER
+   ============================================================ */
+
+.cp-modal-header {
+
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 18px 21px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #EDF0F4;
+
+}
+
+
+.cp-modal-heading {
+
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+}
+
+
+.cp-modal-title-icon {
+
+    width: 39px;
+    height: 39px;
+
+    flex: 0 0 39px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    color: #ffffff;
+
+    background: var(--cp-primary);
+
+}
+
+
+.cp-modal-title-icon-edit {
+
+    background: #7C3AED;
+
+}
+
+
+.cp-modal-title-icon-view {
+
+    background: #2563EB;
+
+}
+
+
+.cp-modal-title-icon-history {
+
+    background: #16A34A;
+
+}
+
+
+.cp-modal-title-icon i {
+
+    font-size: 16px;
+
+}
+
+
+.cp-modal-title {
+
+    margin: 0;
+
+    color: var(--cp-text-dark);
+
+    font-size: 15px;
+    font-weight: 750;
+
+}
+
+
+.cp-modal-subtitle {
+
+    margin: 3px 0 0;
+
+    color: var(--cp-text-muted);
+
+    font-size: 9.5px;
+
+}
+
+
+.cp-modal-close {
+
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid transparent;
+
+    border-radius: 8px;
+
+    color: #667085;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    transition:
+        color var(--cp-transition),
+        background var(--cp-transition),
+        border-color var(--cp-transition);
+
+}
+
+
+.cp-modal-close:hover {
+
+    color: #DC2626;
+
+    background: #FEF2F2;
+
+    border-color: #FEE2E2;
+
+}
+
+
+.cp-modal-close:focus-visible {
+
+    outline: none;
+
+    box-shadow:
+        0 0 0 3px rgba(
+            75,
+            73,
+            172,
+            0.10
+        );
+
+}
+
+
+/* ============================================================
+   ADD PAYMENT FORM
+   THIS IS THE CRITICAL FIX
+   ============================================================ */
+
+.client-payments-page #addPaymentForm,
+.client-payments-page #editPaymentForm {
+    width: 100%;
+
+    min-width: 0;
+
+    min-height: 0;
+
+    height: auto;
+
+    margin: 0;
+    padding: 0;
+
+    display: flex !important;
+
+    flex: 1 1 auto !important;
+
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| ADD PAYMENT FORM MUST OCCUPY AVAILABLE MODAL HEIGHT
+|--------------------------------------------------------------------------
+*/
+
+.client-payments-page #addPaymentModal #addPaymentForm {
+    min-height: 0 !important;
+
+    height: auto !important;
+
+    flex: 1 1 auto !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| EDIT PAYMENT FORM
+|--------------------------------------------------------------------------
+*/
+
+.client-payments-page #editPaymentModal #editPaymentForm {
+    min-height: 0 !important;
+
+    height: auto !important;
+
+    flex: 1 1 auto !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+}
+
+
+
+/* ============================================================
+   MODAL FOOTER
+   ============================================================ */
+
+.cp-modal-footer {
+
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    padding: 12px 21px;
+
+    background: #ffffff;
+
+    border-top: 1px solid #EDF0F4;
+
+}
+
+
+/* ============================================================
+   FORM ALERT
+   ============================================================ */
+
+.cp-form-alert {
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 8px;
+
+    margin-bottom: 17px;
+
+    padding: 10px 11px;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+
+}
+
+
+.cp-form-alert-danger {
+
+    color: #B91C1C;
+
+    background: #FEF2F2;
+
+    border: 1px solid #FECACA;
+
+}
+
+
+.cp-form-alert i {
+
+    margin-top: 1px;
+
+    font-size: 13px;
+
+}
+
+
+/* ============================================================
+   FORM SECTION
+   ============================================================ */
+
+.cp-form-section {
+
+    margin-bottom: 21px;
+
+}
+
+
+.cp-form-section-heading {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-bottom: 13px;
+
+}
+
+
+.cp-section-number {
+
+    width: 29px;
+    height: 29px;
+
+    flex: 0 0 29px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    color: var(--cp-primary);
+
+    background: var(--cp-primary-light);
+
+    font-size: 9px;
+    font-weight: 800;
+
+}
+
+
+.cp-form-section-heading h3 {
+
+    margin: 0;
+
+    color: var(--cp-text-dark);
+
+    font-size: 12px;
+    font-weight: 750;
+
+}
+
+
+.cp-form-section-heading p {
+
+    margin: 3px 0 0;
+
+    color: var(--cp-text-muted);
+
+    font-size: 9px;
+
+}
+
+
+.cp-form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 14px;
+
+}
+
+
+.cp-form-grid-2 {
+
+    grid-template-columns:
+        1fr 1fr;
+
+}
+
+
+.cp-form-grid > .cp-form-group:only-child {
+
+    grid-column: 1 / -1;
+
+}
+
+
+.cp-required {
+
+    color: #DC2626;
+
+}
+
+
+.cp-field-error {
+
+    display: block;
+
+    min-height: 14px;
+
+    margin-top: 4px;
+
+    color: #DC2626;
+
+    font-size: 8.5px;
+
+}
+
+
+.cp-field-help {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #94A3B8;
+
+    font-size: 8.5px;
+
+    line-height: 1.5;
+
+}
+
+
+.cp-label-row {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+}
+
+
+.cp-character-count {
+
+    color: #94A3B8;
+
+    font-size: 8px;
+
+}
+
+
+.cp-textarea {
+
+    min-height: 95px;
+
+    padding-top: 10px;
+
+    padding-bottom: 10px;
+
+    resize: vertical;
+
+}
+
+
+/* ============================================================
+   CURRENCY INPUT
+   ============================================================ */
+
+.cp-input-with-prefix {
+
+    position: relative;
+
+}
+
+
+.cp-input-prefix {
+
+    position: absolute;
+
+    left: 11px;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    color: var(--cp-primary);
+
+    font-size: 12px;
+    font-weight: 750;
+
+    pointer-events: none;
+
+}
+
+
+.cp-input-with-prefix
+.cp-form-control {
+
+    padding-left: 27px;
+
+}
+
+
+/* ============================================================
+   PROJECT BALANCE
+   ============================================================ */
+
+.cp-project-balance-preview {
+
+    margin-top: 14px;
+
+    padding: 14px;
+
+    border: 1px solid #DFE1F4;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #FAFAFF,
+            #F7F8FC
+        );
+
+}
+
+
+.cp-balance-preview-header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 13px;
+
+}
+
+
+.cp-preview-label {
+
+    display: block;
+
+    color: #94A3B8;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.05em;
+
+}
+
+
+.cp-preview-project-name {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 11px;
+    font-weight: 750;
+
+}
+
+
+.cp-status-badge {
+
+    min-height: 23px;
+
+    display: inline-flex;
+    align-items: center;
+
+    padding: 0 8px;
+
+    border-radius: 999px;
+
+    color: #475467;
+
+    background: #F1F5F9;
+
+    font-size: 8px;
+    font-weight: 750;
+
+}
+
+
+.cp-status-completed {
+
+    color: #166534;
+
+    background: #DCFCE7;
+
+}
+
+
+.cp-status-in_progress,
+.cp-status-review,
+.cp-status-client_review {
+
+    color: #1D4ED8;
+
+    background: #DBEAFE;
+
+}
+
+
+.cp-status-planning,
+.cp-status-not_started {
+
+    color: #6D28D9;
+
+    background: #EDE9FE;
+
+}
+
+
+.cp-status-on_hold {
+
+    color: #9A3412;
+
+    background: #FFEDD5;
+
+}
+
+
+.cp-status-cancelled {
+
+    color: #B91C1C;
+
+    background: #FEE2E2;
+
+}
+
+
+.cp-balance-preview-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 9px;
+
+}
+
+
+.cp-preview-item {
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    border: 1px solid #ECEEF4;
+
+}
+
+
+.cp-preview-item span {
+
+    display: block;
+
+    color: #94A3B8;
+
+    font-size: 8px;
+
+}
+
+
+.cp-preview-item strong {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 12px;
+
+}
+
+
+.cp-preview-item-highlight {
+
+    border-color: #E3C8CB;
+
+    background: #FFF9F9;
+
+}
+
+
+.cp-preview-item-highlight strong {
+
+    color: #DC2626;
+
+}
+
+
+/* ============================================================
+   CALCULATION
+   ============================================================ */
+
+.cp-payment-calculation {
+
+    margin-top: 3px;
+
+    margin-bottom: 7px;
+
+    padding: 15px;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #F6F6FF,
+            #F8FAFC
+        );
+
+    border: 1px solid #DFE0F1;
+
+}
+
+
+.cp-calculation-header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+
+}
+
+
+.cp-calculation-kicker {
+
+    display: block;
+
+    color: var(--cp-primary);
+
+    font-size: 7.5px;
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+
+}
+
+
+.cp-calculation-header h3 {
+
+    margin: 3px 0 0;
+
+    color: var(--cp-text-dark);
+
+    font-size: 11px;
+    font-weight: 750;
+
+}
+
+
+.cp-calculation-header > i {
+
+    color: var(--cp-primary);
+
+    font-size: 19px;
+
+}
+
+
+.cp-calculation-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 8px;
+
+}
+
+
+.cp-calculation-item {
+
+    padding: 9px;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    border: 1px solid #ECEEF4;
+
+}
+
+
+.cp-calculation-item span {
+
+    display: block;
+
+    color: #94A3B8;
+
+    font-size: 7.5px;
+
+}
+
+
+.cp-calculation-item strong {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 10.5px;
+
+}
+
+
+.cp-calculation-payment strong {
+
+    color: var(--cp-primary);
+
+}
+
+
+.cp-calculation-remaining strong {
+
+    color: #16A34A;
+
+}
+
+
+.cp-calculation-invalid strong,
+.cp-calculation-item
+.cp-calculation-invalid {
+
+    color: #DC2626 !important;
+
+}
+
+
+/* ============================================================
+   IMMUTABLE CARD
+   ============================================================ */
+
+.cp-immutable-payment-card {
+
+    margin-bottom: 19px;
+
+    padding: 15px;
+
+    border: 1px solid #E2E4EC;
+
+    border-radius: 11px;
+
+    background: #FAFBFD;
+
+}
+
+
+.cp-immutable-header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 13px;
+
+}
+
+
+.cp-immutable-kicker {
+
+    display: block;
+
+    color: #94A3B8;
+
+    font-size: 7.5px;
+    font-weight: 800;
+
+    letter-spacing: 0.07em;
+
+}
+
+
+.cp-immutable-header h3 {
+
+    margin: 3px 0 0;
+
+    color: var(--cp-text-dark);
+
+    font-size: 11px;
+
+}
+
+
+.cp-immutable-lock {
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 5px;
+
+    min-height: 24px;
+
+    padding: 0 8px;
+
+    border-radius: 999px;
+
+    color: #B45309;
+
+    background: #FFF7ED;
+
+    font-size: 8px;
+    font-weight: 750;
+
+}
+
+
+.cp-immutable-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+}
+
+
+.cp-immutable-item {
+
+    padding: 9px;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    border: 1px solid #EDF0F4;
+
+}
+
+
+.cp-immutable-item span {
+
+    display: block;
+
+    color: #94A3B8;
+
+    font-size: 7.5px;
+
+}
+
+
+.cp-immutable-item strong {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 9.5px;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+/* ============================================================
+   VIEW PAYMENT
+   ============================================================ */
+
+.cp-view-payment-header {
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 15px;
+
+    margin-bottom: 17px;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #F6F6FF,
+            #FAFBFD
+        );
+
+    border: 1px solid #E3E4F1;
+
+}
+
+
+.cp-view-payment-icon {
+
+    width: 45px;
+    height: 45px;
+
+    flex: 0 0 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    color: #ffffff;
+
+    background: var(--cp-primary);
+
+}
+
+
+.cp-view-payment-icon i {
+
+    font-size: 19px;
+
+}
+
+
+.cp-view-payment-heading {
+
+    min-width: 0;
+
+    flex: 1;
+
+}
+
+
+.cp-view-payment-eyebrow {
+
+    display: block;
+
+    color: var(--cp-primary);
+
+    font-size: 7px;
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+
+}
+
+
+.cp-view-payment-heading h3 {
+
+    margin: 3px 0 0;
+
+    color: var(--cp-text-dark);
+
+    font-size: 15px;
+
+}
+
+
+.cp-view-payment-heading p {
+
+    margin: 3px 0 0;
+
+    color: var(--cp-text-muted);
+
+    font-size: 9px;
+
+}
+
+
+.cp-view-payment-amount {
+
+    text-align: right;
+
+}
+
+
+.cp-view-payment-amount span {
+
+    display: block;
+
+    color: #94A3B8;
+
+    font-size: 8px;
+
+}
+
+
+.cp-view-payment-amount strong {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--cp-primary);
+
+    font-size: 17px;
+
+}
+
+
+/* ============================================================
+   VIEW SECTIONS
+   ============================================================ */
+
+.cp-view-section {
+
+    margin-bottom: 17px;
+
+}
+
+
+.cp-view-section-title {
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 10px;
+
+    padding-bottom: 7px;
+
+    border-bottom: 1px solid #EDF0F4;
+
+    color: var(--cp-primary);
+
+    font-size: 10px;
+    font-weight: 750;
+
+}
+
+
+.cp-view-section-title i {
+
+    font-size: 12px;
+
+}
+
+
+.cp-view-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 8px;
+
+}
+
+
+.cp-view-field {
+
+    padding: 10px;
+
+    border: 1px solid #EDF0F4;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+}
+
+
+.cp-view-field span {
+
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    color: #94A3B8;
+
+    font-size: 7.5px;
+
+}
+
+
+.cp-view-field span i {
+
+    color: var(--cp-primary);
+
+}
+
+
+.cp-view-field strong {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 9.5px;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+.cp-view-financial-card {
+
+    margin-bottom: 17px;
+
+    padding: 13px;
+
+    border: 1px solid #E1E2F1;
+
+    border-radius: 10px;
+
+    background: #FAFAFF;
+
+}
+
+
+.cp-view-financial-header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 11px;
+
+}
+
+
+.cp-view-financial-header span {
+
+    display: block;
+
+    color: var(--cp-primary);
+
+    font-size: 7px;
+    font-weight: 800;
+
+    letter-spacing: 0.07em;
+
+}
+
+
+.cp-view-financial-header h3 {
+
+    margin: 3px 0 0;
+
+    color: var(--cp-text-dark);
+
+    font-size: 10.5px;
+
+}
+
+
+.cp-view-financial-header > i {
+
+    color: var(--cp-primary);
+
+    font-size: 17px;
+
+}
+
+
+.cp-view-financial-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 8px;
+
+}
+
+
+.cp-view-financial-grid > div {
+
+    padding: 8px;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    border: 1px solid #ECEEF5;
+
+}
+
+
+.cp-view-financial-grid span {
+
+    display: block;
+
+    color: #94A3B8;
+
+    font-size: 7px;
+
+}
+
+
+.cp-view-financial-grid strong {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 10px;
+
+}
+
+
+.cp-view-detail-block {
+
+    display: grid;
+
+    gap: 9px;
+
+}
+
+
+.cp-view-detail-block > div {
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    border: 1px solid #EDF0F4;
+
+}
+
+
+.cp-view-detail-block span {
+
+    display: block;
+
+    color: #94A3B8;
+
+    font-size: 7.5px;
+
+}
+
+
+.cp-view-detail-block strong {
+
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 9.5px;
+
+}
+
+
+.cp-view-detail-block p {
+
+    margin: 5px 0 0;
+
+    color: var(--cp-text);
+
+    font-size: 9px;
+
+    line-height: 1.55;
+
+}
+
+
+.cp-view-loading,
+.cp-view-error {
+
+    min-height: 280px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+}
+
+
+.cp-view-error-icon {
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #DC2626;
+
+    background: #FEF2F2;
+
+}
+
+
+.cp-view-error h3 {
+
+    margin: 12px 0 0;
+
+    font-size: 13px;
+
+}
+
+
+.cp-view-error p {
+
+    max-width: 400px;
+
+    margin: 6px 0;
+
+    color: var(--cp-text-muted);
+
+    font-size: 9.5px;
+
+}
+
+
+/* ============================================================
+   HISTORY CLIENT SUMMARY
+   ============================================================ */
+
+.cp-history-client-summary {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 17px;
+
+    padding: 14px;
+
+    border: 1px solid #E4E6ED;
+
+    border-radius: 11px;
+
+    background: #FAFBFD;
+
+}
+
+
+.cp-history-client-main {
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 0;
+
+}
+
+
+.cp-history-client-avatar {
+
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: var(--cp-primary);
+
+    background: var(--cp-primary-light);
+
+}
+
+
+.cp-history-client-avatar i {
+
+    font-size: 18px;
+
+}
+
+
+.cp-history-client-label {
+
+    display: block;
+
+    color: var(--cp-primary);
+
+    font-size: 7px;
+    font-weight: 800;
+
+    letter-spacing: 0.07em;
+
+}
+
+
+.cp-history-client-name {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 12px;
+
+}
+
+
+.cp-history-client-company {
+
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--cp-text-muted);
+
+    font-size: 8.5px;
+
+}
+
+
+.cp-history-summary-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(100px, 1fr));
+
+    gap: 8px;
+
+}
+
+
+.cp-history-summary-item {
+
+    min-width: 110px;
+
+    padding: 8px 10px;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    border: 1px solid #EDF0F4;
+
+}
+
+
+.cp-history-summary-item span {
+
+    display: block;
+
+    color: #94A3B8;
+
+    font-size: 7px;
+
+}
+
+
+.cp-history-summary-item strong {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 10.5px;
+
+}
+
+
+/* ============================================================
+   HISTORY TABLE
+   ============================================================ */
+
+.cp-history-table-wrapper {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+}
+
+
+.cp-history-table {
+
+    width: 100%;
+
+    min-width: 850px;
+
+    border-collapse: collapse;
+
+}
+
+
+.cp-history-table th {
+
+    padding: 9px 10px;
+
+    color: #64748B;
+
+    background: #FAFBFD;
+
+    border-bottom: 1px solid #E5E7EB;
+
+    font-size: 8px;
+    font-weight: 750;
+
+    text-align: left;
+
+    white-space: nowrap;
+
+}
+
+
+.cp-history-table td {
+
+    padding: 10px;
+
+    border-bottom: 1px solid #F0F2F5;
+
+    color: #475467;
+
+    font-size: 9px;
+
+    vertical-align: middle;
+
+}
+
+
+.cp-history-table tr:last-child td {
+
+    border-bottom: 0;
+
+}
+
+
+.cp-history-project-code {
+
+    display: block;
+
+    margin-top: 2px;
+
+    color: #94A3B8;
+
+    font-size: 7px;
+
+}
+
+
+.cp-history-purpose {
+
+    display: block;
+
+    max-width: 180px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+/* ============================================================
+   RECEIPT MODAL
+   ============================================================ */
+
+.cp-receipt-overlay {
+
+    align-items: flex-start;
+
+    padding-top: 20px;
+
+    padding-bottom: 20px;
+
+}
+
+
+.cp-receipt-modal-dialog {
+
+    width: 100%;
+
+    max-width: 980px;
+
+    height:
+        calc(
+            100dvh - 40px
+        );
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background: #F4F6FA;
+
+    border-radius: 15px;
+
+    box-shadow: var(--cp-shadow-lg);
+
+}
+
+
+.cp-receipt-modal-header {
+
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 13px 17px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #E5E7EB;
+
+}
+
+
+.cp-receipt-modal-header h2 {
+
+    margin: 0;
+
+    color: var(--cp-text-dark);
+
+    font-size: 14px;
+
+}
+
+
+.cp-receipt-modal-header p {
+
+    margin: 3px 0 0;
+
+    color: var(--cp-text-muted);
+
+    font-size: 8.5px;
+
+}
+
+
+.cp-receipt-header-actions {
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+}
+
+
+.cp-receipt-body {
+
+    flex: 1 1 auto;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding: 18px;
+
+}
+
+
+.cp-receipt-container {
+
+    width: 100%;
+
+    max-width: 790px;
+
+    min-height: 0;
+
+    margin: 0 auto;
+
+    padding: 24px;
+
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 5px 20px rgba(
+            15,
+            23,
+            42,
+            0.07
+        );
+
+}
+
+
+/* ============================================================
+   RECEIPT DOCUMENT
+   ============================================================ */
+
+.cp-receipt-document {
+
+    color: var(--cp-text-dark);
+
+}
+
+
+.cp-receipt-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-bottom: 17px;
+
+    border-bottom:
+        2px solid
+        var(--cp-primary);
+
+}
+
+
+.cp-receipt-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+}
+
+
+.cp-receipt-logo {
+
+    width: 50px;
+    height: 50px;
+
+    flex: 0 0 50px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+}
+
+
+.cp-receipt-logo img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+}
+
+
+.cp-receipt-logo-fallback {
+
+    display: none;
+
+    width: 100%;
+    height: 100%;
+
+    align-items: center;
+    justify-content: center;
+
+    color: var(--cp-primary);
+
+    font-size: 25px;
+    font-weight: 850;
+
+}
+
+
+.cp-receipt-company h1 {
+
+    margin: 0 0 4px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 20px;
+
+}
+
+
+.cp-receipt-company p {
+
+    margin: 2px 0;
+
+    color: #64748B;
+
+    font-size: 8.5px;
+
+}
+
+
+.cp-receipt-title-block {
+
+    text-align: right;
+
+}
+
+
+.cp-receipt-title-block span {
+
+    display: block;
+
+    color: var(--cp-primary);
+
+    font-size: 7.5px;
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+
+}
+
+
+.cp-receipt-title-block h2 {
+
+    margin: 4px 0;
+
+    color: var(--cp-text-dark);
+
+    font-size: 16px;
+
+}
+
+
+.cp-receipt-title-block strong {
+
+    font-size: 10px;
+
+}
+
+
+.cp-receipt-status-bar {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin: 14px 0;
+
+    padding: 11px 13px;
+
+    border: 1px solid #E1E2F0;
+
+    border-radius: 9px;
+
+    background: #F8F8FF;
+
+}
+
+
+.cp-receipt-status-bar span {
+
+    display: block;
+
+    color: #64748B;
+
+    font-size: 7.5px;
+
+}
+
+
+.cp-receipt-status-bar strong {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 10px;
+
+}
+
+
+.cp-receipt-amount {
+
+    text-align: right;
+
+}
+
+
+.cp-receipt-amount strong {
+
+    color: var(--cp-primary);
+
+    font-size: 16px;
+
+}
+
+
+.cp-receipt-section {
+
+    margin-top: 14px;
+
+}
+
+
+.cp-receipt-section-title {
+
+    margin-bottom: 8px;
+
+    padding-bottom: 6px;
+
+    border-bottom: 1px solid #E9ECF1;
+
+    color: var(--cp-primary);
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 0.04em;
+
+    text-transform: uppercase;
+
+}
+
+
+.cp-receipt-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 8px 14px;
+
+}
+
+
+.cp-receipt-grid > div,
+.cp-receipt-details > div {
+
+    min-width: 0;
+
+}
+
+
+.cp-receipt-grid-full,
+.cp-receipt-detail-full {
+
+    grid-column: 1 / -1;
+
+}
+
+
+.cp-receipt-grid span,
+.cp-receipt-details span,
+.cp-receipt-balance-grid span {
+
+    display: block;
+
+    color: #94A3B8;
+
+    font-size: 7px;
+
+}
+
+
+.cp-receipt-grid strong,
+.cp-receipt-details strong {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 9px;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+.cp-receipt-details {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 8px 14px;
+
+}
+
+
+.cp-receipt-balance {
+
+    margin-top: 14px;
+
+    padding: 11px;
+
+    border: 1px solid #E1E2F0;
+
+    border-radius: 9px;
+
+    background: #FAFAFF;
+
+}
+
+
+.cp-receipt-balance-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 8px;
+
+}
+
+
+.cp-receipt-balance-grid strong {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--cp-text-dark);
+
+    font-size: 9.5px;
+
+}
+
+
+.cp-receipt-paid {
+
+    color: #16A34A !important;
+
+}
+
+
+.cp-receipt-balance-total {
+
+    grid-column: 1 / -1;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 2px;
+
+    padding-top: 8px;
+
+    border-top: 1px solid #E2E5EB;
+
+}
+
+
+.cp-receipt-balance-total strong {
+
+    color: #DC2626;
+
+    font-size: 12px;
+
+}
+
+
+.cp-receipt-remarks {
+
+    margin-top: 13px;
+
+    padding: 9px;
+
+    border-radius: 8px;
+
+    background: #F8FAFC;
+
+}
+
+
+.cp-receipt-remarks span {
+
+    display: block;
+
+    color: #64748B;
+
+    font-size: 7px;
+    font-weight: 700;
+
+}
+
+
+.cp-receipt-remarks p {
+
+    margin: 4px 0 0;
+
+    color: #374151;
+
+    font-size: 8.5px;
+
+    line-height: 1.55;
+
+}
+
+
+.cp-receipt-history {
+
+    margin-top: 14px;
+
+}
+
+
+.cp-receipt-history table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+
+.cp-receipt-history th,
+.cp-receipt-history td {
+
+    padding: 6px;
+
+    border: 1px solid #E5E7EB;
+
+    font-size: 7px;
+
+    text-align: left;
+
+}
+
+
+.cp-receipt-history th {
+
+    color: var(--cp-primary);
+
+    background: #F5F5FF;
+
+    font-weight: 750;
+
+}
+
+
+.cp-receipt-footer {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 16px;
+
+    padding-top: 10px;
+
+    border-top: 1px solid #DDE1E7;
+
+}
+
+
+.cp-receipt-footer div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+}
+
+
+.cp-receipt-footer strong {
+
+    color: var(--cp-text-dark);
+
+    font-size: 8px;
+
+}
+
+
+.cp-receipt-footer span {
+
+    color: #64748B;
+
+    font-size: 7px;
+
+}
+
+
+.cp-receipt-issued {
+
+    text-align: right;
+
+}
+
+
+.cp-receipt-thank-you {
+
+    margin-top: 10px;
+
+    color: var(--cp-primary);
+
+    text-align: center;
+
+    font-size: 7.5px;
+    font-weight: 700;
+
+}
+
+
+.cp-receipt-loading {
+
+    min-height: 500px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    color: var(--cp-text-muted);
+
+    font-size: 10px;
+
+}
+
+
+.cp-receipt-error {
+
+    min-height: 500px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+}
+
+
+.cp-receipt-error > div {
+
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #DC2626;
+
+    background: #FEF2F2;
+
+}
+
+
+.cp-receipt-error h3 {
+
+    margin: 12px 0 5px;
+
+    font-size: 13px;
+
+}
+
+
+.cp-receipt-error p {
+
+    max-width: 400px;
+
+    color: var(--cp-text-muted);
+
+    font-size: 9px;
+
+}
+
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+
+.cp-toast-container {
+
+    position: fixed;
+
+    right: 20px;
+    bottom: 20px;
+
+    z-index: 1000000;
+
+    width: min(
+        360px,
+        calc(
+            100vw - 40px
+        )
+    );
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    pointer-events: none;
+
+}
+
+
+.cp-toast {
+
+    min-height: 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 9px 10px;
+
+    background: #ffffff;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 12px 30px rgba(
+            15,
+            23,
+            42,
+            0.12
+        );
+
+    opacity: 0;
+
+    transform:
+        translateY(8px);
+
+    pointer-events: auto;
+
+    transition:
+        opacity 0.20s ease,
+        transform 0.20s ease;
+
+}
+
+
+.cp-toast.is-visible {
+
+    opacity: 1;
+
+    transform:
+        translateY(0);
+
+}
+
+
+.cp-toast-icon {
+
+    width: 29px;
+    height: 29px;
+
+    flex: 0 0 29px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+}
+
+
+.cp-toast-success
+.cp-toast-icon {
+
+    color: #16A34A;
+
+    background: #ECFDF3;
+
+}
+
+
+.cp-toast-error
+.cp-toast-icon {
+
+    color: #DC2626;
+
+    background: #FEF2F2;
+
+}
+
+
+.cp-toast-warning
+.cp-toast-icon {
+
+    color: #D97706;
+
+    background: #FFF7ED;
+
+}
+
+
+.cp-toast-info
+.cp-toast-icon {
+
+    color: #2563EB;
+
+    background: #EFF6FF;
+
+}
+
+
+.cp-toast-message {
+
+    flex: 1;
+
+    color: #374151;
+
+    font-size: 10px;
+
+    line-height: 1.45;
+
+}
+
+
+.cp-toast-close {
+
+    width: 26px;
+    height: 26px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 0;
+
+    border-radius: 6px;
+
+    color: #94A3B8;
+
+    background: transparent;
+
+    cursor: pointer;
+
+}
+
+
+.cp-toast-close:hover {
+
+    color: #374151;
+
+    background: #F3F4F6;
+
+}
+
+
+/* ============================================================
+   BODY LOCK
+   ============================================================ */
+
+body.cp-modal-open {
+
+    overflow: hidden !important;
+
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+.client-payments-page
+button:focus-visible,
+.client-payments-page
+input:focus-visible,
+.client-payments-page
+select:focus-visible,
+.client-payments-page
+textarea:focus-visible {
+
+    outline:
+        2px solid
+        var(--cp-secondary);
+
+    outline-offset: 2px;
+
+}
+
+
+.cp-payment-action-btn:focus-visible,
+.cp-payment-action-item:focus-visible {
+
+    outline: none;
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+
+    .client-payments-page *,
+    .client-payments-page *::before,
+    .client-payments-page *::after {
+
+        scroll-behavior: auto !important;
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+
+    }
+
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (
+    max-width: 1200px
+) {
+
+    .client-payments-summary-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .cp-filter-grid {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
+
+    .cp-search-group {
+
+        grid-column:
+            1 / -1;
+
+    }
+
+}
+
+
+/* ============================================================
+   SMALL TABLET
+   ============================================================ */
+
+@media (
+    max-width: 900px
+) {
+
+    .client-payments-page {
+
+        padding: 16px;
+
+    }
+
+
+    .client-payments-page-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .client-payments-header-actions {
+
+        width: 100%;
+
+    }
+
+
+    .client-payments-header-actions
+    .cp-btn {
+
+        flex: 1;
+
+    }
+
+
+    .cp-filter-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+
+    .cp-search-group {
+
+        grid-column:
+            1 / -1;
+
+    }
+
+
+    .cp-history-client-summary {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .cp-history-summary-grid {
+
+        width: 100%;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (
+    max-width: 640px
+) {
+
+    .client-payments-page {
+
+        padding: 11px;
+
+    }
+
+
+    .client-payments-page-title {
+
+        font-size: 18px;
+
+    }
+
+
+    .client-payments-title-icon {
+
+        width: 42px;
+        height: 42px;
+
+        flex-basis: 42px;
+
+    }
+
+
+    .client-payments-page-subtitle {
+
+        font-size: 10px;
+
+    }
+
+
+    .client-payments-header-actions {
+
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+
+    .client-payments-summary-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .cp-summary-card {
+
+        padding: 14px;
+
+    }
+
+
+    .client-payments-filter-card {
+
+        padding: 14px;
+
+    }
+
+
+    .cp-filter-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .cp-filter-header
+    .cp-btn {
+
+        width: 100%;
+
+    }
+
+
+    .cp-filter-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .cp-search-group {
+
+        grid-column:
+            auto;
+
+    }
+
+
+    .cp-table-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .cp-pagination-container {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .cp-pagination {
+
+        width: 100%;
+
+        justify-content: flex-end;
+
+    }
+
+
+    .cp-modal-overlay {
+
+        padding: 0;
+
+        align-items: flex-end;
+
+    }
+
+
+    .cp-modal-dialog {
+
+        max-height:
+            100dvh;
+
+        border-radius:
+            15px 15px 0 0;
+
+    }
+
+
+    .cp-modal-header {
+
+        padding: 15px;
+
+    }
+
+
+    #addPaymentModal .cp-modal-body,
+    #editPaymentModal .cp-modal-body {
+
+        padding: 15px;
+
+    }
+
+
+    .cp-modal-footer {
+
+        padding: 10px 15px;
+
+    }
+
+
+    .cp-modal-footer .cp-btn {
+
+        flex: 1;
+
+    }
+
+
+    .cp-form-grid,
+    .cp-form-grid-2 {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .cp-balance-preview-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .cp-calculation-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+
+    .cp-immutable-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .cp-view-payment-header {
+
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .cp-view-payment-amount {
+
+        width: 100%;
+
+        text-align: left;
+
+        padding-top: 5px;
+
+    }
+
+
+    .cp-view-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .cp-view-financial-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+
+    .cp-history-summary-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+
+    .cp-receipt-modal-dialog {
+
+        height:
+            100dvh;
+
+        max-height:
+            100dvh;
+
+        border-radius: 0;
+
+    }
+
+
+    .cp-receipt-modal-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .cp-receipt-header-actions {
+
+        width: 100%;
+
+    }
+
+
+    .cp-receipt-header-actions
+    .cp-btn {
+
+        flex: 1;
+
+    }
+
+
+    .cp-receipt-body {
+
+        padding: 10px;
+
+    }
+
+
+    .cp-receipt-container {
+
+        padding: 16px;
+
+        border-radius: 7px;
+
+    }
+
+
+    .cp-receipt-header {
+
+        flex-direction: column;
+
+    }
+
+
+    .cp-receipt-title-block {
+
+        text-align: left;
+
+    }
+
+
+    .cp-receipt-grid,
+    .cp-receipt-details {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .cp-receipt-grid-full,
+    .cp-receipt-detail-full {
+
+        grid-column: auto;
+
+    }
+
+
+    .cp-receipt-balance-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+
+    .cp-receipt-footer {
+
+        flex-direction: column;
+
+    }
+
+
+    .cp-receipt-issued {
+
+        text-align: left;
+
+    }
+
+
+    .cp-payment-action-menu {
+
+        width: 180px;
+
+    }
+
+
+    .cp-toast-container {
+
+        right: 11px;
+
+        bottom: 11px;
+
+        width:
+            calc(
+                100vw - 22px
+            );
+
+    }
+
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+   ============================================================ */
+
+@media (
+    max-width: 420px
+) {
+
+    .client-payments-header-actions {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .cp-calculation-grid,
+    .cp-view-financial-grid,
+    .cp-history-summary-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .cp-modal-footer {
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .cp-modal-footer .cp-btn {
+
+        width: 100%;
+
+    }
+
+
+    .cp-receipt-balance-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+
+@media print {
+
+    body.cp-modal-open {
+
+        overflow: visible !important;
+
+    }
+
+
+    .cp-payment-action-menu,
+    .cp-toast-container {
+
+        display: none !important;
+
+    }
+
+}

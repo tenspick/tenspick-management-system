@@ -1,0 +1,135 @@
+/* Activity Logs Styles */
+.activity-logs-page {
+    padding: 24px;
+    background: #F7F8FC;
+    min-height: 100%;
+    box-sizing: border-box;
+}
+
+.logs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.logs-header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #172033;
+    font-weight: 750;
+}
+
+.logs-header p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: #64748B;
+}
+
+.logs-refresh-btn {
+    height: 40px;
+    padding: 0 18px;
+    background: #ffffff;
+    border: 1px solid #CBD5E1;
+    color: #4B49AC;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.logs-card {
+    background: #ffffff;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.logs-filter-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.logs-search-wrap {
+    position: relative;
+    flex: 1;
+    max-width: 380px;
+}
+
+.logs-search-wrap i {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    color: #94A3B8;
+    font-size: 14px;
+}
+
+.logs-search-wrap input {
+    width: 100%;
+    height: 38px;
+    padding-left: 36px;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    font-size: 12px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.logs-select {
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    font-size: 12px;
+    outline: none;
+}
+
+.logs-table-wrap {
+    overflow-x: auto;
+}
+
+.logs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.logs-table th {
+    background: #F8FAFC;
+    color: #475569;
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 700;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.logs-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #F1F5F9;
+    color: #334155;
+}
+
+.action-badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+
+}
+
+.badge-login { background: #EFF6FF; color: #2563EB; }
+.badge-payment { background: #ECFDF3; color: #16A34A; }
+.badge-lead { background: #F5F3FF; color: #7C3AED; }
+.badge-system { background: #FFF7ED; color: #D97706; }
+
+.status-tag {
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.tag-success { color: #16A34A; }

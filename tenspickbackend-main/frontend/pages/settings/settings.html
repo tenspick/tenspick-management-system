@@ -1,0 +1,56 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'settings';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+<section class="settings-page" id="settingsPage">
+    <header class="settings-header">
+        <div>
+            <h1>Company Settings</h1>
+            <p>Configure general system preferences, business branding, and database connectivity.</p>
+        </div>
+        <button type="button" class="settings-save-btn" id="saveSettingsBtn">
+            <i class="bi bi-check-circle-fill"></i> Save Settings
+        </button>
+    </header>
+
+    <div class="settings-card">
+        <div class="settings-section">
+            <h2>General Business Settings</h2>
+            <div class="settings-grid">
+                <div class="settings-group">
+                    <label for="setCompanyName">Company Name</label>
+                    <input type="text" id="setCompanyName" value="Tenspick Software Company">
+                </div>
+                <div class="settings-group">
+                    <label for="setCurrency">Currency Symbol</label>
+                    <input type="text" id="setCurrency" value="₹ (INR)">
+                </div>
+                <div class="settings-group">
+                    <label for="setTimezone">Timezone</label>
+                    <select id="setTimezone">
+                        <option value="Asia/Kolkata" selected>Asia/Kolkata (IST)</option>
+                        <option value="UTC">UTC (Coordinated Universal Time)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2>Supabase & Database Configuration</h2>
+            <div class="settings-grid">
+                <div class="settings-group">
+                    <label for="setSupabaseUrl">Supabase URL</label>
+                    <input type="text" id="setSupabaseUrl" placeholder="https://your-project.supabase.co">
+                </div>
+                <div class="settings-group">
+                    <label for="setSupabaseKey">Supabase Anon Key</label>
+                    <input type="password" id="setSupabaseKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6...">
+                </div>
+            </div>
+        </div>
+
+        <div id="settingsMessage" class="settings-msg"></div>
+    </div>
+</section>

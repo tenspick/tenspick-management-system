@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Tenspick Setup Check</title>
+    <link rel="stylesheet" href="assets/css/root.css">
+    <style>
+        body {
+            font-family: var(--font-family-base, 'Inter', -apple-system, sans-serif);
+            background: #f5f7fb;
+            color: #17233d;
+            padding: 30px;
+            margin: 0;
+        }
+
+        .card {
+            max-width: 760px;
+            margin: 40px auto;
+            background: #fff;
+            border: 1px solid #e5e9f1;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(32, 45, 80, .07);
+        }
+
+        h1 {
+            color: #4B49AC;
+            margin-top: 0;
+            font-size: 26px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .check {
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .check-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .check-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .ok {
+            background: #e6f9f0;
+            color: #20B26B;
+        }
+
+        .bad {
+            background: #fde8e9;
+            color: #E94B55;
+        }
+
+        .info {
+            background: #eef2ff;
+            color: #4B49AC;
+        }
+
+        code {
+            background: #f1f1f8;
+            padding: 3px 6px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .actions {
+            margin-top: 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            background: #4B49AC;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>Tenspick Setup Diagnostics</h1>
+        <p>System readiness and backend connection status check.</p>
+
+        <div id="checksContainer">
+            <div class="check">
+                <div class="check-header">
+                    <span class="check-title">HTML5 & JavaScript Engine</span>
+                    <span class="status-badge ok" id="jsStatus">OK</span>
+                </div>
+                <code>ES6+, Fetch API, LocalStorage Supported</code>
+            </div>
+
+            <div class="check">
+                <div class="check-header">
+                    <span class="check-title">Supabase Database Integration</span>
+                    <span class="status-badge info" id="supabaseStatus">Checking...</span>
+                </div>
+                <code id="supabaseInfo">Verifying Supabase JS Client...</code>
+            </div>
+
+            <div class="check">
+                <div class="check-header">
+                    <span class="check-title">Session & Local Storage</span>
+                    <span class="status-badge info" id="storageStatus">Checking...</span>
+                </div>
+                <code id="storageInfo">Checking browser storage availability...</code>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="login.html" class="btn">Go to Admin Login</a>
+            <a href="client/login.html" class="btn btn-secondary">Go to Client Login</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase-client.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check storage
+            try {
+                sessionStorage.setItem('__test', '1');
+                sessionStorage.removeItem('__test');
+                document.getElementById('storageStatus').className = 'status-badge ok';
+                document.getElementById('storageStatus').textContent = 'OK';
+                document.getElementById('storageInfo').textContent = 'Session Storage & Local Storage are ready.';
+            } catch (e) {
+                document.getElementById('storageStatus').className = 'status-badge bad';
+                document.getElementById('storageStatus').textContent = 'FAILED';
+                document.getElementById('storageInfo').textContent = e.message;
+            }
+
+            // Check Supabase
+            if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+                document.getElementById('supabaseStatus').className = 'status-badge ok';
+                document.getElementById('supabaseStatus').textContent = 'CONFIGURED';
+                document.getElementById('supabaseInfo').textContent = 'Supabase client initialized successfully.';
+            } else {
+                document.getElementById('supabaseStatus').className = 'status-badge info';
+                document.getElementById('supabaseStatus').textContent = 'READY FOR SETUP';
+                document.getElementById('supabaseInfo').textContent = 'Supabase schema file available at database/supabase_schema.sql.';
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Tenspick Software Company Management System"
+    >
+
+    <title>Tenspick | Login</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4B49AC">
+    <script src="assets/js/pwa.js"></script>
+
+    <!-- Root theme -->
+    <link rel="stylesheet" href="assets/css/root.css">
+
+    <!-- Login page styles -->
+    <link rel="stylesheet" href="assets/css/login.css">
+</head>
+
+<body class="login-page">
+
+    <main class="login-wrapper">
+
+        <section class="login-card">
+
+            <!-- =====================================================
+                 BRAND
+            ====================================================== -->
+            <div class="login-brand">
+
+                <div class="brand-logo-wrap">
+
+                    <img
+                        src="assets/images/tenspick-logo.png"
+                        alt="Tenspick"
+                        class="brand-logo"
+                        onerror="this.style.display='none'; document.getElementById('brandFallback').style.display='grid';"
+                    >
+
+                    <div
+                        class="brand-fallback"
+                        id="brandFallback"
+                        aria-hidden="true"
+                    >
+                        T
+                    </div>
+
+                </div>
+
+                <div class="brand-text">
+                    <h1>Tenspick</h1>
+                    <span>Software Company Management</span>
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 LOGIN HEADING
+            ====================================================== -->
+            <div class="login-heading">
+
+                <span class="login-eyebrow">
+                    WELCOME BACK
+                </span>
+
+                <h2>
+                    Sign in to your account
+                </h2>
+
+                <p>
+                    Manage your leads, clients, projects
+                    and team from one place.
+                </p>
+
+            </div>
+
+
+            <!-- Auth Type Tabs -->
+            <div class="auth-tabs" style="display: flex; gap: 8px; margin-bottom: 22px; background: #f0f2f8; padding: 4px; border-radius: 10px;">
+                <button type="button" id="tabPasswordAuth" class="auth-tab-btn active" style="flex: 1; padding: 9px; border: 0; border-radius: 7px; background: #4B49AC; color: #fff; font-weight: 700; font-size: 12px; cursor: pointer;">Password Sign In</button>
+                <button type="button" id="tabEmailAuth" class="auth-tab-btn" style="flex: 1; padding: 9px; border: 0; border-radius: 7px; background: transparent; color: #64748B; font-weight: 700; font-size: 12px; cursor: pointer;">Email Magic Link</button>
+            </div>
+
+            <!-- =====================================================
+                 LOGIN FORM
+            ====================================================== -->
+            <form
+                id="loginForm"
+                class="login-form"
+                method="POST"
+                novalidate
+            >
+
+                <!-- Email -->
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="input-wrap">
+
+                        <span
+                            class="input-icon"
+                            aria-hidden="true"
+                        >
+                            ✉
+                        </span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="username"
+                            maxlength="190"
+                            required
+                        >
+
+                    </div>
+
+                    <small
+                        class="field-error"
+                        id="emailError"
+                    ></small>
+
+                </div>
+
+
+                <!-- Password -->
+                <div class="form-group">
+
+                    <div class="label-row">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <a
+                            href="#"
+                            class="forgot-link"
+                            id="forgotPassword"
+                        >
+                            Forgot password?
+                        </a>
+
+                    </div>
+
+                    <div class="input-wrap">
+
+                        <span
+                            class="input-icon"
+                            aria-hidden="true"
+                        >
+                            ⌑
+                        </span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            maxlength="128"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="passwordToggle"
+                            aria-label="Show password"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                    <small
+                        class="field-error"
+                        id="passwordError"
+                    ></small>
+
+                </div>
+
+
+                <!-- Remember -->
+                <div class="login-options">
+
+                    <label class="remember-option">
+
+                        <input
+                            type="checkbox"
+                            id="remember"
+                            name="remember"
+                        >
+
+                        <span
+                            class="custom-checkbox"
+                            aria-hidden="true"
+                        ></span>
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- Server / API message -->
+                <div
+                    class="login-message"
+                    id="loginMessage"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
+
+
+                <!-- Login button -->
+                <button
+                    type="submit"
+                    class="login-button"
+                    id="loginButton"
+                >
+
+                    <span class="button-text">
+                        Sign In
+                    </span>
+
+                    <span
+                        class="button-loader"
+                        aria-hidden="true"
+                    ></span>
+
+                </button>
+
+            </form>
+
+
+            <!-- =====================================================
+                 FOOTER
+            ====================================================== -->
+            <div class="login-footer" style="flex-direction: column; gap: 8px;">
+
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span id="copyrightYear">© 2026 Tenspick</span>
+                    <span class="footer-dot">•</span>
+                    <span>Admin &amp; Staff Portal</span>
+                </div>
+
+                <div style="display: flex; gap: 16px; font-size: 12px;">
+                    <a href="client/login.html" style="color: #4B49AC; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z"/></svg>
+                        Client Login
+                    </a>
+                    <span style="color: #CBD5E1;">|</span>
+                    <a href="client/login.html" style="color: #6B7280; text-decoration: none; font-size: 11px;">Are you a client? Login here →</a>
+                </div>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="env.js"></script>
+    <script src="assets/js/supabase-client.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/login.js"></script>
+
+</body>
+</html>

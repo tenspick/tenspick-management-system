@@ -1,0 +1,244 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        window.location.replace('../../index.html#/attendance');
+    }
+</script>
+
+<div class="attendance-page-wrapper" style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+    
+    <!-- HEADER -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: #fff; padding: 20px 24px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+        <div>
+            <h2 style="margin: 0; font-size: 20px; font-weight: 700; color: #1F2937;" id="attendancePageTitle">Leave & Attendance</h2>
+            <span style="font-size: 13px; color: #6B7280;" id="attendancePageSubtitle">Manage attendance, submit leave requests and view holiday schedule</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <span id="attendanceRoleBadge" style="background: #EEF2FF; color: #4B49AC; font-weight: 700; font-size: 12px; padding: 6px 14px; border-radius: 20px; border: 1px solid #C7D2FE;">
+                Role View
+            </span>
+        </div>
+    </div>
+
+    <!-- ADMIN ONLY: PENDING LEAVE REQUESTS ALERT CARD -->
+    <div id="adminLeaveRequestsCard" style="display: none; background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #FDE68A; background: linear-gradient(to right, #FFFBEB, #FFFFFF); margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 38px; height: 38px; border-radius: 10px; background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                    <i class="bi bi-clock-history"></i>
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #92400E;">Pending Staff Leave Requests</h3>
+                    <span style="font-size: 12px; color: #B45309;">Review and manage leave applications submitted by staff members</span>
+                </div>
+            </div>
+            <span id="adminPendingLeaveBadge" style="background: #F59E0B; color: #fff; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 100px;">0 Pending</span>
+        </div>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #FCD34D;">
+                        <th style="text-align: left; padding: 8px; color: #78350F; font-size: 12px; font-weight: 700;">STAFF MEMBER</th>
+                        <th style="text-align: left; padding: 8px; color: #78350F; font-size: 12px; font-weight: 700;">TYPE</th>
+                        <th style="text-align: left; padding: 8px; color: #78350F; font-size: 12px; font-weight: 700;">FROM - TO</th>
+                        <th style="text-align: left; padding: 8px; color: #78350F; font-size: 12px; font-weight: 700;">REASON</th>
+                        <th style="text-align: right; padding: 8px; color: #78350F; font-size: 12px; font-weight: 700;">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody id="adminPendingLeaveList">
+                    <tr><td colspan="5" style="text-align: center; padding: 20px; color: #9CA3AF;">No pending leave requests.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- CHECK-IN / CHECK-OUT HERO -->
+    <div id="attendanceClockCard" style="background: linear-gradient(135deg, #1E1B4B, #4B49AC); border-radius: 16px; padding: 28px 32px; color: #fff; box-shadow: 0 8px 30px rgba(75,73,172,0.3); margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+        <div>
+            <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; font-weight: 700;">Today's Attendance</span>
+            <h2 id="attendanceLiveTime" style="font-size: 42px; font-weight: 800; margin: 8px 0 4px; letter-spacing: 1px; font-family: monospace;">00:00:00</h2>
+            <span id="attendanceTodayDate" style="font-size: 14px; opacity: 0.85; font-weight: 500;">--</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-end;">
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <div style="text-align: center; background: rgba(255,255,255,0.1); padding: 12px 20px; border-radius: 10px;">
+                    <span style="font-size: 11px; opacity: 0.75; display: block; margin-bottom: 2px;">Check-In</span>
+                    <strong id="attendanceCheckIn" style="font-size: 18px;">--:--</strong>
+                </div>
+                <div style="text-align: center; background: rgba(255,255,255,0.1); padding: 12px 20px; border-radius: 10px;">
+                    <span style="font-size: 11px; opacity: 0.75; display: block; margin-bottom: 2px;">Check-Out</span>
+                    <strong id="attendanceCheckOut" style="font-size: 18px;">--:--</strong>
+                </div>
+                <div style="text-align: center; background: rgba(255,255,255,0.1); padding: 12px 20px; border-radius: 10px;">
+                    <span style="font-size: 11px; opacity: 0.75; display: block; margin-bottom: 2px;">Hours Today</span>
+                    <strong id="attendanceHours" style="font-size: 18px;">0.0h</strong>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button id="checkInBtn" type="button" style="background: #10B981; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                    <i class="bi bi-box-arrow-in-right"></i> Check In
+                </button>
+                <button id="checkOutBtn" type="button" style="background: #EF4444; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;" disabled>
+                    <i class="bi bi-box-arrow-left"></i> Check Out
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; margin-bottom: 24px;">
+        
+        <!-- LEFT COLUMN: ATTENDANCE HISTORY -->
+        <div style="background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="font-size: 16px; font-weight: 700; color: #1F2937; margin: 0; display: flex; align-items: center; gap: 8px;">
+                    <i class="bi bi-calendar-check" style="color: #4B49AC;"></i> <span id="attendanceTableTitle">Attendance Log</span>
+                </h3>
+                <div id="adminStaffFilterContainer" style="display: none;">
+                    <select id="attendanceStaffFilter" style="padding: 6px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 12px; outline: none;">
+                        <option value="all">All Staff Members</option>
+                    </select>
+                </div>
+            </div>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #E5E7EB;">
+                            <th style="text-align: left; padding: 10px 8px; color: #6B7280; font-weight: 600; font-size: 12px;">DATE</th>
+                            <th style="text-align: left; padding: 10px 8px; color: #6B7280; font-weight: 600; font-size: 12px;" id="staffNameCol">STAFF</th>
+                            <th style="text-align: left; padding: 10px 8px; color: #6B7280; font-weight: 600; font-size: 12px;">CHECK-IN</th>
+                            <th style="text-align: left; padding: 10px 8px; color: #6B7280; font-weight: 600; font-size: 12px;">CHECK-OUT</th>
+                            <th style="text-align: left; padding: 10px 8px; color: #6B7280; font-weight: 600; font-size: 12px;">HOURS</th>
+                            <th style="text-align: left; padding: 10px 8px; color: #6B7280; font-weight: 600; font-size: 12px;">STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceHistoryBody">
+                        <tr><td colspan="6" style="text-align: center; padding: 30px 0; color: #9CA3AF;">Loading attendance...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: LEAVE APPLY / HOLIDAY LIST -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            
+            <!-- LEAVE STATS -->
+            <div style="background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+                <h3 style="font-size: 15px; font-weight: 700; color: #1F2937; margin: 0 0 14px 0;"><i class="bi bi-bar-chart" style="color: #F59E0B; margin-right: 6px;"></i>Leave Summary</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div style="background: #EEF2FF; padding: 12px; border-radius: 8px; text-align: center;">
+                        <span style="font-size: 22px; font-weight: 800; color: #4B49AC; display: block;" id="leaveBalanceCasual">12</span>
+                        <span style="font-size: 11px; color: #6B7280; font-weight: 600;">Casual Leaves</span>
+                    </div>
+                    <div style="background: #F0FDF4; padding: 12px; border-radius: 8px; text-align: center;">
+                        <span style="font-size: 22px; font-weight: 800; color: #10B981; display: block;" id="leaveBalanceSick">6</span>
+                        <span style="font-size: 11px; color: #6B7280; font-weight: 600;">Sick Leaves</span>
+                    </div>
+                    <div style="background: #FFF7ED; padding: 12px; border-radius: 8px; text-align: center;">
+                        <span style="font-size: 22px; font-weight: 800; color: #F59E0B; display: block;" id="leaveBalanceEarned">8</span>
+                        <span style="font-size: 11px; color: #6B7280; font-weight: 600;">Earned Leaves</span>
+                    </div>
+                    <div style="background: #FEF2F2; padding: 12px; border-radius: 8px; text-align: center;">
+                        <span style="font-size: 22px; font-weight: 800; color: #EF4444; display: block;" id="leaveBalanceUsed">4</span>
+                        <span style="font-size: 11px; color: #6B7280; font-weight: 600;">Used This Year</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APPLY LEAVE FORM (STAFF & ADMIN) -->
+            <div style="background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+                <h3 style="font-size: 15px; font-weight: 700; color: #1F2937; margin: 0 0 14px 0;"><i class="bi bi-file-earmark-check" style="color: #10B981; margin-right: 6px;"></i>Apply for Leave</h3>
+                <form id="leaveApplyForm" style="display: flex; flex-direction: column; gap: 12px;">
+                    <div>
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Leave Type *</label>
+                        <select id="leaveType" required style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none;">
+                            <option value="casual">Casual Leave</option>
+                            <option value="sick">Sick Leave</option>
+                            <option value="earned">Earned Leave</option>
+                            <option value="unpaid">Unpaid Leave</option>
+                        </select>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">From Date *</label>
+                            <input type="date" id="leaveFrom" required style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none;" />
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">To Date *</label>
+                            <input type="date" id="leaveTo" required style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none;" />
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Reason *</label>
+                        <textarea id="leaveReason" required rows="2" placeholder="Reason for leave..." style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none; resize: vertical;"></textarea>
+                    </div>
+                    <button type="submit" style="background: #4B49AC; color: #fff; border: none; padding: 10px; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <i class="bi bi-send"></i> Submit Leave Request
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- HOLIDAY LIST SECTION (STAFF VIEWS, ADMIN CAN ADD/UPDATE) -->
+    <div style="background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="font-size: 16px; font-weight: 700; color: #1F2937; margin: 0; display: flex; align-items: center; gap: 8px;">
+                <i class="bi bi-calendar-event-fill" style="color: #EC4899;"></i> Company Holiday List 2026
+            </h3>
+            <button id="addHolidayBtn" type="button" style="display: none; background: #10B981; color: #fff; border: none; padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                + Add Holiday (Admin)
+            </button>
+        </div>
+
+        <!-- Add Holiday Form Modal / Inline Box (Hidden by default) -->
+        <div id="addHolidayFormBox" style="display: none; background: #F9FAFB; padding: 16px; border-radius: 8px; border: 1px dashed #CBD5E1; margin-bottom: 16px;">
+            <form id="addHolidayForm" style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 180px;">
+                    <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px;">HOLIDAY NAME</label>
+                    <input type="text" id="holidayName" required placeholder="e.g. Diwali, Independence Day" style="width: 100%; padding: 7px 10px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 13px;" />
+                </div>
+                <div style="flex: 1; min-width: 140px;">
+                    <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px;">DATE</label>
+                    <input type="date" id="holidayDate" required style="width: 100%; padding: 7px 10px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 13px;" />
+                </div>
+                <div style="flex: 1; min-width: 140px;">
+                    <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px;">TYPE</label>
+                    <select id="holidayType" style="width: 100%; padding: 7px 10px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 13px;">
+                        <option value="National">National Holiday</option>
+                        <option value="Festival">Festival</option>
+                        <option value="Optional">Optional Leave</option>
+                    </select>
+                </div>
+                <button type="submit" style="background: #4B49AC; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer;">Save Holiday</button>
+            </form>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #E5E7EB;">
+                        <th style="text-align: left; padding: 10px 8px; color: #6B7280; font-weight: 600; font-size: 12px;">HOLIDAY</th>
+                        <th style="text-align: left; padding: 10px 8px; color: #6B7280; font-weight: 600; font-size: 12px;">DATE</th>
+                        <th style="text-align: left; padding: 10px 8px; color: #6B7280; font-weight: 600; font-size: 12px;">DAY</th>
+                        <th style="text-align: left; padding: 10px 8px; color: #6B7280; font-weight: 600; font-size: 12px;">TYPE</th>
+                        <th style="text-align: right; padding: 10px 8px; color: #6B7280; font-weight: 600; font-size: 12px;" class="adminHolidayCol">ACTION</th>
+                    </tr>
+                </thead>
+                <tbody id="holidayListBody">
+                    <!-- Rendered by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- LEAVE REQUEST HISTORY TABLE (FOR STAFF AND ADMIN) -->
+    <div style="background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+        <h3 style="font-size: 16px; font-weight: 700; color: #1F2937; margin: 0 0 16px 0;" id="leaveHistoryTitle">
+            <i class="bi bi-list-check" style="color: #10B981; margin-right: 6px;"></i> Leave Applications & History
+        </h3>
+        <div style="overflow-x: auto;" id="leaveRequestsList">
+            <!-- Loaded by JS -->
+        </div>
+    </div>
+
+</div>

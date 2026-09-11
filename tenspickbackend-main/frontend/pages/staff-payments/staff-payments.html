@@ -1,0 +1,2661 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'staff-payments';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+<section
+    class="staff-payments-page"
+    id="staffPaymentsPage"
+>
+
+    <!-- ======================================================
+         PAGE HEADER
+    ======================================================= -->
+
+    <header class="staff-payments-page-header">
+
+        <div class="staff-payments-page-title">
+
+            <div
+                class="staff-payments-title-icon"
+                aria-hidden="true"
+            >
+                <i class="bi bi-wallet2"></i>
+            </div>
+
+            <div>
+
+                <h1>
+                    Staff Payments
+                </h1>
+
+                <p>
+                    Manage staff salary and other payments
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="staff-payments-page-actions">
+
+            <button
+                type="button"
+                class="sp-btn sp-btn-primary"
+                id="spAddPaymentBtn"
+            >
+
+                <i
+                    class="bi bi-plus-lg"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Add Payment
+                </span>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ======================================================
+         SUMMARY CARDS
+    ======================================================= -->
+
+    <section
+        class="staff-payments-summary-grid"
+        aria-label="Staff payment summary"
+    >
+
+        <!-- TOTAL PAYMENTS -->
+
+        <article class="sp-summary-card">
+
+            <div class="sp-summary-card-content">
+
+                <span class="sp-summary-card-label">
+                    Total Payments
+                </span>
+
+                <strong
+                    class="sp-summary-card-value"
+                    id="spTotalPayments"
+                >
+                    0
+                </strong>
+
+            </div>
+
+            <div
+                class="sp-summary-card-icon"
+                aria-hidden="true"
+            >
+                <i class="bi bi-receipt"></i>
+            </div>
+
+        </article>
+
+
+        <!-- TOTAL PAID -->
+
+        <article class="sp-summary-card">
+
+            <div class="sp-summary-card-content">
+
+                <span class="sp-summary-card-label">
+                    Total Paid
+                </span>
+
+                <strong
+                    class="sp-summary-card-value"
+                    id="spTotalPaid"
+                >
+                    ₹0.00
+                </strong>
+
+            </div>
+
+            <div
+                class="sp-summary-card-icon"
+                aria-hidden="true"
+            >
+                <i class="bi bi-currency-rupee"></i>
+            </div>
+
+        </article>
+
+
+        <!-- THIS MONTH -->
+
+        <article class="sp-summary-card">
+
+            <div class="sp-summary-card-content">
+
+                <span class="sp-summary-card-label">
+                    This Month
+                </span>
+
+                <strong
+                    class="sp-summary-card-value"
+                    id="spThisMonth"
+                >
+                    ₹0.00
+                </strong>
+
+            </div>
+
+            <div
+                class="sp-summary-card-icon"
+                aria-hidden="true"
+            >
+                <i class="bi bi-calendar3"></i>
+            </div>
+
+        </article>
+
+
+        <!-- SALARY PAID -->
+
+        <article class="sp-summary-card">
+
+            <div class="sp-summary-card-content">
+
+                <span class="sp-summary-card-label">
+                    Salary Paid
+                </span>
+
+                <strong
+                    class="sp-summary-card-value"
+                    id="spSalaryPaid"
+                >
+                    ₹0.00
+                </strong>
+
+            </div>
+
+            <div
+                class="sp-summary-card-icon"
+                aria-hidden="true"
+            >
+                <i class="bi bi-person-check"></i>
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- ======================================================
+         FILTER CARD
+    ======================================================= -->
+
+    <section
+        class="sp-filter-card"
+        aria-label="Payment filters"
+    >
+
+        <div class="sp-filter-header">
+
+            <div class="sp-filter-title">
+
+                <i
+                    class="bi bi-funnel"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Search &amp; Filters
+                </span>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="sp-filter-clear"
+                id="spClearFiltersBtn"
+            >
+
+                <i
+                    class="bi bi-arrow-counterclockwise"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Clear
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <div class="sp-filter-body">
+
+            <!-- SEARCH -->
+
+            <div
+                class="
+                    sp-form-group
+                    sp-filter-search
+                "
+            >
+
+                <label for="spSearch">
+                    Search
+                </label>
+
+                <div class="sp-input-icon">
+
+                    <i
+                        class="bi bi-search"
+                        aria-hidden="true"
+                    ></i>
+
+                    <input
+                        type="search"
+                        id="spSearch"
+                        class="sp-form-control"
+                        placeholder="Payment ID, staff name..."
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- STAFF -->
+
+            <div class="sp-form-group">
+
+                <label for="spStaffFilter">
+                    Staff
+                </label>
+
+                <select
+                    id="spStaffFilter"
+                    class="sp-form-control"
+                    autocomplete="off"
+                >
+
+                    <option value="">
+                        All Staff
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- PAYMENT TYPE -->
+
+            <div class="sp-form-group">
+
+                <label for="spPaymentTypeFilter">
+                    Payment Type
+                </label>
+
+                <select
+                    id="spPaymentTypeFilter"
+                    class="sp-form-control"
+                    autocomplete="off"
+                >
+
+                    <option value="">
+                        All Types
+                    </option>
+
+                    <option value="salary">
+                        Salary
+                    </option>
+
+                    <option value="advance">
+                        Advance
+                    </option>
+
+                    <option value="bonus">
+                        Bonus
+                    </option>
+
+                    <option value="incentive">
+                        Incentive
+                    </option>
+
+                    <option value="reimbursement">
+                        Reimbursement
+                    </option>
+
+                    <option value="other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- PAYMENT METHOD -->
+
+            <div class="sp-form-group">
+
+                <label for="spPaymentMethodFilter">
+                    Payment Method
+                </label>
+
+                <select
+                    id="spPaymentMethodFilter"
+                    class="sp-form-control"
+                    autocomplete="off"
+                >
+
+                    <option value="">
+                        All Methods
+                    </option>
+
+                    <option value="cash">
+                        Cash
+                    </option>
+
+                    <option value="upi">
+                        UPI
+                    </option>
+
+                    <option value="bank_transfer">
+                        Bank Transfer
+                    </option>
+
+                    <option value="card">
+                        Card
+                    </option>
+
+                    <option value="cheque">
+                        Cheque
+                    </option>
+
+                    <option value="other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- MONTH / PERIOD -->
+
+            <div class="sp-form-group">
+
+                <label for="spPeriodFilter">
+                    Month / Period
+                </label>
+
+                <input
+                    type="text"
+                    id="spPeriodFilter"
+                    class="sp-form-control"
+                    placeholder="e.g. September 2026"
+                    maxlength="50"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+
+            </div>
+
+
+            <!-- FROM DATE -->
+
+            <div class="sp-form-group">
+
+                <label for="spFromDate">
+                    From Date
+                </label>
+
+                <input
+                    type="date"
+                    id="spFromDate"
+                    class="sp-form-control"
+                >
+
+            </div>
+
+
+            <!-- TO DATE -->
+
+            <div class="sp-form-group">
+
+                <label for="spToDate">
+                    To Date
+                </label>
+
+                <input
+                    type="date"
+                    id="spToDate"
+                    class="sp-form-control"
+                >
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         PAYMENT TABLE
+    ======================================================= -->
+
+    <section
+        class="sp-table-card"
+        aria-label="Staff payment records"
+    >
+
+        <!-- TABLE HEADER -->
+
+        <div class="sp-table-header">
+
+            <div>
+
+                <h2>
+                    Payment Records
+                </h2>
+
+                <p id="spTableResultText">
+                    Showing payment records
+                </p>
+
+            </div>
+
+
+            <div class="sp-table-header-actions">
+
+                <button
+                    type="button"
+                    class="sp-icon-btn"
+                    id="spRefreshBtn"
+                    title="Refresh payments"
+                    aria-label="Refresh payments"
+                >
+
+                    <i
+                        class="bi bi-arrow-clockwise"
+                        aria-hidden="true"
+                    ></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             LOADING STATE
+        =================================================== -->
+
+        <div
+            class="sp-table-loading"
+            id="spTableLoading"
+            hidden
+            aria-live="polite"
+            aria-busy="true"
+        >
+
+            <div
+                class="sp-loading-spinner"
+                aria-hidden="true"
+            ></div>
+
+            <span>
+                Loading payments...
+            </span>
+
+        </div>
+
+
+        <!-- ==================================================
+             ERROR STATE
+        =================================================== -->
+
+        <div
+            class="sp-table-error"
+            id="spTableError"
+            hidden
+            role="alert"
+        >
+
+            <div
+                class="sp-error-icon"
+                aria-hidden="true"
+            >
+                <i class="bi bi-exclamation-triangle"></i>
+            </div>
+
+            <div class="sp-error-content">
+
+                <strong>
+                    Unable to load payments
+                </strong>
+
+                <span id="spTableErrorMessage">
+                    Please try again.
+                </span>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="sp-btn sp-btn-secondary"
+                id="spRetryBtn"
+            >
+
+                <i
+                    class="bi bi-arrow-clockwise"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Retry
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <!-- ==================================================
+             EMPTY STATE
+        =================================================== -->
+
+        <div
+            class="sp-table-empty"
+            id="spTableEmpty"
+            hidden
+        >
+
+            <div
+                class="sp-empty-icon"
+                aria-hidden="true"
+            >
+                <i class="bi bi-wallet2"></i>
+            </div>
+
+            <h3>
+                No payments found
+            </h3>
+
+            <p>
+                No staff payment records match your current filters.
+            </p>
+
+
+            <button
+                type="button"
+                class="sp-btn sp-btn-primary"
+                id="spEmptyAddPaymentBtn"
+            >
+
+                <i
+                    class="bi bi-plus-lg"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Add Payment
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <!-- ==================================================
+             TABLE
+        =================================================== -->
+
+        <div
+            class="sp-table-wrapper"
+            id="spTableWrapper"
+        >
+
+            <table class="sp-payments-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th scope="col">
+                            Payment ID
+                        </th>
+
+                        <th scope="col">
+                            Staff
+                        </th>
+
+                        <th scope="col">
+                            Payment Type
+                        </th>
+
+                        <th scope="col">
+                            Amount
+                        </th>
+
+                        <th scope="col">
+                            Payment Date
+                        </th>
+
+                        <th scope="col">
+                            Month / Period
+                        </th>
+
+                        <th scope="col">
+                            Payment Method
+                        </th>
+
+                        <th scope="col">
+                            Remarks
+                        </th>
+
+                        <th scope="col">
+                            Added By
+                        </th>
+
+                        <th
+                            scope="col"
+                            class="sp-actions-column"
+                        >
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="spPaymentsTableBody">
+                    <!-- JavaScript renders payment records -->
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ==================================================
+             PAGINATION
+        =================================================== -->
+
+        <div
+            class="sp-pagination"
+            id="spPagination"
+            hidden
+        >
+
+            <div
+                class="sp-pagination-info"
+                id="spPaginationInfo"
+            >
+                Showing 0–0 of 0
+            </div>
+
+
+            <div class="sp-pagination-controls">
+
+                <button
+                    type="button"
+                    class="sp-pagination-btn"
+                    id="spPrevPageBtn"
+                    disabled
+                    aria-label="Previous page"
+                >
+
+                    <i
+                        class="bi bi-chevron-left"
+                        aria-hidden="true"
+                    ></i>
+
+                </button>
+
+
+                <div
+                    class="sp-pagination-pages"
+                    id="spPaginationPages"
+                    aria-label="Payment pages"
+                ></div>
+
+
+                <button
+                    type="button"
+                    class="sp-pagination-btn"
+                    id="spNextPageBtn"
+                    disabled
+                    aria-label="Next page"
+                >
+
+                    <i
+                        class="bi bi-chevron-right"
+                        aria-hidden="true"
+                    ></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</section>
+
+
+<!-- ==========================================================
+     ADD PAYMENT MODAL
+=========================================================== -->
+
+<div
+    class="sp-modal"
+    id="spAddPaymentModal"
+    hidden
+    aria-hidden="true"
+>
+
+    <div
+        class="sp-modal-backdrop"
+        data-sp-close-modal="spAddPaymentModal"
+        aria-hidden="true"
+    ></div>
+
+
+    <div
+        class="sp-modal-dialog sp-modal-lg"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="spAddPaymentModalTitle"
+        tabindex="-1"
+    >
+
+        <!-- MODAL HEADER -->
+
+        <div class="sp-modal-header">
+
+            <div class="sp-modal-title-wrapper">
+
+                <div
+                    class="sp-modal-icon"
+                    aria-hidden="true"
+                >
+                    <i class="bi bi-wallet2"></i>
+                </div>
+
+                <div>
+
+                    <h2 id="spAddPaymentModalTitle">
+                        Add Staff Payment
+                    </h2>
+
+                    <p>
+                        Record a new payment
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="sp-modal-close"
+                data-sp-close-modal="spAddPaymentModal"
+                aria-label="Close Add Staff Payment"
+            >
+
+                <i
+                    class="bi bi-x-lg"
+                    aria-hidden="true"
+                ></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+            id="spAddPaymentForm"
+            novalidate
+            autocomplete="off"
+        >
+
+            <div class="sp-modal-body">
+
+                <!-- FORM ALERT -->
+
+                <div
+                    class="sp-form-alert"
+                    id="spAddPaymentAlert"
+                    hidden
+                    role="alert"
+                >
+
+                    <i
+                        class="bi bi-exclamation-circle"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span></span>
+
+                </div>
+
+
+                <!-- FORM SECTION -->
+
+                <div class="sp-form-section">
+
+                    <div class="sp-form-section-heading">
+
+                        <i
+                            class="bi bi-person"
+                            aria-hidden="true"
+                        ></i>
+
+                        <div>
+
+                            <h3>
+                                Staff &amp; Payment
+                            </h3>
+
+                            <p>
+                                Enter payment information
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="sp-form-grid">
+
+                        <!-- STAFF -->
+
+                        <div
+                            class="
+                                sp-form-group
+                                sp-field-full
+                            "
+                        >
+
+                            <label for="spAddStaff">
+
+                                Staff
+
+                                <span
+                                    class="sp-required"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <select
+                                id="spAddStaff"
+                                class="sp-form-control"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Staff
+                                </option>
+
+                            </select>
+
+
+                            <span
+                                class="sp-field-error"
+                                id="spAddStaffError"
+                                role="alert"
+                            ></span>
+
+                        </div>
+
+
+                        <!-- PAYMENT TYPE -->
+
+                        <div class="sp-form-group">
+
+                            <label for="spAddPaymentType">
+
+                                Payment Type
+
+                                <span
+                                    class="sp-required"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <select
+                                id="spAddPaymentType"
+                                class="sp-form-control"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Type
+                                </option>
+
+                                <option value="salary">
+                                    Salary
+                                </option>
+
+                                <option value="advance">
+                                    Advance
+                                </option>
+
+                                <option value="bonus">
+                                    Bonus
+                                </option>
+
+                                <option value="incentive">
+                                    Incentive
+                                </option>
+
+                                <option value="reimbursement">
+                                    Reimbursement
+                                </option>
+
+                                <option value="other">
+                                    Other
+                                </option>
+
+                            </select>
+
+
+                            <span
+                                class="sp-field-error"
+                                id="spAddPaymentTypeError"
+                                role="alert"
+                            ></span>
+
+                        </div>
+
+
+                        <!-- AMOUNT -->
+
+                        <div class="sp-form-group">
+
+                            <label for="spAddAmount">
+
+                                Amount
+
+                                <span
+                                    class="sp-required"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <div class="sp-input-prefix">
+
+                                <span aria-hidden="true">
+                                    ₹
+                                </span>
+
+
+                                <input
+                                    type="number"
+                                    id="spAddAmount"
+                                    class="sp-form-control"
+                                    min="0.01"
+                                    step="0.01"
+                                    inputmode="decimal"
+                                    placeholder="0.00"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <span
+                                class="sp-field-error"
+                                id="spAddAmountError"
+                                role="alert"
+                            ></span>
+
+                        </div>
+
+
+                        <!-- PAYMENT DATE -->
+
+                        <div class="sp-form-group">
+
+                            <label for="spAddPaymentDate">
+
+                                Payment Date
+
+                                <span
+                                    class="sp-required"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <input
+                                type="date"
+                                id="spAddPaymentDate"
+                                class="sp-form-control"
+                                required
+                            >
+
+
+                            <span
+                                class="sp-field-error"
+                                id="spAddPaymentDateError"
+                                role="alert"
+                            ></span>
+
+                        </div>
+
+
+                        <!-- PAYMENT PERIOD -->
+
+                        <div class="sp-form-group">
+
+                            <label for="spAddPaymentPeriod">
+
+                                Month / Period
+
+                                <span
+                                    class="sp-required"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="spAddPaymentPeriod"
+                                class="sp-form-control"
+                                maxlength="50"
+                                placeholder="e.g. September 2026"
+                                autocomplete="off"
+                                required
+                                spellcheck="false"
+                            >
+
+
+                            <span
+                                class="sp-field-error"
+                                id="spAddPaymentPeriodError"
+                                role="alert"
+                            ></span>
+
+                        </div>
+
+
+                        <!-- PAYMENT METHOD -->
+
+                        <div class="sp-form-group">
+
+                            <label for="spAddPaymentMethod">
+
+                                Payment Method
+
+                                <span
+                                    class="sp-required"
+                                    aria-hidden="true"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <select
+                                id="spAddPaymentMethod"
+                                class="sp-form-control"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Method
+                                </option>
+
+                                <option value="cash">
+                                    Cash
+                                </option>
+
+                                <option value="upi">
+                                    UPI
+                                </option>
+
+                                <option value="bank_transfer">
+                                    Bank Transfer
+                                </option>
+
+                                <option value="card">
+                                    Card
+                                </option>
+
+                                <option value="cheque">
+                                    Cheque
+                                </option>
+
+                                <option value="other">
+                                    Other
+                                </option>
+
+                            </select>
+
+
+                            <span
+                                class="sp-field-error"
+                                id="spAddPaymentMethodError"
+                                role="alert"
+                            ></span>
+
+                        </div>
+
+
+                        <!-- REMARKS -->
+
+                        <div
+                            class="
+                                sp-form-group
+                                sp-field-full
+                            "
+                        >
+
+                            <label for="spAddRemarks">
+                                Remarks
+                            </label>
+
+
+                            <textarea
+                                id="spAddRemarks"
+                                class="sp-form-control sp-textarea"
+                                rows="4"
+                                maxlength="5000"
+                                placeholder="Add payment remarks..."
+                                spellcheck="true"
+                            ></textarea>
+
+
+                            <div class="sp-textarea-footer">
+
+                                <span>
+                                    Optional
+                                </span>
+
+                                <span>
+
+                                    <strong
+                                        id="spAddRemarksCount"
+                                    >
+                                        0
+                                    </strong>
+
+                                    / 5000
+
+                                </span>
+
+                            </div>
+
+
+                            <span
+                                class="sp-field-error"
+                                id="spAddRemarksError"
+                                role="alert"
+                            ></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FORM FOOTER -->
+
+            <div class="sp-modal-footer">
+
+                <button
+                    type="button"
+                    class="sp-btn sp-btn-secondary"
+                    data-sp-close-modal="spAddPaymentModal"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="sp-btn sp-btn-primary"
+                    id="spSavePaymentBtn"
+                >
+
+                    <span class="sp-btn-text">
+                        Save Payment
+                    </span>
+
+
+                    <span
+                        class="sp-btn-loading"
+                        hidden
+                    >
+
+                        <span
+                            class="sp-button-spinner"
+                            aria-hidden="true"
+                        ></span>
+
+                        Saving...
+
+                    </span>
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     VIEW PAYMENT MODAL
+=========================================================== -->
+
+<div
+    class="sp-modal"
+    id="spViewPaymentModal"
+    hidden
+    aria-hidden="true"
+>
+
+    <div
+        class="sp-modal-backdrop"
+        data-sp-close-modal="spViewPaymentModal"
+        aria-hidden="true"
+    ></div>
+
+
+    <div
+        class="sp-modal-dialog sp-modal-lg"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="spViewPaymentModalTitle"
+        tabindex="-1"
+    >
+
+        <!-- HEADER -->
+
+        <div class="sp-modal-header">
+
+            <div class="sp-modal-title-wrapper">
+
+                <div
+                    class="sp-modal-icon"
+                    aria-hidden="true"
+                >
+                    <i class="bi bi-receipt"></i>
+                </div>
+
+                <div>
+
+                    <h2 id="spViewPaymentModalTitle">
+                        Payment Details
+                    </h2>
+
+                    <p id="spViewPaymentSubtitle">
+                        Staff payment information
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="sp-modal-close"
+                data-sp-close-modal="spViewPaymentModal"
+                aria-label="Close Payment Details"
+            >
+
+                <i
+                    class="bi bi-x-lg"
+                    aria-hidden="true"
+                ></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="sp-modal-body">
+
+            <!-- LOADING -->
+
+            <div
+                class="sp-view-loading"
+                id="spViewPaymentLoading"
+                hidden
+                aria-live="polite"
+            >
+
+                <div
+                    class="sp-loading-spinner"
+                    aria-hidden="true"
+                ></div>
+
+                <span>
+                    Loading payment details...
+                </span>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <div
+                class="sp-view-error"
+                id="spViewPaymentError"
+                hidden
+                role="alert"
+            >
+
+                <i
+                    class="bi bi-exclamation-triangle"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Unable to load payment details.
+                </span>
+
+            </div>
+
+
+            <!-- CONTENT -->
+
+            <div
+                id="spPaymentViewContent"
+                class="sp-payment-view-content"
+                hidden
+            >
+
+                <!-- DETAIL HEADER -->
+
+                <div class="sp-detail-header">
+
+                    <div>
+
+                        <span class="sp-detail-label">
+                            Payment ID
+                        </span>
+
+                        <strong
+                            id="spViewPaymentCode"
+                            class="sp-detail-code"
+                        >
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <span
+                        id="spViewPaymentTypeBadge"
+                        class="sp-payment-type-badge"
+                    >
+                        —
+                    </span>
+
+                </div>
+
+
+                <!-- STAFF INFORMATION -->
+
+                <section class="sp-detail-section">
+
+                    <div class="sp-detail-section-heading">
+
+                        <i
+                            class="bi bi-person-badge"
+                            aria-hidden="true"
+                        ></i>
+
+                        <h3>
+                            Staff Information
+                        </h3>
+
+                    </div>
+
+
+                    <div class="sp-detail-grid">
+
+                        <div class="sp-detail-item">
+
+                            <span>
+                                Staff Name
+                            </span>
+
+                            <strong id="spViewStaffName">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="sp-detail-item">
+
+                            <span>
+                                Staff Code
+                            </span>
+
+                            <strong id="spViewStaffCode">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="sp-detail-item">
+
+                            <span>
+                                Department
+                            </span>
+
+                            <strong id="spViewStaffDepartment">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="sp-detail-item">
+
+                            <span>
+                                Designation
+                            </span>
+
+                            <strong id="spViewStaffDesignation">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- PAYMENT INFORMATION -->
+
+                <section class="sp-detail-section">
+
+                    <div class="sp-detail-section-heading">
+
+                        <i
+                            class="bi bi-cash-stack"
+                            aria-hidden="true"
+                        ></i>
+
+                        <h3>
+                            Payment Information
+                        </h3>
+
+                    </div>
+
+
+                    <div class="sp-detail-grid">
+
+                        <div class="sp-detail-item">
+
+                            <span>
+                                Amount
+                            </span>
+
+                            <strong
+                                id="spViewAmount"
+                                class="sp-detail-amount"
+                            >
+                                ₹0.00
+                            </strong>
+
+                        </div>
+
+
+                        <div class="sp-detail-item">
+
+                            <span>
+                                Payment Date
+                            </span>
+
+                            <strong id="spViewPaymentDate">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="sp-detail-item">
+
+                            <span>
+                                Month / Period
+                            </span>
+
+                            <strong id="spViewPaymentPeriod">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="sp-detail-item">
+
+                            <span>
+                                Payment Method
+                            </span>
+
+                            <strong id="spViewPaymentMethod">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- REMARKS -->
+
+                <section class="sp-detail-section">
+
+                    <div class="sp-detail-section-heading">
+
+                        <i
+                            class="bi bi-chat-left-text"
+                            aria-hidden="true"
+                        ></i>
+
+                        <h3>
+                            Remarks
+                        </h3>
+
+                    </div>
+
+
+                    <div class="sp-detail-remarks">
+
+                        <p id="spViewRemarks">
+                            No remarks
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- RECORD INFORMATION -->
+
+                <section class="sp-detail-section">
+
+                    <div class="sp-detail-section-heading">
+
+                        <i
+                            class="bi bi-clock-history"
+                            aria-hidden="true"
+                        ></i>
+
+                        <h3>
+                            Record Information
+                        </h3>
+
+                    </div>
+
+
+                    <div class="sp-detail-grid">
+
+                        <div class="sp-detail-item">
+
+                            <span>
+                                Added By
+                            </span>
+
+                            <strong id="spViewAddedBy">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="sp-detail-item">
+
+                            <span>
+                                Created At
+                            </span>
+
+                            <strong id="spViewCreatedAt">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="sp-detail-item">
+
+                            <span>
+                                Updated At
+                            </span>
+
+                            <strong id="spViewUpdatedAt">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="sp-modal-footer">
+
+            <button
+                type="button"
+                class="sp-btn sp-btn-secondary"
+                data-sp-close-modal="spViewPaymentModal"
+            >
+                Close
+            </button>
+
+
+            <button
+                type="button"
+                class="sp-btn sp-btn-outline"
+                id="spViewEditBtn"
+            >
+
+                <i
+                    class="bi bi-pencil"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Edit Remarks
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="sp-btn sp-btn-primary"
+                id="spViewReceiptBtn"
+            >
+
+                <i
+                    class="bi bi-printer"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Payment Receipt
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     EDIT PAYMENT MODAL
+=========================================================== -->
+
+<div
+    class="sp-modal"
+    id="spEditPaymentModal"
+    hidden
+    aria-hidden="true"
+>
+
+    <div
+        class="sp-modal-backdrop"
+        data-sp-close-modal="spEditPaymentModal"
+        aria-hidden="true"
+    ></div>
+
+
+    <div
+        class="sp-modal-dialog sp-modal-md"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="spEditPaymentModalTitle"
+        tabindex="-1"
+    >
+
+        <!-- HEADER -->
+
+        <div class="sp-modal-header">
+
+            <div class="sp-modal-title-wrapper">
+
+                <div
+                    class="sp-modal-icon"
+                    aria-hidden="true"
+                >
+                    <i class="bi bi-pencil-square"></i>
+                </div>
+
+                <div>
+
+                    <h2 id="spEditPaymentModalTitle">
+                        Edit Payment Remarks
+                    </h2>
+
+                    <p>
+                        Only remarks can be changed
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="sp-modal-close"
+                data-sp-close-modal="spEditPaymentModal"
+                aria-label="Close Edit Payment"
+            >
+
+                <i
+                    class="bi bi-x-lg"
+                    aria-hidden="true"
+                ></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+            id="spEditPaymentForm"
+            novalidate
+            autocomplete="off"
+        >
+
+            <div class="sp-modal-body">
+
+                <!-- ALERT -->
+
+                <div
+                    class="sp-form-alert"
+                    id="spEditPaymentAlert"
+                    hidden
+                    role="alert"
+                >
+
+                    <i
+                        class="bi bi-exclamation-circle"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span></span>
+
+                </div>
+
+
+                <!-- PAYMENT SUMMARY -->
+
+                <div class="sp-edit-summary">
+
+                    <div>
+
+                        <span>
+                            Payment ID
+                        </span>
+
+                        <strong id="spEditPaymentCode">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Staff
+                        </span>
+
+                        <strong id="spEditStaffName">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REMARKS -->
+
+                <div class="sp-form-group">
+
+                    <label for="spEditRemarks">
+                        Remarks
+                    </label>
+
+
+                    <textarea
+                        id="spEditRemarks"
+                        class="sp-form-control sp-textarea"
+                        rows="6"
+                        maxlength="5000"
+                        placeholder="Enter payment remarks..."
+                        spellcheck="true"
+                    ></textarea>
+
+
+                    <div class="sp-textarea-footer">
+
+                        <span>
+                            Only remarks are editable
+                        </span>
+
+                        <span>
+
+                            <strong
+                                id="spEditRemarksCount"
+                            >
+                                0
+                            </strong>
+
+                            / 5000
+
+                        </span>
+
+                    </div>
+
+
+                    <span
+                        class="sp-field-error"
+                        id="spEditRemarksError"
+                        role="alert"
+                    ></span>
+
+                </div>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="sp-modal-footer">
+
+                <button
+                    type="button"
+                    class="sp-btn sp-btn-secondary"
+                    data-sp-close-modal="spEditPaymentModal"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="sp-btn sp-btn-primary"
+                    id="spUpdatePaymentBtn"
+                >
+
+                    <span class="sp-btn-text">
+                        Update Remarks
+                    </span>
+
+
+                    <span
+                        class="sp-btn-loading"
+                        hidden
+                    >
+
+                        <span
+                            class="sp-button-spinner"
+                            aria-hidden="true"
+                        ></span>
+
+                        Updating...
+
+                    </span>
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     DELETE PAYMENT MODAL
+=========================================================== -->
+
+<div
+    class="sp-modal"
+    id="spDeletePaymentModal"
+    hidden
+    aria-hidden="true"
+>
+
+    <div
+        class="sp-modal-backdrop"
+        data-sp-close-modal="spDeletePaymentModal"
+        aria-hidden="true"
+    ></div>
+
+
+    <div
+        class="sp-modal-dialog sp-modal-sm"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="spDeletePaymentModalTitle"
+        tabindex="-1"
+    >
+
+        <!-- HEADER -->
+
+        <div class="sp-modal-header">
+
+            <div class="sp-modal-title-wrapper">
+
+                <div
+                    class="
+                        sp-modal-icon
+                        sp-modal-icon-danger
+                    "
+                    aria-hidden="true"
+                >
+                    <i class="bi bi-shield-lock"></i>
+                </div>
+
+                <div>
+
+                    <h2 id="spDeletePaymentModalTitle">
+                        Payment Record Protected
+                    </h2>
+
+                    <p>
+                        Financial record protection
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="sp-modal-close"
+                data-sp-close-modal="spDeletePaymentModal"
+                aria-label="Close Payment Protection"
+            >
+
+                <i
+                    class="bi bi-x-lg"
+                    aria-hidden="true"
+                ></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="sp-modal-body">
+
+            <div class="sp-delete-content">
+
+                <div
+                    class="sp-delete-icon"
+                    aria-hidden="true"
+                >
+                    <i class="bi bi-shield-exclamation"></i>
+                </div>
+
+
+                <h3>
+                    This payment cannot be deleted
+                </h3>
+
+
+                <p>
+                    Staff payment records are financial records
+                    and cannot be removed from the system.
+                </p>
+
+
+                <p class="sp-delete-warning">
+                    If a payment was entered incorrectly,
+                    contact the administrator instead of deleting
+                    the financial record.
+                </p>
+
+
+                <div class="sp-confirm-payment-code">
+
+                    <span>
+                        Payment ID
+                    </span>
+
+                    <strong id="spDeletePaymentCode">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="sp-modal-footer sp-confirm-footer">
+
+            <button
+                type="button"
+                class="sp-btn sp-btn-secondary"
+                data-sp-close-modal="spDeletePaymentModal"
+            >
+                Close
+            </button>
+
+
+            <!--
+                Kept for JavaScript compatibility.
+                Backend protection will reject deletion with HTTP 409.
+            -->
+
+            <button
+                type="button"
+                class="sp-btn sp-btn-danger"
+                id="spConfirmDeletePaymentBtn"
+                title="Payment records cannot be deleted"
+            >
+
+                <i
+                    class="bi bi-shield-lock"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Delete Protected
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     PAYMENT RECEIPT MODAL
+=========================================================== -->
+
+<div
+    class="
+        sp-modal
+        sp-receipt-modal
+    "
+    id="spReceiptModal"
+    hidden
+    aria-hidden="true"
+>
+
+    <div
+        class="sp-modal-backdrop"
+        data-sp-close-modal="spReceiptModal"
+        aria-hidden="true"
+    ></div>
+
+
+    <div
+        class="
+            sp-modal-dialog
+            sp-modal-receipt
+        "
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="spReceiptModalTitle"
+        tabindex="-1"
+    >
+
+        <!-- RECEIPT MODAL HEADER -->
+
+        <div
+            class="
+                sp-modal-header
+                sp-receipt-modal-header
+            "
+        >
+
+            <div class="sp-modal-title-wrapper">
+
+                <div
+                    class="sp-modal-icon"
+                    aria-hidden="true"
+                >
+                    <i class="bi bi-receipt-cutoff"></i>
+                </div>
+
+                <div>
+
+                    <h2 id="spReceiptModalTitle">
+                        Payment Receipt
+                    </h2>
+
+                    <p>
+                        Staff payment receipt
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="sp-modal-close"
+                data-sp-close-modal="spReceiptModal"
+                aria-label="Close Payment Receipt"
+            >
+
+                <i
+                    class="bi bi-x-lg"
+                    aria-hidden="true"
+                ></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- ==================================================
+             RECEIPT PREVIEW
+        =================================================== -->
+
+        <div class="sp-receipt-preview-wrapper">
+
+            <div
+                class="sp-payment-receipt"
+                id="spPaymentReceipt"
+            >
+
+                <!-- ==================================================
+                     COMPANY HEADER
+                =================================================== -->
+
+                <div class="sp-receipt-company-header">
+
+                    <div class="sp-receipt-company-brand">
+
+                        <!--
+                            Static logo placeholder.
+
+                            Do not change the element ID/class.
+                            The actual company logo can be inserted
+                            later through CSS or JavaScript without
+                            changing the receipt structure.
+                        -->
+
+                        <div
+                            class="sp-receipt-company-logo"
+                            aria-hidden="true"
+                        >
+
+                            <span>
+                                T
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+                                TENSPICK
+                            </h2>
+
+                            <p>
+                                Software Solutions
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="sp-receipt-title-block">
+
+                        <strong>
+                            PAYMENT RECEIPT
+                        </strong>
+
+                        <span id="spReceiptPaymentCode">
+                            —
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==================================================
+                     COMPANY INFORMATION
+                =================================================== -->
+
+                <div class="sp-receipt-company-info">
+
+                    <span>
+                        Bazaar Street, Pulampeta, Tirupati
+                    </span>
+
+                    <span>
+                        8688386307
+                    </span>
+
+                    <span>
+                        www.tenspick.com
+                    </span>
+
+                </div>
+
+
+                <!-- ==================================================
+                     PAYMENT DETAILS
+                =================================================== -->
+
+                <div class="sp-receipt-section">
+
+                    <div class="sp-receipt-section-title">
+                        Payment Details
+                    </div>
+
+
+                    <div class="sp-receipt-grid">
+
+                        <div>
+
+                            <span>
+                                Payment ID
+                            </span>
+
+                            <strong id="spReceiptId">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Payment Date
+                            </span>
+
+                            <strong id="spReceiptDate">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Payment Type
+                            </span>
+
+                            <strong id="spReceiptType">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Payment Method
+                            </span>
+
+                            <strong id="spReceiptMethod">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Month / Period
+                            </span>
+
+                            <strong id="spReceiptPeriod">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Added By
+                            </span>
+
+                            <strong id="spReceiptAddedBy">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==================================================
+                     STAFF DETAILS
+                =================================================== -->
+
+                <div class="sp-receipt-section">
+
+                    <div class="sp-receipt-section-title">
+                        Staff Details
+                    </div>
+
+
+                    <div class="sp-receipt-grid">
+
+                        <div>
+
+                            <span>
+                                Staff Name
+                            </span>
+
+                            <strong id="spReceiptStaffName">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Staff Code
+                            </span>
+
+                            <strong id="spReceiptStaffCode">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Department
+                            </span>
+
+                            <strong id="spReceiptDepartment">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Designation
+                            </span>
+
+                            <strong id="spReceiptDesignation">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==================================================
+                     AMOUNT
+                =================================================== -->
+
+                <div class="sp-receipt-amount-box">
+
+                    <span>
+                        Amount Paid
+                    </span>
+
+                    <strong id="spReceiptAmount">
+                        ₹0.00
+                    </strong>
+
+                </div>
+
+
+                <!-- ==================================================
+                     REMARKS
+                =================================================== -->
+
+                <div class="sp-receipt-remarks">
+
+                    <span>
+                        Remarks
+                    </span>
+
+                    <p id="spReceiptRemarks">
+                        No remarks
+                    </p>
+
+                </div>
+
+
+                <!-- ==================================================
+                     SIGNATURE AREA
+                =================================================== -->
+
+                <div class="sp-receipt-signature-area">
+
+                    <div>
+
+                        <span>
+                            Authorized By
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Staff Acknowledgement
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==================================================
+                     COMPANY FOOTER
+                =================================================== -->
+
+                <div class="sp-receipt-footer">
+
+                    <div>
+
+                        <strong>
+                            TENSPICK
+                        </strong>
+
+                        <span>
+                            Software Solutions
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Bazaar Street, Pulampeta, Tirupati
+                        </span>
+
+                        <span>
+                            Phone: 8688386307
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            www.tenspick.com
+                        </span>
+
+                        <span>
+                            Computer generated receipt
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECEIPT FOOTER -->
+
+        <div class="sp-modal-footer sp-receipt-modal-footer">
+
+            <button
+                type="button"
+                class="sp-btn sp-btn-secondary"
+                data-sp-close-modal="spReceiptModal"
+            >
+                Close
+            </button>
+
+
+            <button
+                type="button"
+                class="sp-btn sp-btn-outline"
+                id="spDownloadReceiptBtn"
+            >
+
+                <i
+                    class="bi bi-download"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Download
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="sp-btn sp-btn-primary"
+                id="spPrintReceiptBtn"
+            >
+
+                <i
+                    class="bi bi-printer"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Print Receipt
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     TOAST CONTAINER
+=========================================================== -->
+
+<div
+    class="sp-toast-container"
+    id="spToastContainer"
+    aria-live="polite"
+    aria-atomic="true"
+></div>

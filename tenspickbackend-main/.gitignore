@@ -1,0 +1,5 @@
+.env
+backend/logs/*
+backend/uploads/*
+!backend/logs/.gitkeep
+!backend/uploads/.gitkeep

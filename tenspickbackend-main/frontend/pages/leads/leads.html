@@ -1,0 +1,1139 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'leads';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+<section class="leads-page" id="leadsPage" data-page="leads">
+
+    <!-- ========================================================
+         HEADER
+         ======================================================== -->
+
+    <div class="leads-page-header">
+
+        <div class="leads-page-heading">
+
+            <span class="leads-eyebrow">
+                TENSPICK CRM
+            </span>
+
+            <h2>
+                Leads
+            </h2>
+
+            <p>
+                Manage, track and convert your business leads.
+            </p>
+
+        </div>
+
+        <div class="leads-header-actions">
+
+            <button type="button" class="leads-btn leads-btn-primary" id="addLeadButton">
+
+                <span class="leads-btn-plus">
+                    +
+                </span>
+
+                <span>
+                    Add Lead
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         STATISTICS
+         ======================================================== -->
+
+    <div class="leads-stat-grid">
+
+        <article class="leads-stat-card">
+
+            <div class="leads-stat-icon blue">
+                <span>≡</span>
+            </div>
+
+            <div class="leads-stat-content">
+
+                <span>
+                    Total Leads
+                </span>
+
+                <strong id="totalLeadsCount">
+                    0
+                </strong>
+
+                <small>
+                    All leads
+                </small>
+
+            </div>
+
+        </article>
+
+
+        <article class="leads-stat-card">
+
+            <div class="leads-stat-icon purple">
+                <span>＋</span>
+            </div>
+
+            <div class="leads-stat-content">
+
+                <span>
+                    New Leads
+                </span>
+
+                <strong id="newLeadsCount">
+                    0
+                </strong>
+
+                <small>
+                    Newly added
+                </small>
+
+            </div>
+
+        </article>
+
+
+        <article class="leads-stat-card">
+
+            <div class="leads-stat-icon yellow">
+                <span>↻</span>
+            </div>
+
+            <div class="leads-stat-content">
+
+                <span>
+                    Follow-ups
+                </span>
+
+                <strong id="followUpLeadsCount">
+                    0
+                </strong>
+
+                <small>
+                    Need attention
+                </small>
+
+            </div>
+
+        </article>
+
+
+        <article class="leads-stat-card">
+
+            <div class="leads-stat-icon green">
+                <span>✓</span>
+            </div>
+
+            <div class="leads-stat-content">
+
+                <span>
+                    Won Leads
+                </span>
+
+                <strong id="wonLeadsCount">
+                    0
+                </strong>
+
+                <small>
+                    Converted leads
+                </small>
+
+            </div>
+
+        </article>
+
+    </div>
+
+
+    <!-- ========================================================
+         FILTER CARD
+         ======================================================== -->
+
+    <div class="leads-card leads-filter-card">
+
+        <div class="leads-filter-header">
+
+            <div>
+
+                <h3>
+                    Lead Filters
+                </h3>
+
+                <p>
+                    Search and filter your leads.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="leads-filter-row">
+
+            <div class="leads-search-wrapper">
+
+                <span class="leads-search-icon">
+                    ⌕
+                </span>
+
+                <input type="search" id="leadSearch" class="leads-form-control leads-search-input"
+                    placeholder="Search by name, company, phone..." autocomplete="off">
+
+            </div>
+
+
+            <div class="leads-filter-field">
+
+                <select id="leadStatusFilter" class="leads-form-control">
+
+                    <option value="">
+                        All Status
+                    </option>
+
+                    <option value="new">
+                        New
+                    </option>
+
+                    <option value="contacted">
+                        Contacted
+                    </option>
+
+                    <option value="follow_up">
+                        Follow-up
+                    </option>
+
+                    <option value="proposal_sent">
+                        Proposal Sent
+                    </option>
+
+                    <option value="negotiation">
+                        Negotiation
+                    </option>
+
+                    <option value="won">
+                        Won
+                    </option>
+
+                    <option value="lost">
+                        Lost
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="leads-filter-field">
+
+                <select id="leadPriorityFilter" class="leads-form-control">
+
+                    <option value="">
+                        All Priority
+                    </option>
+
+                    <option value="high">
+                        High
+                    </option>
+
+                    <option value="medium">
+                        Medium
+                    </option>
+
+                    <option value="low">
+                        Low
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button type="button" class="leads-btn leads-btn-secondary" id="clearLeadFilters">
+                Clear
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         LEADS TABLE
+         ======================================================== -->
+
+    <div class="leads-card leads-table-card">
+
+        <div class="leads-card-header">
+
+            <div>
+
+                <h3>
+                    Leads List
+                </h3>
+
+                <p>
+                    Manage your business pipeline.
+                </p>
+
+            </div>
+
+            <span class="leads-result-count" id="leadResultCount">
+                0 leads
+            </span>
+
+        </div>
+
+
+        <div class="leads-table-scroll">
+
+            <table class="leads-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Lead
+                        </th>
+
+                        <th>
+                            Company
+                        </th>
+
+                        <th>
+                            Phone
+                        </th>
+
+                        <th>
+                            Service
+                        </th>
+
+                        <th>
+                            Source
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Priority
+                        </th>
+
+                        <th>
+                            Follow-up
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="leadsTableBody">
+
+                    <tr>
+
+                        <td colspan="9" class="leads-table-message">
+                            Loading leads...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="leads-pagination" id="leadsPagination"></div>
+
+    </div>
+
+
+    <!-- ========================================================
+         MODAL
+         ======================================================== -->
+
+    <div class="leads-modal" id="leadModal" hidden>
+
+        <div class="leads-modal-backdrop" data-close-lead-modal></div>
+
+
+        <div class="leads-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="leadModalTitle">
+
+            <div class="leads-modal-header">
+
+                <div>
+
+                    <span class="leads-modal-eyebrow">
+                        LEAD MANAGEMENT
+                    </span>
+
+                    <h3 id="leadModalTitle">
+                        Add Lead
+                    </h3>
+
+                    <p>
+                        Enter the lead information below.
+                    </p>
+
+                </div>
+
+                <button type="button" class="leads-modal-close" id="closeLeadModal" aria-label="Close">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="leadForm" novalidate>
+
+                <input type="hidden" id="leadId" name="id">
+
+
+                <div class="leads-modal-body">
+
+                    <div class="leads-form-grid">
+
+
+                        <!-- NAME -->
+
+                        <div class="leads-form-group">
+
+                            <label for="leadName">
+                                Lead Name
+                                <span>*</span>
+                            </label>
+
+                            <input type="text" id="leadName" name="name" class="leads-form-control"
+                                placeholder="Enter lead name" required>
+
+                        </div>
+
+
+                        <!-- COMPANY -->
+
+                        <div class="leads-form-group">
+
+                            <label for="leadCompany">
+                                Company
+                            </label>
+
+                            <input type="text" id="leadCompany" name="company" class="leads-form-control"
+                                placeholder="Company name">
+
+                        </div>
+
+
+                        <!-- PHONE -->
+
+                        <div class="leads-form-group">
+
+                            <label for="leadPhone">
+                                Phone
+                            </label>
+
+                            <input type="tel" id="leadPhone" name="phone" class="leads-form-control"
+                                placeholder="Phone number">
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="leads-form-group">
+
+                            <label for="leadEmail">
+                                Email
+                            </label>
+
+                            <input type="email" id="leadEmail" name="email" class="leads-form-control"
+                                placeholder="Email address">
+
+                        </div>
+
+
+                        <!-- SERVICE -->
+
+                        <div class="leads-form-group">
+
+                            <label for="leadService">
+                                Service
+                            </label>
+
+                            <input type="text" id="leadService" name="service" class="leads-form-control"
+                                placeholder="Website, SEO, CRM...">
+
+                        </div>
+
+
+                        <!-- SOURCE -->
+
+                        <div class="leads-form-group">
+
+                            <label for="leadSource">
+                                Source
+                            </label>
+
+                            <select id="leadSource" name="source" class="leads-form-control">
+
+                                <option value="">
+                                    Select Source
+                                </option>
+
+                                <option value="website">
+                                    Website
+                                </option>
+
+                                <option value="whatsapp">
+                                    WhatsApp
+                                </option>
+
+                                <option value="referral">
+                                    Referral
+                                </option>
+
+                                <option value="social_media">
+                                    Social Media
+                                </option>
+
+                                <option value="direct">
+                                    Direct
+                                </option>
+
+                                <option value="other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- STATUS -->
+
+                        <div class="leads-form-group">
+
+                            <label for="leadStatus">
+                                Status
+                            </label>
+
+                            <select id="leadStatus" name="status" class="leads-form-control">
+
+                                <option value="new">
+                                    New
+                                </option>
+
+                                <option value="contacted">
+                                    Contacted
+                                </option>
+
+                                <option value="follow_up">
+                                    Follow-up
+                                </option>
+
+                                <option value="proposal_sent">
+                                    Proposal Sent
+                                </option>
+
+                                <option value="negotiation">
+                                    Negotiation
+                                </option>
+
+                                <option value="won">
+                                    Won
+                                </option>
+
+                                <option value="lost">
+                                    Lost
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- PRIORITY -->
+
+                        <div class="leads-form-group">
+
+                            <label for="leadPriority">
+                                Priority
+                            </label>
+
+                            <select id="leadPriority" name="priority" class="leads-form-control">
+
+                                <option value="medium">
+                                    Medium
+                                </option>
+
+                                <option value="high">
+                                    High
+                                </option>
+
+                                <option value="low">
+                                    Low
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- FOLLOW UP -->
+
+                        <div class="leads-form-group">
+
+                            <label for="leadFollowUp">
+                                Follow-up Date
+                            </label>
+
+                            <input type="date" id="leadFollowUp" name="follow_up_date" class="leads-form-control">
+
+                        </div>
+
+
+                        <!-- NOTES -->
+
+                        <div class="
+                                leads-form-group
+                                leads-form-group-full
+                            ">
+
+                            <label for="leadNotes">
+                                Notes
+                            </label>
+
+                            <textarea id="leadNotes" name="notes" class="leads-form-control" rows="4"
+                                placeholder="Add notes about this lead..."></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="leads-modal-footer">
+
+                    <button type="button" class="leads-btn leads-btn-secondary" id="cancelLeadModal">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="leads-btn leads-btn-primary" id="saveLeadButton">
+                        Save Lead
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+     LEAD → CLIENT CONVERSION MODAL
+     ============================================================ -->
+
+    <div class="leads-modal" id="leadConvertModal" hidden>
+
+        <div class="leads-modal-backdrop" data-close-lead-convert-modal></div>
+
+
+        <div class="leads-modal-dialog lead-convert-dialog" role="dialog" aria-modal="true"
+            aria-labelledby="leadConvertModalTitle">
+
+            <!-- HEADER -->
+
+            <div class="leads-modal-header">
+
+                <div>
+
+                    <span class="leads-modal-eyebrow">
+                        LEAD CONVERSION
+                    </span>
+
+                    <h3 id="leadConvertModalTitle">
+                        Convert Lead to Client
+                    </h3>
+
+                    <p>
+                        Complete the client information below.
+                    </p>
+
+                </div>
+
+
+                <button type="button" class="leads-modal-close" id="closeLeadConvertModal" aria-label="Close">
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- FORM -->
+
+            <form id="leadConvertForm" novalidate>
+
+                <input type="hidden" id="convertLeadId">
+
+
+                <div class="leads-modal-body">
+
+                    <!-- =================================================
+                     BASIC INFORMATION
+                     ================================================= -->
+
+                    <div class="lead-convert-section">
+
+                        <div class="lead-convert-section-title">
+                            Basic Information
+                        </div>
+
+
+                        <div class="leads-form-grid">
+
+                            <div class="leads-form-group">
+
+                                <label for="convertClientName">
+                                    Client Name
+                                    <span>*</span>
+                                </label>
+
+                                <input type="text" id="convertClientName" class="leads-form-control" required>
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertCompanyName">
+                                    Company Name
+                                    <span>*</span>
+                                </label>
+
+                                <input type="text" id="convertCompanyName" class="leads-form-control" required>
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertMobile">
+                                    Mobile
+                                    <span>*</span>
+                                </label>
+
+                                <input type="tel" id="convertMobile" class="leads-form-control" required>
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertWhatsapp">
+                                    WhatsApp
+                                </label>
+
+                                <input type="tel" id="convertWhatsapp" class="leads-form-control">
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertEmail">
+                                    Email
+                                    <span>*</span>
+                                </label>
+
+                                <input type="email" id="convertEmail" class="leads-form-control" required>
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertAlternatePhone">
+                                    Alternate Phone
+                                </label>
+
+                                <input type="tel" id="convertAlternatePhone" class="leads-form-control">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                     BUSINESS INFORMATION
+                     ================================================= -->
+
+                    <div class="lead-convert-section">
+
+                        <div class="lead-convert-section-title">
+                            Business Information
+                        </div>
+
+
+                        <div class="leads-form-grid">
+
+                            <div class="leads-form-group">
+
+                                <label for="convertBusinessType">
+                                    Business Type
+                                </label>
+
+                                <input type="text" id="convertBusinessType" class="leads-form-control"
+                                    placeholder="Retail, Service, Manufacturing...">
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertIndustry">
+                                    Industry
+                                </label>
+
+                                <input type="text" id="convertIndustry" class="leads-form-control">
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertWebsite">
+                                    Website
+                                </label>
+
+                                <input type="url" id="convertWebsite" class="leads-form-control"
+                                    placeholder="https://example.com">
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertCity">
+                                    City
+                                </label>
+
+                                <input type="text" id="convertCity" class="leads-form-control">
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertState">
+                                    State
+                                </label>
+
+                                <input type="text" id="convertState" class="leads-form-control">
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertPincode">
+                                    Pincode
+                                </label>
+
+                                <input type="text" id="convertPincode" class="leads-form-control">
+
+                            </div>
+
+
+                            <div class="leads-form-group leads-form-group-full">
+
+                                <label for="convertAddress">
+                                    Address
+                                </label>
+
+                                <textarea id="convertAddress" class="leads-form-control" rows="2"></textarea>
+
+                            </div>
+
+
+                            <div class="leads-form-group leads-form-group-full">
+
+                                <label for="convertBusinessDescription">
+                                    Business Description
+                                </label>
+
+                                <textarea id="convertBusinessDescription" class="leads-form-control"
+                                    rows="3"></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                     CONTACT PERSON
+                     ================================================= -->
+
+                    <div class="lead-convert-section">
+
+                        <div class="lead-convert-section-title">
+                            Contact Person
+                        </div>
+
+
+                        <div class="leads-form-grid">
+
+                            <div class="leads-form-group">
+
+                                <label for="convertContactName">
+                                    Name
+                                </label>
+
+                                <input type="text" id="convertContactName" class="leads-form-control">
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertContactDesignation">
+                                    Designation
+                                </label>
+
+                                <input type="text" id="convertContactDesignation" class="leads-form-control">
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertContactMobile">
+                                    Mobile
+                                </label>
+
+                                <input type="tel" id="convertContactMobile" class="leads-form-control">
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertContactEmail">
+                                    Email
+                                </label>
+
+                                <input type="email" id="convertContactEmail" class="leads-form-control">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                     BILLING
+                     ================================================= -->
+
+                    <div class="lead-convert-section">
+
+                        <div class="lead-convert-section-title">
+                            Billing Information
+                        </div>
+
+
+                        <div class="leads-form-grid">
+
+                            <div class="leads-form-group">
+
+                                <label for="convertBillingName">
+                                    Billing Name
+                                </label>
+
+                                <input type="text" id="convertBillingName" class="leads-form-control">
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertGst">
+                                    GST Number
+                                </label>
+
+                                <input type="text" id="convertGst" class="leads-form-control">
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertPan">
+                                    PAN Number
+                                </label>
+
+                                <input type="text" id="convertPan" class="leads-form-control">
+
+                            </div>
+
+
+                            <div class="leads-form-group leads-form-group-full">
+
+                                <label for="convertBillingAddress">
+                                    Billing Address
+                                </label>
+
+                                <textarea id="convertBillingAddress" class="leads-form-control" rows="2"></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                     CLIENT PORTAL
+                     ================================================= -->
+
+                    <div class="lead-convert-section">
+
+                        <div class="lead-convert-section-title">
+                            Client Portal
+                        </div>
+
+
+                        <div class="leads-form-grid">
+
+                            <div class="leads-form-group">
+
+                                <label for="convertLoginEmail">
+                                    Login Email
+                                    <span>*</span>
+                                </label>
+
+                                <input type="email" id="convertLoginEmail" class="leads-form-control" required>
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label>
+                                    Status
+                                </label>
+
+                                <select id="convertStatus" class="leads-form-control">
+
+                                    <option value="active">
+                                        Active
+                                    </option>
+
+                                    <option value="inactive">
+                                        Inactive
+                                    </option>
+
+                                    <option value="suspended">
+                                        Suspended
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertPassword">
+                                    Password
+                                    <span>*</span>
+                                </label>
+
+                                <input type="password" id="convertPassword" class="leads-form-control" minlength="8"
+                                    required>
+
+                            </div>
+
+
+                            <div class="leads-form-group">
+
+                                <label for="convertConfirmPassword">
+                                    Confirm Password
+                                    <span>*</span>
+                                </label>
+
+                                <input type="password" id="convertConfirmPassword" class="leads-form-control"
+                                    minlength="8" required>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                     INTERNAL NOTES
+                     ================================================= -->
+
+                    <div class="lead-convert-section">
+
+                        <div class="lead-convert-section-title">
+                            Internal Notes
+                        </div>
+
+
+                        <div class="leads-form-group">
+
+                            <textarea id="convertInternalNotes" class="leads-form-control" rows="4"
+                                placeholder="Internal notes about this client..."></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FOOTER -->
+
+                <div class="leads-modal-footer">
+
+                    <button type="button" class="leads-btn leads-btn-secondary" id="cancelLeadConvertModal">
+                        Cancel
+                    </button>
+
+
+                    <button type="submit" class="leads-btn leads-btn-primary" id="convertLeadButton">
+                        Convert to Client
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>

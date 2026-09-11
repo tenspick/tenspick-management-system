@@ -1,0 +1,75 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'calendar';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+
+<div class="calendar-page-wrapper" style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+    <!-- TOP CONTROL BAR -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: #ffffff; padding: 20px 24px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+        <div>
+            <h2 style="margin: 0; font-size: 20px; font-weight: 700; color: #1F2937;">Calendar & Team Meetings</h2>
+            <span style="font-size: 13px; color: #6B7280;">Schedule client calls, team standups, and track project deadlines</span>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <button type="button" id="calendarNewMeetingBtn" style="background: #4B49AC; color: #fff; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                <i class="bi bi-calendar-plus"></i> Schedule Meeting
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+        <!-- UPCOMING MEETINGS LIST & CALENDAR CARD -->
+        <div style="background: #ffffff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="font-size: 16px; font-weight: 700; color: #1F2937; margin: 0;">Upcoming Schedule</h3>
+                <span style="font-size: 12px; background: #EEF2FF; color: #4B49AC; font-weight: 700; padding: 4px 10px; border-radius: 20px;">This Week</span>
+            </div>
+            <div id="calendarEventsList" style="display: flex; flex-direction: column; gap: 14px;">
+                <!-- Dynamically loaded events -->
+            </div>
+        </div>
+
+        <!-- NEW MEETING MODAL / SIDE PANEL -->
+        <div style="background: #ffffff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+            <h3 style="font-size: 16px; font-weight: 700; color: #1F2937; margin: 0 0 16px 0;">New Meeting Form</h3>
+            <form id="calendarMeetingForm" style="display: flex; flex-direction: column; gap: 14px;">
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Meeting Title *</label>
+                    <input type="text" id="meetTitle" required placeholder="e.g. Client Project Review" style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none;" />
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Date *</label>
+                        <input type="date" id="meetDate" required style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none;" />
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Time *</label>
+                        <input type="time" id="meetTime" required style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none;" />
+                    </div>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Meeting Type</label>
+                    <select id="meetType" style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none;">
+                        <option value="client">Client Meeting</option>
+                        <option value="team">Team Internal Standup</option>
+                        <option value="review">Project Review</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Location / Google Meet Link</label>
+                    <input type="text" id="meetLink" placeholder="https://meet.google.com/xyz or Conference Room 1" style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none;" />
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Agenda / Description</label>
+                    <textarea id="meetDesc" rows="3" placeholder="Topics to cover..." style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none; resize: vertical;"></textarea>
+                </div>
+                <button type="submit" style="background: #4B49AC; color: #fff; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; margin-top: 4px;">
+                    <i class="bi bi-check-lg" style="margin-right: 4px;"></i> Save & Schedule
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

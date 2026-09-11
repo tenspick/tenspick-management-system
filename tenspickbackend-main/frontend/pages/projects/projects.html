@@ -1,0 +1,1096 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'projects';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+<section class="projects-page" id="projectsPage">
+
+    <!-- ======================================================
+         PAGE HEADER
+         ====================================================== -->
+
+    <div class="projects-page-header">
+
+        <div class="projects-page-heading">
+
+            <div class="projects-breadcrumb">
+                <span>CRM</span>
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                <span>Projects</span>
+            </div>
+
+            <h1>Projects</h1>
+
+            <p>
+                Manage client projects, progress and delivery.
+            </p>
+
+        </div>
+
+        <div class="projects-page-actions">
+
+            <button
+                type="button"
+                class="projects-btn projects-btn-primary"
+                id="projectsAddBtn"
+            >
+                <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                <span>Add Project</span>
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         STATISTICS
+         ====================================================== -->
+
+    <div class="projects-stats-grid">
+
+        <!-- Total Projects -->
+
+        <div class="projects-stat-card">
+
+            <div class="projects-stat-icon projects-stat-icon-total">
+                <i class="bi bi-kanban-fill" aria-hidden="true"></i>
+            </div>
+
+            <div class="projects-stat-content">
+
+                <span class="projects-stat-label">
+                    Total Projects
+                </span>
+
+                <strong
+                    id="projectsTotalCount"
+                    class="projects-stat-value"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- In Progress -->
+
+        <div class="projects-stat-card">
+
+            <div class="projects-stat-icon projects-stat-icon-active">
+                <i class="bi bi-arrow-repeat" aria-hidden="true"></i>
+            </div>
+
+            <div class="projects-stat-content">
+
+                <span class="projects-stat-label">
+                    In Progress
+                </span>
+
+                <strong
+                    id="projectsInProgressCount"
+                    class="projects-stat-value"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Review -->
+
+        <div class="projects-stat-card">
+
+            <div class="projects-stat-icon projects-stat-icon-review">
+                <i class="bi bi-eye-fill" aria-hidden="true"></i>
+            </div>
+
+            <div class="projects-stat-content">
+
+                <span class="projects-stat-label">
+                    In Review
+                </span>
+
+                <strong
+                    id="projectsReviewCount"
+                    class="projects-stat-value"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Completed -->
+
+        <div class="projects-stat-card">
+
+            <div class="projects-stat-icon projects-stat-icon-completed">
+                <i class="bi bi-check2-circle" aria-hidden="true"></i>
+            </div>
+
+            <div class="projects-stat-content">
+
+                <span class="projects-stat-label">
+                    Completed
+                </span>
+
+                <strong
+                    id="projectsCompletedCount"
+                    class="projects-stat-value"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         FILTER / SEARCH CARD
+         ====================================================== -->
+
+    <div class="projects-filter-card">
+
+        <div class="projects-search-box">
+
+            <i class="bi bi-search" aria-hidden="true"></i>
+
+            <input
+                type="search"
+                id="projectsSearch"
+                placeholder="Search projects or clients..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <div class="projects-filter-group">
+
+            <!-- Status -->
+
+            <select
+                id="projectsStatusFilter"
+                class="projects-filter-select"
+            >
+
+                <option value="">All Statuses</option>
+
+                <option value="planning">
+                    Planning
+                </option>
+
+                <option value="not_started">
+                    Not Started
+                </option>
+
+                <option value="in_progress">
+                    In Progress
+                </option>
+
+                <option value="review">
+                    Review
+                </option>
+
+                <option value="client_review">
+                    Client Review
+                </option>
+
+                <option value="completed">
+                    Completed
+                </option>
+
+                <option value="on_hold">
+                    On Hold
+                </option>
+
+                <option value="cancelled">
+                    Cancelled
+                </option>
+
+            </select>
+
+
+            <!-- Client -->
+
+            <select
+                id="projectsClientFilter"
+                class="projects-filter-select"
+            >
+
+                <option value="">
+                    All Clients
+                </option>
+
+            </select>
+
+
+            <!-- Project Type -->
+
+            <select
+                id="projectsTypeFilter"
+                class="projects-filter-select"
+            >
+
+                <option value="">
+                    All Project Types
+                </option>
+
+            </select>
+
+
+            <!-- Reset -->
+
+            <button
+                type="button"
+                class="projects-btn projects-btn-light"
+                id="projectsResetFilters"
+            >
+
+                <i
+                    class="bi bi-arrow-counterclockwise"
+                    aria-hidden="true"
+                ></i>
+
+                <span>Reset</span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         TABLE CARD
+         ====================================================== -->
+
+    <div class="projects-table-card">
+
+        <div class="projects-table-header">
+
+            <div>
+
+                <h2>Project List</h2>
+
+                <span id="projectsResultInfo">
+                    Loading projects...
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="projects-table-wrapper">
+
+            <table
+                class="projects-table"
+                id="projectsTable"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Project
+                        </th>
+
+                        <th>
+                            Client
+                        </th>
+
+                        <th>
+                            Type
+                        </th>
+
+                        <th>
+                            Start Date
+                        </th>
+
+                        <th>
+                            Expected
+                        </th>
+
+                        <th>
+                            Budget
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Progress
+                        </th>
+
+                        <th>
+                            Manager
+                        </th>
+
+                        <th class="projects-action-column">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="projectsTableBody">
+
+                    <tr>
+
+                        <td
+                            colspan="10"
+                            class="projects-table-message"
+                        >
+
+                            <div class="projects-loading">
+
+                                <span
+                                    class="projects-spinner"
+                                    aria-hidden="true"
+                                ></span>
+
+                                <span>
+                                    Loading projects...
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ==================================================
+             PAGINATION
+             ================================================== -->
+
+        <div class="projects-pagination">
+
+            <div
+                class="projects-pagination-info"
+                id="projectsPaginationInfo"
+            >
+                Showing 0 of 0
+            </div>
+
+
+            <div
+                class="projects-pagination-buttons"
+                id="projectsPaginationButtons"
+            ></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PROJECT MODAL
+     ========================================================= -->
+
+<div
+    class="projects-modal"
+    id="projectModal"
+    aria-hidden="true"
+    inert
+>
+
+    <div class="projects-modal-overlay"></div>
+
+
+    <div
+        class="projects-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="projectModalTitle"
+    >
+
+        <!-- Modal Header -->
+
+        <div class="projects-modal-header">
+
+            <div>
+
+                <span class="projects-modal-eyebrow">
+                    Project Management
+                </span>
+
+                <h2 id="projectModalTitle">
+                    Add Project
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="projects-modal-close"
+                id="projectModalClose"
+                aria-label="Close"
+            >
+
+                <i
+                    class="bi bi-x-lg"
+                    aria-hidden="true"
+                ></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- Modal Form -->
+
+        <form
+            id="projectForm"
+            class="projects-form"
+            novalidate
+        >
+
+            <input
+                type="hidden"
+                id="projectFormId"
+                value=""
+            >
+
+
+            <!-- ==================================================
+                 PROJECT INFORMATION
+                 ================================================== -->
+
+            <div class="projects-form-section">
+
+                <div class="projects-form-section-title">
+
+                    <i
+                        class="bi bi-kanban-fill"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Project Information
+                    </span>
+
+                </div>
+
+
+                <div class="projects-form-grid">
+
+                    <!-- Client -->
+
+                    <div class="projects-form-field projects-form-field-full">
+
+                        <label for="projectClient">
+                            Client
+                            <span>*</span>
+                        </label>
+
+                        <select
+                            id="projectClient"
+                            name="client_id"
+                            required
+                        >
+
+                            <option value="">
+                                Select Client
+                            </option>
+
+                        </select>
+
+                        <small
+                            class="projects-field-error"
+                            data-error-for="client_id"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- Project Name -->
+
+                    <div class="projects-form-field">
+
+                        <label for="projectName">
+                            Project Name
+                            <span>*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="projectName"
+                            name="project_name"
+                            maxlength="200"
+                            placeholder="Enter project name"
+                            required
+                        >
+
+                        <small
+                            class="projects-field-error"
+                            data-error-for="project_name"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- Project Type -->
+
+                    <div class="projects-form-field">
+
+                        <label for="projectType">
+                            Project Type
+                        </label>
+
+                        <input
+                            type="text"
+                            id="projectType"
+                            name="project_type"
+                            maxlength="100"
+                            placeholder="Website, CRM, App, Branding..."
+                        >
+
+                    </div>
+
+
+                    <!-- Description -->
+
+                    <div class="projects-form-field projects-form-field-full">
+
+                        <label for="projectDescription">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="projectDescription"
+                            name="description"
+                            rows="3"
+                            placeholder="Describe the project requirements..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 SCHEDULE DATES
+                 ================================================== -->
+
+            <div class="projects-form-section">
+
+                <div class="projects-form-section-title">
+
+                    <i
+                        class="bi bi-calendar3"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Project Dates & Schedule
+                    </span>
+
+                </div>
+
+
+                <div class="projects-form-grid">
+
+                    <!-- Project Received Date -->
+                    <div class="projects-form-field">
+
+                        <label for="projectStartDate">
+                            Project Received Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="projectStartDate"
+                            name="start_date"
+                        >
+
+                    </div>
+
+                    <!-- Project Submitted Date (Expected Completion) -->
+                    <div class="projects-form-field">
+
+                        <label for="projectExpectedCompletion">
+                            Project Submitted Date / Deadline
+                        </label>
+
+                        <input
+                            type="date"
+                            id="projectExpectedCompletion"
+                            name="expected_completion"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 FINANCIALS & MULTIPLE PAYMENTS
+                 ================================================== -->
+
+            <div class="projects-form-section">
+
+                <div class="projects-form-section-title">
+
+                    <i
+                        class="bi bi-currency-rupee"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Project Financials & Billing
+                    </span>
+
+                </div>
+
+
+                <div class="projects-form-grid">
+
+                    <!-- Amount Quoted / Budget -->
+
+                    <div class="projects-form-field">
+
+                        <label for="projectBudget">
+                            Amount Quoted (Total)
+                            <span>*</span>
+                        </label>
+
+                        <div class="projects-input-prefix">
+
+                            <span>₹</span>
+
+                            <input
+                                type="number"
+                                id="projectBudget"
+                                name="budget"
+                                min="0"
+                                step="1"
+                                placeholder="e.g. 50000"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <!-- Discount Amount -->
+
+                    <div class="projects-form-field">
+
+                        <label for="projectDiscountAmount">
+                            Discount Amount
+                        </label>
+
+                        <div class="projects-input-prefix">
+
+                            <span>₹</span>
+
+                            <input
+                                type="number"
+                                id="projectDiscountAmount"
+                                name="discount_amount"
+                                min="0"
+                                step="1"
+                                placeholder="e.g. 5000"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <!-- Initial Amount Received -->
+
+                    <div class="projects-form-field">
+
+                        <label for="projectAmountReceived">
+                            Amount Received (Advance)
+                        </label>
+
+                        <div class="projects-input-prefix">
+
+                            <span>₹</span>
+
+                            <input
+                                type="number"
+                                id="projectAmountReceived"
+                                name="amount_received"
+                                min="0"
+                                step="1"
+                                placeholder="e.g. 20000"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <!-- Amount Received Date -->
+
+                    <div class="projects-form-field">
+
+                        <label for="projectAmountReceivedDate">
+                            Amount Received Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="projectAmountReceivedDate"
+                            name="amount_received_date"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 STATUS & PROGRESS
+                 ================================================== -->
+
+            <div class="projects-form-section">
+
+                <div class="projects-form-section-title">
+
+                    <i
+                        class="bi bi-graph-up-arrow"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Status & Progress
+                    </span>
+
+                </div>
+
+
+                <div class="projects-form-grid">
+
+                    <!-- Status -->
+
+                    <div class="projects-form-field">
+
+                        <label for="projectStatus">
+                            Status
+                        </label>
+
+                        <select
+                            id="projectStatus"
+                            name="status"
+                        >
+
+                            <option value="planning">
+                                Planning
+                            </option>
+
+                            <option value="not_started">
+                                Not Started
+                            </option>
+
+                            <option value="in_progress">
+                                In Progress
+                            </option>
+
+                            <option value="review">
+                                Review
+                            </option>
+
+                            <option value="client_review">
+                                Client Review
+                            </option>
+
+                            <option value="completed">
+                                Completed
+                            </option>
+
+                            <option value="on_hold">
+                                On Hold
+                            </option>
+
+                            <option value="cancelled">
+                                Cancelled
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Progress -->
+
+                    <div class="projects-form-field">
+
+                        <label for="projectProgress">
+                            Progress
+                        </label>
+
+                        <div class="projects-progress-input">
+
+                            <input
+                                type="number"
+                                id="projectProgress"
+                                name="progress_percentage"
+                                min="0"
+                                max="100"
+                                value="0"
+                            >
+
+                            <span>%</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 WEBSITE & SEO
+                 ================================================== -->
+
+            <div class="projects-form-section">
+
+                <div class="projects-form-section-title">
+
+                    <i
+                        class="bi bi-globe2"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Website & SEO
+                    </span>
+
+                </div>
+
+
+                <div class="projects-form-grid">
+
+                    <!-- Live Website Link -->
+
+                    <div class="projects-form-field projects-form-field-full">
+
+                        <label for="projectWebsite">
+                            Live Website Link
+                        </label>
+
+                        <input
+                            type="url"
+                            id="projectWebsite"
+                            name="live_website_link"
+                            maxlength="500"
+                            placeholder="https://example.com"
+                        >
+
+                    </div>
+
+
+                    <!-- Domain Purchased Email -->
+
+                    <div class="projects-form-field">
+
+                        <label for="projectDomainPurchasedEmail">
+                            Domain Purchased Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="projectDomainPurchasedEmail"
+                            name="domain_purchased_email"
+                            maxlength="255"
+                            placeholder="domain@example.com"
+                            autocomplete="email"
+                        >
+
+                        <small>
+                            Email account used for the domain purchase.
+                        </small>
+
+                    </div>
+
+
+                    <!-- SEO Added Email -->
+
+                    <div class="projects-form-field">
+
+                        <label for="projectSeoAddedEmail">
+                            SEO Added Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="projectSeoAddedEmail"
+                            name="seo_added_email"
+                            maxlength="255"
+                            placeholder="seo@example.com"
+                            autocomplete="email"
+                        >
+
+                        <small>
+                            Email account used for SEO services,
+                            Search Console or related SEO setup.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 FORM FOOTER
+                 ================================================== -->
+
+            <div class="projects-form-footer">
+
+                <button
+                    type="button"
+                    class="projects-btn projects-btn-light"
+                    id="projectCancelBtn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="projects-btn projects-btn-primary"
+                    id="projectSaveBtn"
+                >
+
+                    <span
+                        class="projects-save-spinner"
+                        id="projectSaveSpinner"
+                    ></span>
+
+                    <i
+                        class="bi bi-check-lg"
+                        id="projectSaveIcon"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span id="projectSaveText">
+                        Save Project
+                    </span>
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     DELETE CONFIRMATION MODAL
+     ========================================================= -->
+
+<div
+    class="projects-confirm-modal"
+    id="projectDeleteModal"
+    aria-hidden="true"
+    inert
+>
+
+    <div class="projects-modal-overlay"></div>
+
+
+    <div
+        class="projects-confirm-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="projectDeleteTitle"
+    >
+
+        <div class="projects-confirm-icon">
+
+            <i
+                class="bi bi-trash3-fill"
+                aria-hidden="true"
+            ></i>
+
+        </div>
+
+
+        <h3 id="projectDeleteTitle">
+            Delete Project?
+        </h3>
+
+
+        <p id="projectDeleteMessage">
+            Are you sure you want to delete this project?
+        </p>
+
+
+        <div class="projects-confirm-actions">
+
+            <button
+                type="button"
+                class="projects-btn projects-btn-light"
+                id="projectDeleteCancel"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="projects-btn projects-btn-danger"
+                id="projectDeleteConfirm"
+            >
+
+                <i
+                    class="bi bi-trash3-fill"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Delete Project
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

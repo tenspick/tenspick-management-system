@@ -1,0 +1,38 @@
+# ============================================================
+# TENSPICK
+# BACKEND API ROUTING
+# ============================================================
+
+RewriteEngine On
+
+
+# ------------------------------------------------------------
+# Prevent directory listing
+# ------------------------------------------------------------
+
+Options -Indexes
+
+
+# ------------------------------------------------------------
+# Allow existing files and directories
+# ------------------------------------------------------------
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+
+# ------------------------------------------------------------
+# Send API requests to index.php
+# ------------------------------------------------------------
+
+RewriteRule ^api(?:/(.*))?$ index.php [QSA,L]
+
+
+# ------------------------------------------------------------
+# Protect sensitive backend files
+# ------------------------------------------------------------
+
+<FilesMatch "\.(env|ini|log|sql|bak|config|conf)$">
+    Require all denied
+</FilesMatch>

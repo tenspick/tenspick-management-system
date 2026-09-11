@@ -1,0 +1,1490 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'staff';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+<section
+    class="staff-page"
+    id="staffPage"
+>
+
+    <!-- ======================================================
+         PAGE HEADER
+         ====================================================== -->
+
+    <div class="staff-page-header">
+
+        <div class="staff-page-heading">
+
+            <div class="staff-breadcrumb">
+
+                <span>CRM</span>
+
+                <i
+                    class="bi bi-chevron-right"
+                    aria-hidden="true"
+                ></i>
+
+                <span>Staff</span>
+
+            </div>
+
+
+            <h1>
+                Staff
+            </h1>
+
+
+            <p>
+                Manage team members, staff accounts and responsibilities.
+            </p>
+
+        </div>
+
+
+        <div class="staff-page-actions">
+
+            <button
+                type="button"
+                class="staff-btn staff-btn-primary"
+                id="staffAddBtn"
+            >
+
+                <i
+                    class="bi bi-plus-lg"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Add Staff
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         STATISTICS
+         ====================================================== -->
+
+    <div class="staff-stats-grid">
+
+        <!-- ==================================================
+             TOTAL STAFF
+             ================================================== -->
+
+        <div class="staff-stat-card">
+
+            <div class="staff-stat-icon staff-stat-icon-total">
+
+                <i
+                    class="bi bi-people-fill"
+                    aria-hidden="true"
+                ></i>
+
+            </div>
+
+
+            <div class="staff-stat-content">
+
+                <span class="staff-stat-label">
+                    Total Staff
+                </span>
+
+                <strong
+                    id="staffTotalCount"
+                    class="staff-stat-value"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             ACTIVE
+             ================================================== -->
+
+        <div class="staff-stat-card">
+
+            <div class="staff-stat-icon staff-stat-icon-active">
+
+                <i
+                    class="bi bi-person-check-fill"
+                    aria-hidden="true"
+                ></i>
+
+            </div>
+
+
+            <div class="staff-stat-content">
+
+                <span class="staff-stat-label">
+                    Active
+                </span>
+
+                <strong
+                    id="staffActiveCount"
+                    class="staff-stat-value"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             INACTIVE
+             ================================================== -->
+
+        <div class="staff-stat-card">
+
+            <div class="staff-stat-icon staff-stat-icon-inactive">
+
+                <i
+                    class="bi bi-person-dash-fill"
+                    aria-hidden="true"
+                ></i>
+
+            </div>
+
+
+            <div class="staff-stat-content">
+
+                <span class="staff-stat-label">
+                    Inactive
+                </span>
+
+                <strong
+                    id="staffInactiveCount"
+                    class="staff-stat-value"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             SUSPENDED
+             ================================================== -->
+
+        <div class="staff-stat-card">
+
+            <div class="staff-stat-icon staff-stat-icon-suspended">
+
+                <i
+                    class="bi bi-person-x-fill"
+                    aria-hidden="true"
+                ></i>
+
+            </div>
+
+
+            <div class="staff-stat-content">
+
+                <span class="staff-stat-label">
+                    Suspended
+                </span>
+
+                <strong
+                    id="staffSuspendedCount"
+                    class="staff-stat-value"
+                >
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         FILTER / SEARCH CARD
+         ====================================================== -->
+
+    <div class="staff-filter-card">
+
+        <!-- Search -->
+
+        <div class="staff-search-box">
+
+            <i
+                class="bi bi-search"
+                aria-hidden="true"
+            ></i>
+
+            <input
+                type="search"
+                id="staffSearchInput"
+                class="staff-search-input"
+                placeholder="Search staff, email or phone..."
+                autocomplete="off"
+                aria-label="Search staff"
+            >
+
+        </div>
+
+
+        <!-- Filters -->
+
+        <div class="staff-filter-group">
+
+            <!-- ==================================================
+                 STATUS
+                 ================================================== -->
+
+            <select
+                id="staffStatusFilter"
+                class="staff-filter-select"
+                aria-label="Filter by status"
+            >
+
+                <option value="">
+                    All Statuses
+                </option>
+
+                <option value="active">
+                    Active
+                </option>
+
+                <option value="inactive">
+                    Inactive
+                </option>
+
+                <option value="suspended">
+                    Suspended
+                </option>
+
+            </select>
+
+
+            <!-- ==================================================
+                 DEPARTMENT
+                 ================================================== -->
+
+            <select
+                id="staffDepartmentFilter"
+                class="staff-filter-select"
+                aria-label="Filter by department"
+            >
+
+                <option value="">
+                    All Departments
+                </option>
+
+            </select>
+
+
+            <!-- ==================================================
+                 DESIGNATION
+                 ================================================== -->
+
+            <select
+                id="staffDesignationFilter"
+                class="staff-filter-select"
+                aria-label="Filter by designation"
+            >
+
+                <option value="">
+                    All Designations
+                </option>
+
+            </select>
+
+
+            <!-- ==================================================
+                 RESET
+                 ================================================== -->
+
+            <button
+                type="button"
+                class="staff-btn staff-btn-light"
+                id="staffResetFiltersBtn"
+                title="Reset filters"
+            >
+
+                <i
+                    class="bi bi-arrow-counterclockwise"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Reset
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         STAFF TABLE CARD
+         ====================================================== -->
+
+    <div class="staff-table-card">
+
+        <!-- ==================================================
+             TABLE HEADER
+             ================================================== -->
+
+        <div class="staff-table-header">
+
+            <div>
+
+                <h2>
+                    Staff List
+                </h2>
+
+                <span id="staffResultInfo">
+                    Loading staff...
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             TABLE
+             ================================================== -->
+
+        <div class="staff-table-wrapper">
+
+            <table
+                class="staff-table"
+                id="staffTable"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Staff
+                        </th>
+
+                        <th>
+                            Staff ID
+                        </th>
+
+                        <th>
+                            Contact
+                        </th>
+
+                        <th>
+                            Department
+                        </th>
+
+                        <th>
+                            Designation
+                        </th>
+
+                        <th>
+                            Joining Date
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th class="staff-action-column">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="staffTableBody">
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            class="staff-table-message"
+                        >
+
+                            <div class="staff-loading">
+
+                                <span
+                                    class="staff-spinner"
+                                    aria-hidden="true"
+                                ></span>
+
+                                <span>
+                                    Loading staff...
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+            <!-- ==================================================
+                 LOADING STATE
+                 ================================================== -->
+
+            <div
+                class="staff-table-state"
+                id="staffLoadingState"
+                hidden
+            >
+
+                <div class="staff-loading-icon">
+
+                    <span
+                        class="staff-spinner"
+                        aria-hidden="true"
+                    ></span>
+
+                </div>
+
+                <p>
+                    Loading staff...
+                </p>
+
+            </div>
+
+
+            <!-- ==================================================
+                 EMPTY STATE
+                 ================================================== -->
+
+            <div
+                class="staff-table-state"
+                id="staffEmptyState"
+                hidden
+            >
+
+                <div class="staff-empty-icon">
+
+                    <i
+                        class="bi bi-people"
+                        aria-hidden="true"
+                    ></i>
+
+                </div>
+
+
+                <h3>
+                    No staff found
+                </h3>
+
+
+                <p>
+                    No staff members match your current filters.
+                </p>
+
+
+                <button
+                    type="button"
+                    class="staff-btn staff-btn-primary"
+                    id="staffEmptyAddBtn"
+                >
+
+                    <i
+                        class="bi bi-plus-lg"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Add Staff
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- ==================================================
+                 ERROR STATE
+                 ================================================== -->
+
+            <div
+                class="staff-table-state staff-error-state"
+                id="staffErrorState"
+                hidden
+            >
+
+                <div class="staff-error-icon">
+
+                    <i
+                        class="bi bi-exclamation-triangle"
+                        aria-hidden="true"
+                    ></i>
+
+                </div>
+
+
+                <h3>
+                    Unable to load staff
+                </h3>
+
+
+                <p id="staffErrorMessage">
+                    Something went wrong while loading staff.
+                </p>
+
+
+                <button
+                    type="button"
+                    class="staff-btn staff-btn-primary"
+                    id="staffRetryBtn"
+                >
+
+                    <i
+                        class="bi bi-arrow-repeat"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Try Again
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             PAGINATION
+             ================================================== -->
+
+        <div class="staff-pagination">
+
+            <div
+                class="staff-pagination-info"
+                id="staffPaginationInfo"
+            >
+                Showing 0 of 0
+            </div>
+
+
+            <div class="staff-pagination-buttons">
+
+                <button
+                    type="button"
+                    class="staff-pagination-btn"
+                    id="staffPrevPageBtn"
+                    disabled
+                    aria-label="Previous page"
+                    title="Previous page"
+                >
+
+                    <i
+                        class="bi bi-chevron-left"
+                        aria-hidden="true"
+                    ></i>
+
+                </button>
+
+
+                <div
+                    class="staff-pagination-pages"
+                    id="staffPaginationPages"
+                ></div>
+
+
+                <button
+                    type="button"
+                    class="staff-pagination-btn"
+                    id="staffNextPageBtn"
+                    disabled
+                    aria-label="Next page"
+                    title="Next page"
+                >
+
+                    <i
+                        class="bi bi-chevron-right"
+                        aria-hidden="true"
+                    ></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ============================================================
+     ADD / EDIT STAFF MODAL
+     ============================================================ -->
+
+<div
+    class="staff-modal"
+    id="staffFormModal"
+    aria-hidden="true"
+    inert
+>
+
+    <div class="staff-modal-overlay"></div>
+
+
+    <div
+        class="staff-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="staffFormModalTitle"
+    >
+
+        <!-- ==================================================
+             MODAL HEADER
+             ================================================== -->
+
+        <div class="staff-modal-header">
+
+            <div>
+
+                <span class="staff-modal-eyebrow">
+                    Staff Management
+                </span>
+
+
+                <h2
+                    id="staffFormModalTitle"
+                    class="staff-modal-title"
+                >
+                    Add Staff
+                </h2>
+
+
+                <p class="staff-modal-subtitle">
+                    Create a staff member and account.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="staff-modal-close"
+                id="staffFormModalClose"
+                aria-label="Close"
+            >
+
+                <i
+                    class="bi bi-x-lg"
+                    aria-hidden="true"
+                ></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- ==================================================
+             STAFF FORM
+             ================================================== -->
+
+        <form
+            id="staffForm"
+            class="staff-form"
+            novalidate
+        >
+
+            <input
+                type="hidden"
+                id="staffFormId"
+                name="id"
+                value=""
+            >
+
+
+            <!-- ==================================================
+                 STAFF INFORMATION
+                 ================================================== -->
+
+            <div class="staff-form-section">
+
+                <div class="staff-form-section-title">
+
+                    <i
+                        class="bi bi-person-fill"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Staff Information
+                    </span>
+
+                </div>
+
+
+                <div class="staff-form-grid">
+
+                    <!-- Name -->
+
+                    <div class="staff-form-field staff-form-field-full">
+
+                        <label for="staffName">
+
+                            Full Name
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="staffName"
+                            name="name"
+                            class="staff-form-input"
+                            maxlength="150"
+                            placeholder="Enter full name"
+                            required
+                        >
+
+
+                        <small
+                            class="staff-field-error"
+                            id="staffNameError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="staff-form-field">
+
+                        <label for="staffEmail">
+                            Email
+                        </label>
+
+
+                        <input
+                            type="email"
+                            id="staffEmail"
+                            name="email"
+                            class="staff-form-input"
+                            maxlength="150"
+                            placeholder="staff@example.com"
+                            autocomplete="email"
+                        >
+
+
+                        <small
+                            class="staff-field-error"
+                            id="staffEmailError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- Phone -->
+
+                    <div class="staff-form-field">
+
+                        <label for="staffPhone">
+                            Phone
+                        </label>
+
+
+                        <input
+                            type="tel"
+                            id="staffPhone"
+                            name="phone"
+                            class="staff-form-input"
+                            maxlength="30"
+                            placeholder="Enter phone number"
+                            autocomplete="tel"
+                        >
+
+
+                        <small
+                            class="staff-field-error"
+                            id="staffPhoneError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- Department -->
+
+                    <div class="staff-form-field">
+
+                        <label for="staffDepartment">
+                            Department
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="staffDepartment"
+                            name="department"
+                            class="staff-form-input"
+                            maxlength="100"
+                            placeholder="e.g. Development"
+                        >
+
+                    </div>
+
+
+                    <!-- Designation -->
+
+                    <div class="staff-form-field">
+
+                        <label for="staffDesignation">
+                            Designation
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="staffDesignation"
+                            name="designation"
+                            class="staff-form-input"
+                            maxlength="100"
+                            placeholder="e.g. Senior Developer"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 EMPLOYMENT
+                 ================================================== -->
+
+            <div class="staff-form-section">
+
+                <div class="staff-form-section-title">
+
+                    <i
+                        class="bi bi-briefcase-fill"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Employment
+                    </span>
+
+                </div>
+
+
+                <div class="staff-form-grid">
+
+                    <!-- Joining Date -->
+
+                    <div class="staff-form-field">
+
+                        <label for="staffJoiningDate">
+                            Joining Date
+                        </label>
+
+
+                        <input
+                            type="date"
+                            id="staffJoiningDate"
+                            name="joining_date"
+                            class="staff-form-input"
+                        >
+
+                    </div>
+
+
+                    <!-- Salary -->
+
+                    <div class="staff-form-field">
+
+                        <label for="staffSalary">
+                            Salary
+                        </label>
+
+
+                        <div class="staff-input-prefix">
+
+                            <span>
+                                ₹
+                            </span>
+
+
+                            <input
+                                type="number"
+                                id="staffSalary"
+                                name="salary"
+                                class="staff-form-input"
+                                min="0"
+                                step="0.01"
+                                placeholder="0.00"
+                            >
+
+                        </div>
+
+
+                        <small
+                            class="staff-field-error"
+                            id="staffSalaryError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="staff-form-field">
+
+                        <label for="staffStatus">
+
+                            Status
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+
+                        <select
+                            id="staffStatus"
+                            name="status"
+                            class="staff-form-input"
+                        >
+
+                            <option value="active">
+                                Active
+                            </option>
+
+                            <option value="inactive">
+                                Inactive
+                            </option>
+
+                            <option value="suspended">
+                                Suspended
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 LOGIN ACCOUNT
+                 ================================================== -->
+
+            <div class="staff-form-section">
+
+                <div class="staff-form-section-title">
+
+                    <i
+                        class="bi bi-shield-lock-fill"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Login Account
+                    </span>
+
+                </div>
+
+
+                <div class="staff-account-note">
+
+                    <i
+                        class="bi bi-info-circle"
+                        aria-hidden="true"
+                    ></i>
+
+
+                    <span>
+                        Login credentials are optional. Passwords are
+                        securely hashed before being stored.
+                    </span>
+
+                </div>
+
+
+                <div class="staff-form-grid">
+
+                    <!-- Username -->
+
+                    <div class="staff-form-field">
+
+                        <label for="staffUsername">
+                            Username
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="staffUsername"
+                            name="username"
+                            class="staff-form-input"
+                            maxlength="100"
+                            placeholder="Enter username"
+                            autocomplete="username"
+                        >
+
+
+                        <small
+                            class="staff-field-error"
+                            id="staffUsernameError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- Password -->
+
+                    <div class="staff-form-field">
+
+                        <label
+                            for="staffPassword"
+                            id="staffPasswordLabel"
+                        >
+                            Password
+                        </label>
+
+
+                        <div class="staff-password-field">
+
+                            <input
+                                type="password"
+                                id="staffPassword"
+                                name="password"
+                                class="staff-form-input"
+                                placeholder="Enter password"
+                                autocomplete="new-password"
+                            >
+
+
+                            <button
+                                type="button"
+                                class="staff-password-toggle"
+                                id="staffPasswordToggle"
+                                aria-label="Show password"
+                                title="Show password"
+                            >
+
+                                <i
+                                    class="bi bi-eye"
+                                    aria-hidden="true"
+                                ></i>
+
+                            </button>
+
+                        </div>
+
+
+                        <small
+                            class="staff-form-hint"
+                            id="staffPasswordHint"
+                        >
+                            Leave blank when editing to keep the
+                            current password.
+                        </small>
+
+
+                        <small
+                            class="staff-field-error"
+                            id="staffPasswordError"
+                        ></small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 FORM ALERT
+                 ================================================== -->
+
+            <div
+                class="staff-form-alert"
+                id="staffFormAlert"
+                hidden
+            >
+
+                <i
+                    class="bi bi-exclamation-circle"
+                    aria-hidden="true"
+                ></i>
+
+
+                <span id="staffFormAlertMessage"></span>
+
+            </div>
+
+
+            <!-- ==================================================
+                 FORM FOOTER
+                 ================================================== -->
+
+            <div class="staff-form-footer">
+
+                <button
+                    type="button"
+                    class="staff-btn staff-btn-light"
+                    id="staffFormCancelBtn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="staff-btn staff-btn-primary"
+                    id="staffFormSubmitBtn"
+                >
+
+                    <span
+                        class="staff-submit-spinner"
+                        id="staffSubmitSpinner"
+                        hidden
+                    ></span>
+
+
+                    <i
+                        class="bi bi-check-lg"
+                        id="staffSubmitIcon"
+                        aria-hidden="true"
+                    ></i>
+
+
+                    <span id="staffFormSubmitText">
+                        Create Staff
+                    </span>
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     VIEW STAFF MODAL
+     ============================================================ -->
+
+<div
+    class="staff-modal"
+    id="staffViewModal"
+    aria-hidden="true"
+    inert
+>
+
+    <div class="staff-modal-overlay"></div>
+
+
+    <div
+        class="staff-modal-dialog staff-view-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="staffViewModalTitle"
+    >
+
+        <!-- ==================================================
+             HEADER
+             ================================================== -->
+
+        <div class="staff-modal-header">
+
+            <div>
+
+                <span class="staff-modal-eyebrow">
+                    Staff Management
+                </span>
+
+
+                <h2
+                    class="staff-modal-title"
+                    id="staffViewModalTitle"
+                >
+                    Staff Details
+                </h2>
+
+
+                <p class="staff-modal-subtitle">
+                    View staff member information.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="staff-modal-close"
+                id="staffViewModalClose"
+                aria-label="Close"
+            >
+
+                <i
+                    class="bi bi-x-lg"
+                    aria-hidden="true"
+                ></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- ==================================================
+             VIEW CONTENT
+             ================================================== -->
+
+        <div
+            class="staff-view-content"
+            id="staffViewContent"
+        >
+
+            <!-- Filled by staff.js -->
+
+        </div>
+
+
+        <!-- ==================================================
+             FOOTER
+             ================================================== -->
+
+        <div class="staff-form-footer">
+
+            <button
+                type="button"
+                class="staff-btn staff-btn-light"
+                id="staffViewCloseBtn"
+            >
+                Close
+            </button>
+
+
+            <button
+                type="button"
+                class="staff-btn staff-btn-primary"
+                id="staffViewEditBtn"
+            >
+
+                <i
+                    class="bi bi-pencil"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Edit Staff
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     DELETE CONFIRMATION MODAL
+     ============================================================ -->
+
+<div
+    class="staff-confirm-modal"
+    id="staffDeleteModal"
+    aria-hidden="true"
+    inert
+>
+
+    <div class="staff-modal-overlay"></div>
+
+
+    <div
+        class="staff-confirm-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="staffDeleteModalTitle"
+    >
+
+        <!-- ==================================================
+             DELETE CONTENT
+             ================================================== -->
+
+        <div class="staff-confirm-content">
+
+            <div class="staff-confirm-icon">
+
+                <i
+                    class="bi bi-trash3-fill"
+                    aria-hidden="true"
+                ></i>
+
+            </div>
+
+
+            <h2
+                id="staffDeleteModalTitle"
+                class="staff-confirm-title"
+            >
+                Delete Staff?
+            </h2>
+
+
+            <p class="staff-confirm-message">
+
+                Are you sure you want to delete
+
+                <strong id="staffDeleteName">
+                    this staff member
+                </strong>?
+
+                This action cannot be undone.
+
+            </p>
+
+
+            <!-- Delete Error -->
+
+            <div
+                class="staff-form-alert"
+                id="staffDeleteAlert"
+                hidden
+            >
+
+                <i
+                    class="bi bi-exclamation-circle"
+                    aria-hidden="true"
+                ></i>
+
+
+                <span id="staffDeleteAlertMessage"></span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             DELETE FOOTER
+             ================================================== -->
+
+        <div class="staff-form-footer">
+
+            <button
+                type="button"
+                class="staff-btn staff-btn-light"
+                id="staffDeleteCancelBtn"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="staff-btn staff-btn-danger"
+                id="staffDeleteConfirmBtn"
+            >
+
+                <span
+                    class="staff-delete-spinner"
+                    id="staffDeleteSpinner"
+                    hidden
+                ></span>
+
+
+                <i
+                    class="bi bi-trash3-fill"
+                    id="staffDeleteIcon"
+                    aria-hidden="true"
+                ></i>
+
+
+                <span>
+                    Delete Staff
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     TOAST
+     ============================================================ -->
+
+<div
+    class="staff-toast"
+    id="staffToast"
+    role="status"
+    aria-live="polite"
+    hidden
+>
+
+    <div class="staff-toast-icon">
+
+        <i
+            id="staffToastIcon"
+            class="bi bi-check-circle"
+            aria-hidden="true"
+        ></i>
+
+    </div>
+
+
+    <div
+        class="staff-toast-message"
+        id="staffToastMessage"
+    >
+        Success
+    </div>
+
+
+    <button
+        type="button"
+        class="staff-toast-close"
+        id="staffToastClose"
+        aria-label="Close notification"
+    >
+
+        <i
+            class="bi bi-x"
+            aria-hidden="true"
+        ></i>
+
+    </button>
+
+</div>

@@ -1,0 +1,228 @@
+/* Notifications Page Styles */
+.notifications-page {
+    padding: 24px;
+    background: #F7F8FC;
+    min-height: 100%;
+    box-sizing: border-box;
+}
+
+.notifications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.notifications-header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #172033;
+    font-weight: 750;
+}
+
+.notifications-header p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: #64748B;
+}
+
+.notifications-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.notif-btn {
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid transparent;
+}
+
+.notif-btn-secondary {
+    background: #ffffff;
+    border-color: #CBD5E1;
+    color: #4B49AC;
+}
+
+.notif-btn-secondary:hover {
+    background: #F1F1FF;
+}
+
+.notif-btn-danger {
+    background: #ffffff;
+    border-color: #FECDD3;
+    color: #E11D48;
+}
+
+.notif-btn-danger:hover {
+    background: #FFF1F2;
+}
+
+.notifications-filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-chip {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1px solid #E2E8F0;
+    background: #ffffff;
+    color: #64748B;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.filter-chip.active, .filter-chip:hover {
+    background: #4B49AC;
+    color: #ffffff;
+    border-color: #4B49AC;
+}
+
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.notification-card {
+    display: flex;
+    gap: 16px;
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    transition: transform 0.15s ease;
+}
+
+.notification-card.unread {
+    border-left: 4px solid #4B49AC;
+    background: #FAF9FE;
+}
+
+.notif-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.notif-icon-blue { background: #EFF6FF; color: #2563EB; }
+.notif-icon-green { background: #ECFDF3; color: #16A34A; }
+.notif-icon-purple { background: #F5F3FF; color: #7C3AED; }
+.notif-icon-orange { background: #FFF7ED; color: #D97706; }
+
+.notif-body {
+    flex: 1;
+}
+
+.notif-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.notif-title-row h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #1E293B;
+    font-weight: 700;
+}
+
+.notif-time {
+    font-size: 11px;
+    color: #94A3B8;
+}
+
+.notif-body p {
+    margin: 4px 0 10px;
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.notif-footer-actions {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.notif-link {
+    color: #4B49AC;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.notif-link:hover {
+    text-decoration: underline;
+}
+
+.notif-mark-btn {
+    background: transparent;
+    border: 0;
+    color: #94A3B8;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.notif-mark-btn:hover {
+    color: #475569;
+}
+
+/* Empty State */
+.notif-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px dashed #CBD5E1;
+    text-align: center;
+}
+
+.notif-empty-icon {
+    width: 54px;
+    height: 54px;
+    background: #F1F5F9;
+    color: #64748B;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.notif-empty-state h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1E293B;
+}
+
+.notif-empty-state p {
+    margin: 0;
+    font-size: 13px;
+    color: #64748B;
+}
+

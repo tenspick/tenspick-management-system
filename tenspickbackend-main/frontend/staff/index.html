@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenspick | Staff Portal</title>
+    <meta name="description" content="Tenspick Staff Portal - Manage your tasks, attendance and work.">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Shared Stylesheets -->
+    <link rel="stylesheet" href="../assets/css/root.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/sidebar.css">
+    <link rel="stylesheet" href="../assets/css/topbar.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/leads.css">
+    <link rel="stylesheet" href="../assets/css/clients.css">
+    <link rel="stylesheet" href="../assets/css/projects.css">
+    <link rel="stylesheet" href="../assets/css/tasks.css">
+    <link rel="stylesheet" href="../assets/css/chat.css">
+    <link rel="stylesheet" href="../assets/css/notifications.css">
+    <link rel="stylesheet" href="../assets/css/profile.css">
+    <link rel="stylesheet" href="../assets/css/calendar.css">
+    <link rel="stylesheet" href="../assets/css/attendance.css">
+    <link rel="stylesheet" href="../assets/css/documents.css">
+    <link rel="stylesheet" href="../assets/css/reports.css">
+
+    <style>
+        /* Staff portal: hide all admin-only sidebar sections */
+        #adminOnlySection { display: none !important; }
+        .staff-portal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ======================================================
+         SIDEBAR - STAFF ONLY NAV
+         ====================================================== -->
+
+    <aside class="app-sidebar" id="appSidebar" aria-label="Staff navigation">
+
+        <!-- BRAND -->
+        <div class="sidebar-brand">
+            <a href="#/my-payments" class="sidebar-brand-link" data-route="my-payments" aria-label="Staff Portal">
+                <img src="../assets/images/tenspick-logo.png" alt="Tenspick Logo" class="sidebar-logo" onerror="this.style.display='none';">
+                <div class="sidebar-brand-content">
+                    <span class="sidebar-brand-name">Tenspick</span>
+                    <span class="staff-portal-badge"><i class="bi bi-person-badge"></i> Staff Portal</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- NAVIGATION -->
+        <div class="sidebar-scroll">
+            <nav class="sidebar-navigation">
+
+                <!-- MY WORK -->
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title">My Work</div>
+
+                    <!-- My Payments: staff can view salary/payments they received -->
+                    <a href="#/my-payments" data-route="my-payments" class="sidebar-menu-item active">
+                        <span class="sidebar-menu-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2Zm0 14H4v-6h16v6Zm0-10H4V6h16v2Z"/></svg>
+                        </span>
+                        <span class="sidebar-menu-label">My Payments</span>
+                    </a>
+
+                    <!-- Chat with Admin only -->
+                    <a href="#/admin-chat" data-route="admin-chat" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2Z"/></svg>
+                        </span>
+                        <span class="sidebar-menu-label">Chat with Admin</span>
+                    </a>
+                </div>
+
+                <!-- MY PORTAL -->
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title">My Portal</div>
+
+                    <a href="#/profile" data-route="profile" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z"/></svg>
+                        </span>
+                        <span class="sidebar-menu-label">My Profile</span>
+                    </a>
+
+                    <a href="#/calendar" data-route="calendar" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2Zm0 16H5V8h14v11ZM7 10h5v5H7z"/></svg>
+                        </span>
+                        <span class="sidebar-menu-label">Calendar & Meetings</span>
+                    </a>
+
+                    <a href="#/attendance" data-route="attendance" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.5 12.5H15v4l3 1.8-.75-1.3-1.75-1.04V12.5ZM16 2v2H8V2H6v2H5c-1.11 0-1.99.89-1.99 2L3 20c0 1.1.89 2 2 2h5.96c-.57-.78-1-1.66-1.2-2.62C7 18.87 5 16.5 5 14c0-3.87 3.13-7 7-7 .53 0 1.04.06 1.53.17L15 5.87V4h-1V2h-2ZM14 9c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5Z"/></svg>
+                        </span>
+                        <span class="sidebar-menu-label">Leave & Attendance</span>
+                    </a>
+
+                    <a href="#/documents" data-route="documents" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6ZM6 20V4h7v5h5v11H6Z"/></svg>
+                        </span>
+                        <span class="sidebar-menu-label">Documents</span>
+                    </a>
+
+                    <a href="#/reports" data-route="reports" class="sidebar-menu-item">
+                        <span class="sidebar-menu-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2Zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6Zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19Z"/></svg>
+                        </span>
+                        <span class="sidebar-menu-label">Work Reports</span>
+                    </a>
+                </div>
+
+            </nav>
+        </div>
+
+        <!-- SIDEBAR FOOTER -->
+        <div class="sidebar-footer">
+            <div class="sidebar-admin">
+                <div class="sidebar-admin-avatar" id="sidebarAdminAvatar">S</div>
+                <div class="sidebar-admin-details">
+                    <strong id="sidebarAdminName">Staff User</strong>
+                    <span>Staff Member</span>
+                </div>
+            </div>
+
+            <button type="button" class="sidebar-logout" id="sidebarLogout">
+                <span class="sidebar-logout-icon">↪</span>
+                <span>Logout</span>
+            </button>
+        </div>
+
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ======================================================
+         MAIN APP
+         ====================================================== -->
+
+    <main class="app-main">
+
+        <!-- TOPBAR -->
+        <header class="app-topbar" id="appTopbar">
+
+            <div class="topbar-left">
+                <button type="button" class="topbar-menu-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false" aria-controls="appSidebar">
+                    <span></span><span></span><span></span>
+                </button>
+
+                <div class="topbar-heading">
+                    <h1 id="topbarPageTitle">Dashboard</h1>
+                    <p id="topbarPageSubtitle">Welcome back! Here's your work overview.</p>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <!-- Clock -->
+                <div class="topbar-clock" id="topbarClock">--:--:--</div>
+
+                <!-- Notifications -->
+                <button type="button" class="topbar-icon-btn" id="topbarNotifications" title="Notifications">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2Zm6-6V11c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2Z"/></svg>
+                </button>
+
+                <!-- Profile -->
+                <div class="topbar-profile" id="topbarProfile">
+                    <button type="button" class="topbar-profile-toggle" id="profileToggle" aria-haspopup="true" aria-expanded="false" aria-controls="profileDropdown">
+                        <div class="topbar-avatar" id="topbarAdminInitial">S</div>
+                        <span class="topbar-profile-name" id="topbarAdminName">Staff</span>
+                        <svg class="topbar-profile-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+                    </button>
+
+                    <div class="topbar-profile-dropdown" id="profileDropdown" hidden role="menu">
+                        <div class="profile-dropdown-header">
+                            <div class="profile-dropdown-avatar" id="dropdownAdminInitial">S</div>
+                            <div>
+                                <strong id="dropdownAdminName">Staff User</strong>
+                                <span id="dropdownAdminEmail">staff@tenspick.org</span>
+                            </div>
+                        </div>
+                        <div class="profile-dropdown-divider"></div>
+                        <a href="#/profile" class="profile-dropdown-item" data-route="profile">
+                            <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z"/></svg>
+                            My Profile
+                        </a>
+                        <div class="profile-dropdown-divider"></div>
+                        <button type="button" class="profile-dropdown-item profile-dropdown-logout" id="topbarLogout">
+                            <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+        <!-- PAGE CONTENT -->
+        <div class="app-content" id="app-content">
+            <div class="spa-loading">
+                <div class="spa-loading-spinner"></div>
+                <span>Loading...</span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ENV + Auth guard -->
+    <script src="../env.js"></script>
+    <script>
+        // STAFF PORTAL GUARD: Only allow staff users in
+        (function () {
+            try {
+                const raw = sessionStorage.getItem("tenspick_user");
+                const user = raw ? JSON.parse(raw) : null;
+                const isAuth = sessionStorage.getItem("tenspick_authenticated");
+
+                if (!user && !isAuth) {
+                    window.location.replace("../login.html");
+                    return;
+                }
+
+                const isStaff = user && (user.isStaff === true || String(user.role || "").toLowerCase() === "staff");
+                if (!isStaff) {
+                    // Admin trying to access staff portal — redirect to admin
+                    window.location.replace("../index.html");
+                    return;
+                }
+
+                // Force staff flag in session
+                user.isStaff = true;
+                sessionStorage.setItem("tenspick_user", JSON.stringify(user));
+            } catch (e) {
+                window.location.replace("../login.html");
+            }
+        })();
+    </script>
+
+    <!-- Supabase -->
+    <script src="../assets/js/supabase-client.js"></script>
+
+    <!-- Staff Portal Modules -->
+    <script src="../assets/js/layout.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+    <script src="../assets/js/staff-my-payments.js"></script>
+    <script src="../assets/js/admin-chat.js"></script>
+    <script src="../assets/js/profile.js"></script>
+    <script src="../assets/js/calendar.js"></script>
+    <script src="../assets/js/attendance.js"></script>
+    <script src="../assets/js/documents.js"></script>
+    <script src="../assets/js/reports.js"></script>
+
+    <!-- Staff Router: blocks admin-only routes -->
+    <script>
+        (function () {
+            // Staff is only allowed these routes (all others are blocked)
+            const STAFF_ROUTES = {
+                "my-payments": "../pages/staff-my-payments/staff-my-payments.html",
+                "admin-chat":  "../pages/admin-chat/admin-chat.html",
+                profile:       "../pages/profile/profile.html",
+                calendar:      "../pages/calendar/calendar.html",
+                attendance:    "../pages/attendance/attendance.html",
+                documents:     "../pages/documents/documents.html",
+                reports:       "../pages/reports/reports.html"
+            };
+
+            const STAFF_BLOCKED = ["dashboard", "leads", "clients", "projects", "tasks", "staff", "client-payments", "staff-payments", "website-content", "settings", "activity-logs"];
+
+            const PAGE_META = {
+                "my-payments": { title: "My Payments",         subtitle: "Salary and payments received" },
+                "admin-chat":  { title: "Chat with Admin",     subtitle: "Send messages to the admin team" },
+                profile:       { title: "My Profile",          subtitle: "View and edit your account" },
+                calendar:      { title: "Calendar & Meetings", subtitle: "Your schedule and meetings" },
+                attendance:    { title: "Leave & Attendance",  subtitle: "Clock in and manage leaves" },
+                documents:     { title: "Documents",           subtitle: "Assigned files and documents" },
+                reports:       { title: "Work Reports",        subtitle: "Your performance summary" }
+            };
+
+            const PAGE_MODULES = {
+                "my-payments": "TenspickMyPayments",
+                "admin-chat":  "TenspickAdminChat",
+                profile:       "TenspickProfile",
+                calendar:      "TenspickCalendar",
+                attendance:    "TenspickAttendance",
+                documents:     "TenspickDocuments",
+                reports:       "TenspickReports"
+            };
+
+            let currentRoute = null;
+            let navId = 0;
+
+            function normalize(raw) {
+                return String(raw || "").replace(/^#\/?/, "").replace(/^\/+/, "").split("?")[0].replace(/\/+$/, "").toLowerCase() || "my-payments";
+            }
+
+            function updateMeta(route) {
+                const meta = PAGE_META[route] || PAGE_META["my-payments"];
+                const h1 = document.querySelector(".topbar-heading h1");
+                const p = document.querySelector(".topbar-heading p");
+                if (h1) h1.textContent = meta.title;
+                if (p) p.textContent = meta.subtitle;
+                document.title = "Tenspick Staff | " + meta.title;
+            }
+
+            function updateSidebar(route) {
+                document.querySelectorAll(".sidebar-menu-item").forEach(function (item) {
+                    item.classList.remove("active");
+                    const r = normalize(item.getAttribute("href") || "");
+                    if (r === route) item.classList.add("active");
+                });
+            }
+
+            function destroyModule(route) {
+                const modName = PAGE_MODULES[route];
+                if (!modName) return;
+                const mod = window[modName];
+                if (mod && typeof mod.destroy === "function") {
+                    try { mod.destroy(); } catch (e) {}
+                }
+            }
+
+            function initModule(route) {
+                const modName = PAGE_MODULES[route];
+                if (!modName) return;
+                const mod = window[modName];
+                if (mod && typeof mod.init === "function") {
+                    try { mod.init(); } catch (e) { console.error("Module init failed:", route, e); }
+                }
+            }
+
+            async function navigate(rawRoute, replace) {
+                let route = normalize(rawRoute);
+
+                // Block restricted routes
+                if (STAFF_BLOCKED.includes(route) || !STAFF_ROUTES[route]) {
+                    route = "my-payments";
+                }
+
+                const id = ++navId;
+                const content = document.getElementById("app-content");
+                if (!content) return;
+
+                if (currentRoute && currentRoute !== route) destroyModule(currentRoute);
+
+                content.innerHTML = '<div class="spa-loading"><div class="spa-loading-spinner"></div><span>Loading...</span></div>';
+
+                const hash = "#" + route;
+                if (window.location.hash !== hash) {
+                    replace ? window.history.replaceState({ route }, "", hash) : window.history.pushState({ route }, "", hash);
+                }
+
+                try {
+                    const res = await fetch(STAFF_ROUTES[route], { cache: "no-store", headers: { "X-SPA-Request": "1" } });
+                    if (!res.ok) throw new Error("HTTP " + res.status);
+                    const html = await res.text();
+                    if (id !== navId) return;
+                    content.innerHTML = html;
+                    currentRoute = route;
+                    updateMeta(route);
+                    updateSidebar(route);
+                    initModule(route);
+                } catch (err) {
+                    if (id !== navId) return;
+                    content.innerHTML = '<div class="spa-error"><div class="spa-error-icon">!</div><h2>Unable to load page</h2><p>' + err.message + '</p></div>';
+                }
+            }
+
+            // Intercept all sidebar clicks
+            document.addEventListener("click", function (e) {
+                const link = e.target.closest("[data-route]");
+                if (!link) return;
+                e.preventDefault();
+                navigate(link.getAttribute("data-route") || link.getAttribute("href"));
+            });
+
+            // Handle browser back/forward
+            window.addEventListener("popstate", function () {
+                navigate(window.location.hash || "my-payments");
+            });
+
+            // Initial load
+            document.addEventListener("DOMContentLoaded", function () {
+                const initial = normalize(window.location.hash || "my-payments");
+                navigate(initial, true);
+            });
+
+            window.TenspickStaffRouter = { navigate };
+        })();
+    </script>
+
+</body>
+</html>

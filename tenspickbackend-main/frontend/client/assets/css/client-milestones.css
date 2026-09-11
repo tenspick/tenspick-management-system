@@ -1,0 +1,628 @@
+/* ============================================================
+ * TENSPICK CRM
+ * CLIENT PORTAL — MILESTONES
+ * File: assets/css/client-milestones.css
+ * ============================================================ */
+
+/* ============================================================
+   PAGE
+   ============================================================ */
+
+.client-milestones-page {
+    width: 100%;
+    min-width: 0;
+    padding: var(--space-7);
+    animation: clientMilestonesFadeIn 0.22s ease;
+}
+
+@keyframes clientMilestonesFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+
+.client-milestones-layout {
+    display: grid;
+    grid-template-columns: 285px minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+}
+
+
+/* ============================================================
+   PROJECT PANEL
+   ============================================================ */
+
+.client-milestones-projects {
+    min-width: 0;
+    padding: 18px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    background: var(--surface);
+    box-shadow: var(--shadow-md);
+}
+
+.client-milestones-project-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: 15px;
+}
+
+.client-milestones-project-header h2 {
+    margin: 4px 0 0;
+
+    color: var(--text);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-semibold);
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   PROJECT ITEMS
+   ============================================================ */
+
+.client-milestones-project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.client-milestone-project-item {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 11px;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+
+    background: var(--surface-soft);
+    color: var(--text-secondary);
+
+    text-align: left;
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        transform var(--transition);
+}
+
+.client-milestone-project-item:hover {
+    border-color: var(--border-dark);
+    background: var(--surface-hover);
+    transform: translateX(2px);
+}
+
+.client-milestone-project-item.is-active {
+    border-color: var(--primary-light);
+    background: var(--primary-soft);
+}
+
+.client-milestone-project-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+
+    margin-right: 10px;
+
+    border-radius: var(--radius-sm);
+
+    background: var(--surface-hover);
+    color: var(--muted);
+
+    font-size: 13px;
+
+    transition:
+        background var(--transition),
+        color var(--transition);
+}
+
+.client-milestone-project-item.is-active
+.client-milestone-project-icon {
+    background: var(--primary-soft-hover);
+    color: var(--primary);
+}
+
+.client-milestone-project-info {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.client-milestone-project-info small {
+    margin-bottom: 3px;
+
+    overflow: hidden;
+
+    color: var(--muted);
+
+    font-size: var(--font-size-xs);
+    line-height: 1.2;
+    font-weight: var(--font-bold);
+
+    letter-spacing: 0.07em;
+
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.client-milestone-project-info strong {
+    overflow: hidden;
+
+    color: var(--text-secondary);
+
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+    font-weight: var(--font-semibold);
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.client-milestone-project-item.is-active
+.client-milestone-project-info strong {
+    color: var(--primary);
+}
+
+.client-milestone-project-item > .bi-chevron-right {
+    flex: 0 0 auto;
+
+    margin-left: 7px;
+
+    color: var(--placeholder);
+    font-size: var(--font-size-xs);
+
+    transition: color var(--transition-fast);
+}
+
+.client-milestone-project-item.is-active
+> .bi-chevron-right {
+    color: var(--primary);
+}
+
+
+/* ============================================================
+   CONTENT PANEL
+   ============================================================ */
+
+.client-milestones-content {
+    min-width: 0;
+    min-height: 500px;
+
+    padding: 22px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    background: var(--surface);
+    box-shadow: var(--shadow-md);
+}
+
+.client-milestones-content-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+    margin-bottom: 23px;
+}
+
+.client-milestones-content-header h2 {
+    margin: 4px 0 4px;
+
+    color: var(--text);
+
+    font-size: var(--font-size-xl);
+    line-height: 1.35;
+    font-weight: var(--font-bold);
+}
+
+
+/* ============================================================
+   MILESTONE LIST
+   ============================================================ */
+
+.client-milestone-list {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 11px;
+}
+
+
+/* ============================================================
+   MILESTONE CARD
+   ============================================================ */
+
+.client-milestone-card {
+    position: relative;
+
+    display: flex;
+
+    gap: 14px;
+    min-width: 0;
+
+    padding: 15px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+
+    background: var(--surface-soft);
+
+    transition:
+        border-color var(--transition),
+        box-shadow var(--transition),
+        transform var(--transition);
+}
+
+.client-milestone-card:hover {
+    border-color: var(--border-dark);
+    background: var(--surface);
+
+    box-shadow: var(--shadow-sm);
+
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   MILESTONE MARKER
+   ============================================================ */
+
+.client-milestone-card-marker {
+    position: relative;
+    z-index: 2;
+
+    flex: 0 0 34px;
+}
+
+.client-milestone-card-marker span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    border: 1px solid var(--primary-light);
+    border-radius: var(--radius-full);
+
+    background: var(--primary-soft);
+    color: var(--primary);
+
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-extrabold);
+}
+
+.client-milestone-card.is-success
+.client-milestone-card-marker span {
+    border-color: var(--success);
+    background: var(--green-soft);
+    color: var(--success);
+}
+
+.client-milestone-card.is-warning
+.client-milestone-card-marker span {
+    border-color: var(--warning);
+    background: var(--yellow-soft);
+    color: var(--warning);
+}
+
+.client-milestone-card.is-danger
+.client-milestone-card-marker span {
+    border-color: var(--danger);
+    background: var(--red-soft);
+    color: var(--danger);
+}
+
+
+/* ============================================================
+   MILESTONE BODY
+   ============================================================ */
+
+.client-milestone-card-body {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.client-milestone-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.client-milestone-card-heading > div {
+    min-width: 0;
+}
+
+.client-milestone-number {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: var(--muted);
+
+    font-size: var(--font-size-xs);
+    line-height: 1.2;
+    font-weight: var(--font-bold);
+
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.client-milestone-card-heading h3 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: var(--font-size-md);
+    line-height: 1.4;
+    font-weight: var(--font-semibold);
+}
+
+.client-milestone-card-description {
+    margin: 7px 0 13px;
+
+    color: var(--muted);
+
+    font-size: var(--font-size-xs);
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   PROGRESS
+   ============================================================ */
+
+.client-milestone-card-progress {
+    max-width: 680px;
+}
+
+.client-milestone-card-progress
+.client-progress-track {
+    height: 6px;
+}
+
+.client-milestone-progress-top {
+    margin-bottom: 6px;
+}
+
+.client-milestone-progress-top span {
+    color: var(--muted);
+
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-medium);
+}
+
+.client-milestone-progress-top strong {
+    color: var(--text-secondary);
+
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-bold);
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.client-milestone-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    flex-wrap: wrap;
+
+    gap: var(--space-2);
+
+    margin-top: 11px;
+    padding-top: 9px;
+
+    border-top: 1px solid var(--border-light);
+}
+
+.client-milestone-card-footer > span {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 5px;
+
+    color: var(--muted);
+
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-medium);
+}
+
+.client-milestone-card-footer i {
+    font-size: var(--font-size-xs);
+}
+
+.client-milestone-complete {
+    color: var(--success) !important;
+}
+
+
+/* ============================================================
+   INLINE ERROR
+   ============================================================ */
+
+.client-inline-error {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 14px;
+    padding: 10px 12px;
+
+    border: 1px solid var(--danger);
+    border-radius: var(--radius-sm);
+
+    background: var(--red-soft);
+    color: var(--danger);
+
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-semibold);
+}
+
+.client-inline-error i {
+    font-size: var(--font-size-sm);
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1050px) {
+
+    .client-milestones-layout {
+        grid-template-columns: 240px minmax(0, 1fr);
+    }
+
+}
+
+
+@media (max-width: 850px) {
+
+    .client-milestones-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .client-milestones-projects {
+        width: 100%;
+    }
+
+    .client-milestones-project-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .client-milestones-content {
+        min-height: 400px;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .client-milestones-page {
+        padding: var(--space-5) var(--space-4);
+    }
+
+    .client-milestones-project-list {
+        grid-template-columns: 1fr;
+    }
+
+    .client-milestones-content {
+        padding: var(--space-4);
+        border-radius: var(--radius-md);
+    }
+
+    .client-milestones-content-header {
+        margin-bottom: 18px;
+    }
+
+    .client-milestones-content-header h2 {
+        font-size: var(--font-size-lg);
+    }
+
+    .client-milestone-card {
+        gap: 10px;
+        padding: 13px;
+    }
+
+    .client-milestone-card-heading {
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+}
+
+
+@media (max-width: 450px) {
+
+    .client-milestones-page {
+        padding: var(--space-4) var(--space-3);
+    }
+
+    .client-milestones-projects {
+        padding: 14px;
+    }
+
+    .client-milestones-content {
+        padding: 13px;
+    }
+
+    .client-milestone-card-marker,
+    .client-milestone-card-marker span {
+        width: 29px;
+        height: 29px;
+        flex-basis: 29px;
+    }
+
+    .client-milestone-card-heading h3 {
+        font-size: var(--font-size-sm);
+    }
+
+    .client-milestone-card-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+.client-milestone-project-item:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .client-milestones-page,
+    .client-milestone-project-item,
+    .client-milestone-card {
+        animation: none;
+        transition: none;
+    }
+
+}

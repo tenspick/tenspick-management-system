@@ -1,0 +1,3685 @@
+/* ============================================================
+   TENSPICK CRM
+   LEADS MODULE
+   RESPONSIVE + HORIZONTAL SCROLL
+   ============================================================ */
+
+.leads-page {
+  min-width: 0;
+  width: 100%;
+  padding: 24px;
+
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   GLOBAL LEADS WIDTH SAFETY
+   ============================================================ */
+
+.leads-page *,
+.leads-page *::before,
+.leads-page *::after {
+  box-sizing: border-box;
+}
+
+/*
+ * Prevent long text from forcing the complete page wider.
+ */
+
+.leads-page img,
+.leads-page input,
+.leads-page select,
+.leads-page textarea,
+.leads-page button {
+  max-width: 100%;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.leads-page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 22px;
+
+  min-width: 0;
+}
+
+.leads-page-heading {
+  min-width: 0;
+}
+
+.leads-eyebrow {
+  display: block;
+
+    margin-bottom: 6px;
+
+    color: #64748b;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.leads-page-heading h2 {
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: 30px;
+  line-height: 1.15;
+
+  font-weight: 700;
+
+  letter-spacing: -0.5px;
+}
+
+.leads-page-heading p {
+  margin: 7px 0 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+.leads-header-actions {
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.leads-btn {
+  min-height: 42px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 0 16px;
+
+  border: 1px solid transparent;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.leads-btn:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+.leads-btn-primary {
+  background: var(--primary);
+
+  border-color: var(--primary);
+
+  color: #fff;
+}
+
+.leads-btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.leads-btn-secondary {
+  background: var(--surface);
+
+  border-color: var(--border);
+
+  color: var(--text-secondary);
+}
+
+.leads-btn-secondary:hover:not(:disabled) {
+  background: var(--surface-hover);
+
+  color: var(--text);
+}
+
+.leads-btn-plus {
+  font-size: 18px;
+
+  line-height: 1;
+}
+
+/* ============================================================
+   STATISTICS
+   ============================================================ */
+
+.leads-stat-grid {
+  width: 100%;
+
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 18px;
+}
+
+.leads-stat-card {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 18px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.leads-stat-card:hover {
+  transform: translateY(-1px);
+
+  box-shadow: var(--shadow-md);
+}
+
+.leads-stat-icon {
+  width: 50px;
+  height: 50px;
+
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 50px;
+
+  border-radius: 13px;
+
+  font-size: 21px;
+
+  font-weight: 700;
+}
+
+.leads-stat-icon.blue {
+  background: var(--support-blue);
+
+  color: #fff;
+}
+
+.leads-stat-icon.purple {
+  background: var(--support-purple);
+
+  color: #fff;
+}
+
+.leads-stat-icon.yellow {
+  background: var(--warning);
+
+  color: #fff;
+}
+
+.leads-stat-icon.green {
+  background: var(--success);
+
+  color: #fff;
+}
+
+.leads-stat-content {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.leads-stat-content > span {
+  color: var(--muted);
+
+  font-size: 11px;
+
+  white-space: nowrap;
+}
+
+.leads-stat-content strong {
+  margin-top: 4px;
+
+  color: var(--text);
+
+  font-size: 24px;
+
+  line-height: 1.1;
+}
+
+.leads-stat-content small {
+  margin-top: 5px;
+
+  color: var(--muted);
+
+  font-size: 9px;
+}
+
+/* ============================================================
+   CARD
+   ============================================================ */
+
+.leads-card {
+  width: 100%;
+
+  min-width: 0;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================================
+   FILTER
+   ============================================================ */
+
+.leads-filter-card {
+  margin-bottom: 18px;
+
+  padding: 18px;
+
+  min-width: 0;
+}
+
+.leads-filter-header {
+  margin-bottom: 15px;
+}
+
+.leads-filter-header h3 {
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+.leads-filter-header p {
+  margin: 4px 0 0;
+
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+.leads-filter-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(220px, 1fr)
+    180px
+    180px
+    auto;
+
+  gap: 10px;
+
+  align-items: center;
+
+  min-width: 0;
+}
+
+.leads-search-wrapper {
+  position: relative;
+
+  min-width: 0;
+
+  width: 100%;
+}
+
+.leads-search-icon {
+  position: absolute;
+
+  left: 13px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: var(--muted);
+
+  font-size: 17px;
+
+  pointer-events: none;
+}
+
+.leads-search-input {
+  padding-left: 38px !important;
+}
+
+/* ============================================================
+   FORM
+   ============================================================ */
+
+.leads-form-control {
+  width: 100%;
+
+  min-width: 0;
+
+  height: 42px;
+
+  padding: 0 12px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  background: var(--surface);
+
+  color: var(--text);
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+textarea.leads-form-control {
+  height: auto;
+
+  min-height: 100px;
+
+  padding: 12px;
+
+  resize: vertical;
+}
+
+.leads-form-control::placeholder {
+  color: #a2aabd;
+}
+
+.leads-form-control:focus {
+  border-color: var(--primary);
+
+  box-shadow: 0 0 0 3px rgba(91, 87, 200, 0.1);
+}
+
+.leads-form-group {
+  min-width: 0;
+}
+
+.leads-form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: var(--text-secondary);
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+.leads-form-group label span {
+  color: var(--danger);
+}
+
+.leads-form-group-full {
+  grid-column: 1 / -1;
+}
+
+/* ============================================================
+   TABLE CARD
+   ============================================================ */
+
+.leads-table-card {
+  width: 100%;
+
+  min-width: 0;
+
+  overflow: hidden;
+}
+
+.leads-card-header {
+  min-height: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 14px 20px;
+
+  border-bottom: 1px solid var(--border-light);
+
+  min-width: 0;
+}
+
+.leads-card-header > div {
+  min-width: 0;
+}
+
+.leads-card-header h3 {
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+.leads-card-header p {
+  margin: 4px 0 0;
+
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+.leads-result-count {
+  flex-shrink: 0;
+
+  padding: 6px 10px;
+
+  border-radius: 7px;
+
+  background: var(--primary-soft);
+
+  color: var(--primary);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+/* ============================================================
+   TABLE SCROLL
+   ============================================================ */
+
+/*
+ * Main horizontal scrolling area.
+ *
+ * On small screens the user can swipe/drag
+ * from left to right.
+ */
+
+.leads-table-scroll {
+  width: 100%;
+
+  max-width: 100%;
+
+  overflow-x: auto;
+
+  overflow-y: hidden;
+
+  -webkit-overflow-scrolling: touch;
+
+  overscroll-behavior-x: contain;
+
+  scrollbar-width: thin;
+
+  scrollbar-color: var(--border) transparent;
+}
+
+/*
+ * Chrome / Edge / Safari scrollbar.
+ */
+
+.leads-table-scroll::-webkit-scrollbar {
+  height: 7px;
+}
+
+.leads-table-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.leads-table-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+
+  border-radius: 20px;
+}
+
+.leads-table-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/*
+ * Important:
+ *
+ * The table intentionally stays wider than mobile.
+ *
+ * Therefore the table scrolls horizontally
+ * instead of crushing all columns.
+ */
+
+.leads-table {
+  width: 100%;
+
+  min-width: 1100px;
+
+  border-collapse: collapse;
+
+  table-layout: auto;
+}
+
+.leads-table th {
+  padding: 12px 14px;
+
+  background: var(--surface-soft);
+
+  border-bottom: 1px solid var(--border);
+
+  color: var(--text-secondary);
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  text-align: left;
+
+  white-space: nowrap;
+}
+
+.leads-table td {
+  padding: 13px 14px;
+
+  border-bottom: 1px solid var(--border-light);
+
+  color: var(--text-secondary);
+
+  font-size: 10px;
+
+  white-space: nowrap;
+}
+
+.leads-table tbody tr:hover {
+  background: var(--surface-hover);
+}
+
+.leads-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ============================================================
+   PERSON
+   ============================================================ */
+
+.lead-person {
+  display: flex;
+
+  flex-direction: column;
+
+  min-width: 130px;
+}
+
+.lead-person strong {
+  color: var(--text);
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+.lead-person small {
+  margin-top: 3px;
+
+  color: var(--muted);
+
+  font-size: 9px;
+}
+
+/* ============================================================
+   STATUS
+   ============================================================ */
+
+.leads-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  min-height: 24px;
+
+  padding: 4px 8px;
+
+  border-radius: 6px;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.leads-status.new {
+  background: var(--blue-soft);
+
+  color: #3168d8;
+}
+
+.leads-status.contacted {
+  background: var(--primary-soft);
+
+  color: var(--primary);
+}
+
+.leads-status.follow_up {
+  background: var(--yellow-soft);
+
+  color: #b77900;
+}
+
+.leads-status.proposal_sent {
+  background: var(--primary-soft);
+
+  color: var(--primary);
+}
+
+.leads-status.negotiation {
+  background: var(--yellow-soft);
+
+  color: #b77900;
+}
+
+.leads-status.won {
+  background: var(--green-soft);
+
+  color: #178552;
+}
+
+.leads-status.lost {
+  background: var(--red-soft);
+
+  color: #d9363e;
+}
+
+/* ============================================================
+   PRIORITY
+   ============================================================ */
+
+.lead-priority {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.lead-priority::before {
+  content: "";
+
+  width: 6px;
+
+  height: 6px;
+
+  flex: 0 0 6px;
+
+  border-radius: 50%;
+}
+
+.lead-priority.high {
+  color: var(--danger);
+}
+
+.lead-priority.high::before {
+  background: var(--danger);
+}
+
+.lead-priority.medium {
+  color: #b77900;
+}
+
+.lead-priority.medium::before {
+  background: var(--warning);
+}
+
+.lead-priority.low {
+  color: var(--success);
+}
+
+.lead-priority.low::before {
+  background: var(--success);
+}
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+
+.lead-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+}
+
+.lead-action-btn {
+  width: 30px;
+
+  height: 30px;
+
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 30px;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: var(--text-secondary);
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  cursor: pointer;
+}
+
+.lead-action-btn:hover {
+  background: var(--primary-soft);
+
+  color: var(--primary);
+}
+
+.lead-action-btn.delete:hover {
+  background: var(--red-soft);
+
+  color: var(--danger);
+}
+
+/* ============================================================
+   TABLE STATES
+   ============================================================ */
+
+.leads-table-message {
+  height: 180px;
+
+  color: var(--muted);
+
+  text-align: center;
+}
+
+.leads-empty {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 180px;
+
+  gap: 7px;
+}
+
+.leads-empty-icon {
+  width: 42px;
+
+  height: 42px;
+
+  display: grid;
+
+  place-items: center;
+
+  margin-bottom: 5px;
+
+  border-radius: 50%;
+
+  background: var(--primary-soft);
+
+  color: var(--primary);
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+.leads-empty strong {
+  color: var(--text);
+
+  font-size: 13px;
+}
+
+.leads-empty span {
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+
+.leads-pagination {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 5px;
+
+  padding: 14px 18px;
+
+  border-top: 1px solid var(--border-light);
+
+  overflow-x: auto;
+
+  max-width: 100%;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.leads-pagination:empty {
+  display: none;
+}
+
+.leads-page-btn {
+  min-width: 30px;
+
+  height: 30px;
+
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  padding: 0 8px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 7px;
+
+  background: var(--surface);
+
+  color: var(--text-secondary);
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.leads-page-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+
+  color: var(--primary);
+}
+
+.leads-page-btn.active {
+  background: var(--primary);
+
+  border-color: var(--primary);
+
+  color: #fff;
+}
+
+.leads-page-btn:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+
+.leads-modal {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 99999;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 100%;
+
+  height: 100%;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+}
+
+.leads-modal[hidden] {
+  display: none !important;
+}
+
+.leads-modal.show {
+  opacity: 1;
+
+  visibility: visible;
+}
+
+.leads-modal-backdrop {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  background: rgba(15, 18, 30, 0.48);
+
+  backdrop-filter: blur(2px);
+
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.leads-modal-dialog {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(720px, 100%);
+
+  max-width: 100%;
+
+  max-height: calc(100vh - 40px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  box-shadow: 0 25px 70px rgba(20, 24, 40, 0.2);
+
+  transform: translateY(10px) scale(0.98);
+
+  transition: transform 0.2s ease;
+}
+
+.leads-modal.show .leads-modal-dialog {
+  transform: translateY(0) scale(1);
+}
+
+/* ============================================================
+   MODAL HEADER
+   ============================================================ */
+
+.leads-modal-header {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 20px;
+
+  flex-shrink: 0;
+
+  border-bottom: 1px solid var(--border-light);
+}
+
+.leads-modal-header > div {
+  min-width: 0;
+}
+
+.leads-modal-eyebrow {
+  color: var(--primary);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+.leads-modal-header h3 {
+  margin: 5px 0 0;
+
+  color: var(--text);
+
+  font-size: 19px;
+}
+
+.leads-modal-header p {
+  margin: 5px 0 0;
+
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+.leads-modal-close {
+  width: 34px;
+
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background: var(--surface-soft);
+
+  color: var(--text-secondary);
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+.leads-modal-close:hover {
+  background: var(--red-soft);
+
+  color: var(--danger);
+}
+
+/* ============================================================
+   MODAL BODY
+   ============================================================ */
+
+.leads-modal-body {
+  flex: 1;
+
+  min-height: 0;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  padding: 20px;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================================
+   MODAL FORM GRID
+   ============================================================ */
+
+.leads-form-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+
+  width: 100%;
+
+  min-width: 0;
+}
+
+.leads-form-group-full {
+  grid-column: 1 / -1;
+}
+
+/* ============================================================
+   MODAL FOOTER
+   ============================================================ */
+
+.leads-modal-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 9px;
+
+  padding: 15px 20px;
+
+  flex-shrink: 0;
+
+  border-top: 1px solid var(--border-light);
+
+  background: var(--surface);
+}
+
+/* ============================================================
+   BODY LOCK
+   ============================================================ */
+
+body.leads-modal-open,
+body.modal-open {
+  overflow: hidden;
+}
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+.leads-loading {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.leads-loading-spinner {
+  width: 16px;
+
+  height: 16px;
+
+  border: 2px solid var(--border);
+
+  border-top-color: var(--primary);
+
+  border-radius: 50%;
+
+  animation: leadsSpin 0.7s linear infinite;
+}
+
+@keyframes leadsSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================
+   LAPTOP
+   ============================================================ */
+
+@media (max-width: 1200px) {
+  .leads-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .leads-filter-row {
+    grid-template-columns:
+      minmax(180px, 1fr)
+      160px
+      160px
+      auto;
+  }
+}
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .leads-page-header {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .leads-header-actions {
+    width: 100%;
+  }
+
+  .leads-header-actions .leads-btn {
+    width: 100%;
+  }
+
+  .leads-filter-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .leads-search-wrapper {
+    grid-column: 1 / -1;
+  }
+
+  .leads-modal {
+    padding: 16px;
+  }
+
+  .leads-modal-dialog {
+    max-height: calc(100vh - 32px);
+  }
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+  .leads-page {
+    width: calc(100% - 20px);
+
+    margin-left: 10px;
+
+    margin-right: 10px;
+
+    margin-bottom: 20px;
+  }
+
+  /* --------------------------------------------------------
+       HEADER
+       -------------------------------------------------------- */
+
+  .leads-page-heading h2 {
+    font-size: 24px;
+  }
+
+  .leads-page-heading p {
+    font-size: 11px;
+  }
+
+  /* --------------------------------------------------------
+       STATISTICS
+       -------------------------------------------------------- */
+
+  .leads-stat-grid {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+  .leads-stat-card {
+    padding: 15px;
+  }
+
+  /* --------------------------------------------------------
+       FILTER
+       -------------------------------------------------------- */
+
+  .leads-filter-row {
+    grid-template-columns: 1fr;
+  }
+
+  .leads-search-wrapper {
+    grid-column: auto;
+  }
+
+  .leads-filter-card {
+    padding: 14px;
+  }
+
+  /*
+     * Make filters comfortable for touch.
+     */
+
+  .leads-filter-row .leads-form-control,
+  .leads-filter-row .leads-btn {
+    min-height: 42px;
+  }
+
+  /* --------------------------------------------------------
+       TABLE HEADER
+       -------------------------------------------------------- */
+
+  .leads-card-header {
+    padding: 14px;
+
+    align-items: flex-start;
+  }
+
+  /*
+     * Keep count visible without
+     * breaking the card width.
+     */
+
+  .leads-card-header {
+    flex-wrap: wrap;
+  }
+
+  /* --------------------------------------------------------
+       TABLE
+       -------------------------------------------------------- */
+
+  .leads-table-scroll {
+    /*
+         * Important mobile horizontal scroll.
+         */
+
+    overflow-x: auto;
+
+    width: 100%;
+
+    max-width: 100%;
+  }
+
+  .leads-table {
+    min-width: 1100px;
+  }
+
+  /* --------------------------------------------------------
+       MODAL
+       -------------------------------------------------------- */
+
+  .leads-modal {
+    align-items: flex-end;
+
+    padding: 0;
+  }
+
+  .leads-modal-dialog {
+    width: 100%;
+
+    max-width: 100%;
+
+    max-height: 94vh;
+
+    border-radius: 16px 16px 0 0;
+
+    transform: translateY(25px);
+  }
+
+  .leads-modal.show .leads-modal-dialog {
+    transform: translateY(0);
+  }
+
+  .leads-modal-header {
+    padding: 16px;
+  }
+
+  .leads-modal-body {
+    padding: 16px;
+  }
+
+  .leads-form-grid {
+    grid-template-columns: 1fr;
+
+    gap: 13px;
+  }
+
+  .leads-form-group-full {
+    grid-column: auto;
+  }
+
+  .leads-modal-footer {
+    padding: 13px 16px;
+
+    /*
+         * Two buttons remain visible
+         * and touch friendly.
+         */
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .leads-modal-footer .leads-btn {
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 400px) {
+  .leads-page {
+    width: calc(100% - 16px);
+
+    margin-left: 8px;
+
+    margin-right: 8px;
+  }
+
+  .leads-page-heading h2 {
+    font-size: 22px;
+  }
+
+  .leads-stat-icon {
+    width: 45px;
+
+    height: 45px;
+
+    flex-basis: 45px;
+  }
+
+  .leads-stat-content strong {
+    font-size: 21px;
+  }
+
+  .leads-modal-dialog {
+    max-height: 96vh;
+  }
+
+  .leads-modal-header {
+    padding: 14px;
+  }
+
+  .leads-modal-body {
+    padding: 14px;
+  }
+
+  .leads-modal-footer {
+    padding: 11px 14px;
+  }
+}
+
+/* ============================================================
+   VERY SMALL DEVICES
+   ============================================================ */
+
+@media (max-width: 320px) {
+  .leads-page {
+    width: calc(100% - 12px);
+
+    margin-left: 6px;
+
+    margin-right: 6px;
+  }
+
+  .leads-filter-card {
+    padding: 11px;
+  }
+
+  .leads-card-header {
+    padding: 11px;
+  }
+
+  .leads-table th,
+  .leads-table td {
+    padding-left: 11px;
+
+    padding-right: 11px;
+  }
+
+  .leads-modal-header {
+    padding: 12px;
+  }
+
+  .leads-modal-body {
+    padding: 12px;
+  }
+
+  .leads-modal-footer {
+    padding: 10px 12px;
+  }
+}
+
+/* ============================================================
+   LANDSCAPE MOBILE
+   ============================================================ */
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .leads-modal {
+    align-items: center;
+
+    padding: 10px;
+  }
+
+  .leads-modal-dialog {
+    max-height: 96vh;
+
+    border-radius: 14px;
+  }
+
+  .leads-modal-header {
+    padding: 13px 16px;
+  }
+
+  .leads-modal-body {
+    padding: 15px 16px;
+  }
+
+  .leads-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 13px 16px;
+  }
+
+  .leads-form-group-full {
+    grid-column: 1 / -1;
+  }
+
+  .leads-modal-footer {
+    padding: 10px 16px;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .leads-btn,
+  .leads-stat-card,
+  .leads-modal,
+  .leads-modal-dialog {
+    transition: none !important;
+  }
+
+  .leads-loading-spinner {
+    animation: none !important;
+  }
+}
+
+
+/* ============================================================
+   TENSPICK CRM
+   LEADS MODAL
+   RESPONSIVE CSS
+   ============================================================ */
+
+/* ============================================================
+   MODAL OVERLAY
+   ============================================================ */
+
+.leads-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 24px;
+
+    box-sizing: border-box;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+}
+
+
+/*
+ * JS removes the hidden attribute and adds .show.
+ */
+
+.leads-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/*
+ * Respect the HTML hidden attribute.
+ */
+
+.leads-modal[hidden] {
+    display: none !important;
+}
+
+
+/* ============================================================
+   BACKDROP
+   ============================================================ */
+
+.leads-modal-backdrop {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(15, 23, 42, 0.58);
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   MODAL DIALOG
+   ============================================================ */
+
+.leads-modal-dialog {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    width: min(920px, 100%);
+
+    max-height: min(
+        900px,
+        calc(100vh - 48px)
+    );
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 25px 60px rgba(15, 23, 42, 0.20),
+        0 8px 25px rgba(15, 23, 42, 0.10);
+
+    overflow: hidden;
+
+    transform: translateY(15px) scale(0.985);
+
+    transition:
+        transform 0.22s ease,
+        opacity 0.22s ease;
+
+    opacity: 0;
+}
+
+
+.leads-modal.show .leads-modal-dialog {
+    transform: translateY(0) scale(1);
+
+    opacity: 1;
+}
+
+
+/* ============================================================
+   MODAL HEADER
+   ============================================================ */
+
+.leads-modal-header {
+    position: relative;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 24px 28px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eef0f3;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   MODAL HEADING
+   ============================================================ */
+
+.leads-modal-header > div:first-child {
+    min-width: 0;
+}
+
+
+.leads-modal-eyebrow {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #2563eb;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    line-height: 1.4;
+
+    letter-spacing: 0.12em;
+
+    text-transform: uppercase;
+}
+
+
+.leads-modal-header h3 {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    line-height: 1.25;
+}
+
+
+.leads-modal-header p {
+    margin: 6px 0 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   CLOSE BUTTON
+   ============================================================ */
+
+.leads-modal-close {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 auto;
+
+    width: 38px;
+    height: 38px;
+
+    padding: 0;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 10px;
+
+    background: #f9fafb;
+
+    color: #4b5563;
+
+    font-size: 25px;
+    font-weight: 400;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease;
+}
+
+
+.leads-modal-close:hover {
+    background: #f3f4f6;
+
+    color: #111827;
+
+    border-color: #d1d5db;
+
+    transform: rotate(90deg);
+}
+
+
+.leads-modal-close:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.18);
+
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   FORM
+   ============================================================ */
+
+#leadForm {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 0;
+
+    flex: 1;
+}
+
+
+/* ============================================================
+   MODAL BODY
+   ============================================================ */
+
+.leads-modal-body {
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding: 26px 28px;
+
+    overscroll-behavior: contain;
+
+    scrollbar-width: thin;
+
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+
+/*
+ * Chrome / Edge scrollbar.
+ */
+
+.leads-modal-body::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+.leads-modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.leads-modal-body::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+
+    border-radius: 20px;
+}
+
+
+.leads-modal-body::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+
+/* ============================================================
+   FORM GRID
+   ============================================================ */
+
+.leads-form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px 22px;
+
+    width: 100%;
+}
+
+
+/* ============================================================
+   FORM GROUP
+   ============================================================ */
+
+.leads-form-group {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+
+.leads-form-group-full {
+    grid-column: 1 / -1;
+}
+
+
+/* ============================================================
+   LABEL
+   ============================================================ */
+
+.leads-form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #374151;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    line-height: 1.4;
+}
+
+
+.leads-form-group label span {
+    margin-left: 2px;
+
+    color: #dc2626;
+
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   FORM CONTROLS
+   ============================================================ */
+
+.leads-form-control {
+    display: block;
+
+    width: 100%;
+    min-width: 0;
+
+    height: 44px;
+
+    padding: 0 13px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #111827;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+
+    outline: none;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+}
+
+
+/*
+ * Textarea.
+ */
+
+textarea.leads-form-control {
+    min-height: 110px;
+
+    height: auto;
+
+    padding-top: 11px;
+    padding-bottom: 11px;
+
+    resize: vertical;
+
+    line-height: 1.5;
+}
+
+
+/*
+ * Select.
+ */
+
+select.leads-form-control {
+    cursor: pointer;
+
+    padding-right: 38px;
+}
+
+
+/* ============================================================
+   PLACEHOLDER
+   ============================================================ */
+
+.leads-form-control::placeholder {
+    color: #9ca3af;
+
+    opacity: 1;
+}
+
+
+/* ============================================================
+   FOCUS
+   ============================================================ */
+
+.leads-form-control:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.10);
+
+    background: #ffffff;
+}
+
+
+/* ============================================================
+   HOVER
+   ============================================================ */
+
+.leads-form-control:hover:not(:focus) {
+    border-color: #9ca3af;
+}
+
+
+/* ============================================================
+   DISABLED
+   ============================================================ */
+
+.leads-form-control:disabled {
+    background: #f3f4f6;
+
+    color: #6b7280;
+
+    cursor: not-allowed;
+
+    opacity: 0.8;
+}
+
+
+/* ============================================================
+   MODAL FOOTER
+   ============================================================ */
+
+.leads-modal-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 18px 28px;
+
+    background: #ffffff;
+
+    border-top: 1px solid #eef0f3;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   BUTTON BASE
+   ============================================================ */
+
+.leads-modal-footer .leads-btn {
+    min-width: 110px;
+
+    min-height: 42px;
+
+    padding: 10px 18px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease,
+        box-shadow 0.18s ease,
+        transform 0.18s ease;
+}
+
+
+/* ============================================================
+   PRIMARY BUTTON
+   ============================================================ */
+
+.leads-modal-footer .leads-btn-primary {
+    border: 1px solid #2563eb;
+
+    background: #2563eb;
+
+    color: #ffffff;
+}
+
+
+.leads-modal-footer .leads-btn-primary:hover {
+    background: #1d4ed8;
+
+    border-color: #1d4ed8;
+
+    box-shadow:
+        0 5px 14px rgba(37, 99, 235, 0.22);
+}
+
+
+.leads-modal-footer .leads-btn-primary:active {
+    transform: translateY(1px);
+}
+
+
+.leads-modal-footer .leads-btn-primary:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.65;
+
+    box-shadow: none;
+
+    transform: none;
+}
+
+
+/* ============================================================
+   SECONDARY BUTTON
+   ============================================================ */
+
+.leads-modal-footer .leads-btn-secondary {
+    border: 1px solid #d1d5db;
+
+    background: #ffffff;
+
+    color: #374151;
+}
+
+
+.leads-modal-footer .leads-btn-secondary:hover {
+    border-color: #9ca3af;
+
+    background: #f9fafb;
+
+    color: #111827;
+}
+
+
+/* ============================================================
+   BODY MODAL LOCK
+   ============================================================ */
+
+body.leads-modal-open {
+    overflow: hidden;
+}
+
+
+body.modal-open {
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .leads-modal {
+        align-items: center;
+
+        padding: 16px;
+    }
+
+
+    .leads-modal-dialog {
+        width: 100%;
+
+        max-height: calc(100vh - 32px);
+
+        border-radius: 15px;
+    }
+
+
+    .leads-modal-header {
+        padding: 20px;
+    }
+
+
+    .leads-modal-header h3 {
+        font-size: 21px;
+    }
+
+
+    .leads-modal-body {
+        padding: 22px 20px;
+    }
+
+
+    .leads-form-grid {
+        grid-template-columns: 1fr;
+
+        gap: 17px;
+    }
+
+
+    .leads-form-group-full {
+        grid-column: auto;
+    }
+
+
+    .leads-modal-footer {
+        padding: 15px 20px;
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 576px) {
+
+    .leads-modal {
+        align-items: flex-end;
+
+        padding: 0;
+    }
+
+
+    .leads-modal-dialog {
+        width: 100%;
+
+        max-height: 94vh;
+
+        border-radius:
+            18px 18px 0 0;
+
+        transform:
+            translateY(30px);
+    }
+
+
+    .leads-modal.show .leads-modal-dialog {
+        transform:
+            translateY(0);
+    }
+
+
+    .leads-modal-header {
+        gap: 12px;
+
+        padding:
+            18px 16px;
+    }
+
+
+    .leads-modal-eyebrow {
+        font-size: 10px;
+    }
+
+
+    .leads-modal-header h3 {
+        font-size: 20px;
+    }
+
+
+    .leads-modal-header p {
+        max-width: 260px;
+
+        font-size: 12px;
+    }
+
+
+    .leads-modal-close {
+        width: 36px;
+        height: 36px;
+
+        font-size: 23px;
+    }
+
+
+    .leads-modal-body {
+        padding:
+            20px 16px;
+    }
+
+
+    .leads-form-grid {
+        gap: 15px;
+    }
+
+
+    .leads-form-group label {
+        margin-bottom: 6px;
+
+        font-size: 12px;
+    }
+
+
+    .leads-form-control {
+        height: 43px;
+
+        padding:
+            0 12px;
+
+        font-size: 14px;
+    }
+
+
+    textarea.leads-form-control {
+        min-height: 100px;
+    }
+
+
+    .leads-modal-footer {
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 10px;
+
+        padding:
+            13px 16px;
+
+        padding-bottom:
+            calc(
+                13px +
+                env(safe-area-inset-bottom)
+            );
+    }
+
+
+    .leads-modal-footer .leads-btn {
+        width: 100%;
+
+        min-width: 0;
+
+        min-height: 44px;
+    }
+
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 380px) {
+
+    .leads-modal-dialog {
+        max-height: 96vh;
+
+        border-radius:
+            15px 15px 0 0;
+    }
+
+
+    .leads-modal-header {
+        padding:
+            15px 13px;
+    }
+
+
+    .leads-modal-body {
+        padding:
+            17px 13px;
+    }
+
+
+    .leads-modal-footer {
+        padding:
+            11px 13px;
+
+        padding-bottom:
+            calc(
+                11px +
+                env(safe-area-inset-bottom)
+            );
+    }
+
+
+    .leads-modal-header h3 {
+        font-size: 18px;
+    }
+
+
+    .leads-modal-header p {
+        font-size: 11px;
+    }
+
+}
+
+
+/* ============================================================
+   LANDSCAPE MOBILE
+   ============================================================ */
+
+@media (
+    max-width: 768px
+) and (
+    orientation: landscape
+) {
+
+    .leads-modal {
+        align-items: center;
+
+        padding: 10px;
+    }
+
+
+    .leads-modal-dialog {
+        max-height: 96vh;
+
+        border-radius: 14px;
+    }
+
+
+    .leads-modal-body {
+        padding:
+            16px 18px;
+    }
+
+
+    .leads-form-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 14px 16px;
+    }
+
+
+    .leads-form-group-full {
+        grid-column: 1 / -1;
+    }
+
+
+    .leads-modal-header {
+        padding:
+            14px 18px;
+    }
+
+
+    .leads-modal-footer {
+        padding:
+            11px 18px;
+    }
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .leads-modal,
+    .leads-modal-dialog,
+    .leads-modal-close,
+    .leads-form-control,
+    .leads-modal-footer .leads-btn {
+        transition: none !important;
+    }
+
+}
+
+
+
+
+
+/* ============================================================
+   LEAD ACTION MENU
+   ============================================================ */
+
+.lead-more-wrapper {
+    position: relative;
+    display: inline-flex;
+}
+
+.lead-more-btn {
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: 1px;
+}
+
+.lead-action-menu {
+    position: absolute;
+    top: calc(100% + 7px);
+    right: 0;
+
+    z-index: 9999;
+
+    width: 175px;
+
+    padding: 6px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 12px 35px rgba(20, 24, 40, .16);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform:
+        translateY(-5px)
+        scale(.98);
+
+    transition:
+        opacity .15s ease,
+        visibility .15s ease,
+        transform .15s ease;
+}
+
+.lead-action-menu.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+.lead-menu-item {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 9px 10px;
+
+    border: 0;
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background .15s ease,
+        color .15s ease;
+}
+
+.lead-menu-item:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+}
+
+.lead-menu-item.danger:hover {
+    background: var(--red-soft);
+    color: var(--danger);
+}
+
+.lead-menu-icon {
+    width: 18px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 18px;
+}
+
+.lead-menu-divider {
+    height: 1px;
+
+    margin: 5px 4px;
+
+    background: var(--border-light);
+}
+
+
+/* ============================================================
+   LEAD PROFILE MODAL
+   ============================================================ */
+
+.lead-profile-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100000;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: transparent;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity .2s ease,
+        visibility .2s ease;
+}
+
+.lead-profile-modal[hidden] {
+    display: none !important;
+}
+
+.lead-profile-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lead-profile-backdrop {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(15, 18, 30, .52);
+
+    backdrop-filter:
+        blur(3px);
+}
+
+.lead-profile-dialog {
+    position: relative;
+
+    width: min(
+        760px,
+        100%
+    );
+
+    max-height:
+        calc(100vh - 40px);
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background:
+        var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 30px 80px
+        rgba(20, 24, 40, .24);
+
+    transform:
+        translateY(15px)
+        scale(.98);
+
+    transition:
+        transform .2s ease;
+}
+
+.lead-profile-modal.show
+.lead-profile-dialog {
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* ============================================================
+   PROFILE HEADER
+   ============================================================ */
+
+.lead-profile-header {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 22px;
+
+    border-bottom:
+        1px solid var(--border-light);
+}
+
+.lead-profile-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    min-width: 0;
+}
+
+.lead-profile-avatar {
+    width: 54px;
+    height: 54px;
+
+    flex: 0 0 54px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 14px;
+
+    background:
+        var(--primary-soft);
+
+    color:
+        var(--primary);
+
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.lead-profile-eyebrow {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color:
+        var(--primary);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+.lead-profile-header h3 {
+    margin: 0;
+
+    overflow: hidden;
+
+    color:
+        var(--text);
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.lead-profile-code {
+    display: block;
+
+    margin-top: 4px;
+
+    color:
+        var(--muted);
+
+    font-size: 10px;
+}
+
+.lead-profile-close {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: grid;
+
+    place-items: center;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background:
+        var(--surface-soft);
+
+    color:
+        var(--text-secondary);
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+.lead-profile-close:hover {
+    background:
+        var(--red-soft);
+
+    color:
+        var(--danger);
+}
+
+
+/* ============================================================
+   PROFILE STATUS
+   ============================================================ */
+
+.lead-profile-status-bar {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    padding:
+        12px 22px;
+
+    background:
+        var(--surface-soft);
+
+    border-bottom:
+        1px solid var(--border-light);
+}
+
+
+/* ============================================================
+   PROFILE BODY
+   ============================================================ */
+
+.lead-profile-body {
+    overflow-y: auto;
+
+    padding: 22px;
+}
+
+.lead-profile-section {
+    margin-bottom: 22px;
+}
+
+.lead-profile-section:last-child {
+    margin-bottom: 0;
+}
+
+.lead-profile-section-title {
+    margin-bottom: 12px;
+
+    color:
+        var(--text);
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+.lead-profile-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 10px;
+}
+
+.lead-profile-field {
+    min-width: 0;
+
+    padding: 12px;
+
+    background:
+        var(--surface-soft);
+
+    border:
+        1px solid var(--border-light);
+
+    border-radius: 9px;
+}
+
+.lead-profile-field span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color:
+        var(--muted);
+
+    font-size: 9px;
+
+    font-weight: 600;
+}
+
+.lead-profile-field strong {
+    display: block;
+
+    overflow-wrap: anywhere;
+
+    color:
+        var(--text);
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+.lead-profile-notes {
+    min-height: 80px;
+
+    padding: 13px;
+
+    background:
+        var(--surface-soft);
+
+    border:
+        1px solid var(--border-light);
+
+    border-radius: 9px;
+
+    color:
+        var(--text-secondary);
+
+    font-size: 11px;
+
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   PROFILE FOOTER
+   ============================================================ */
+
+.lead-profile-footer {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    padding:
+        14px 22px;
+
+    border-top:
+        1px solid var(--border-light);
+}
+
+.lead-profile-delete-button {
+    margin-right: auto;
+}
+
+.lead-profile-delete-button:hover {
+    background:
+        var(--red-soft);
+
+    border-color:
+        var(--red-soft);
+
+    color:
+        var(--danger);
+}
+
+
+/* ============================================================
+   BODY LOCK
+   ============================================================ */
+
+body.leads-profile-open {
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   TABLE ACTION IMPROVEMENTS
+   ============================================================ */
+
+.lead-actions {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+}
+
+.lead-view-btn {
+    font-size: 14px;
+}
+
+.lead-more-btn {
+    font-size: 20px;
+}
+
+
+/* ============================================================
+   TABLE SCROLL - KEEP MENU VISIBLE
+   ============================================================ */
+
+.leads-table-scroll {
+    position: relative;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .lead-profile-modal {
+        padding: 12px;
+    }
+
+    .lead-profile-dialog {
+        max-height:
+            calc(100vh - 24px);
+
+        border-radius: 13px;
+    }
+
+    .lead-profile-header {
+        padding: 17px;
+    }
+
+    .lead-profile-body {
+        padding: 17px;
+    }
+
+    .lead-profile-footer {
+        padding:
+            12px 17px;
+    }
+
+    .lead-profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    .lead-action-menu {
+        position: fixed;
+
+        top: auto;
+        right: 10px;
+
+        width: 185px;
+    }
+
+    .lead-profile-modal {
+        padding: 8px;
+    }
+
+    .lead-profile-dialog {
+        width: 100%;
+
+        max-height:
+            calc(100vh - 16px);
+
+        border-radius: 12px;
+    }
+
+    .lead-profile-header {
+        padding: 15px;
+    }
+
+    .lead-profile-heading {
+        gap: 10px;
+    }
+
+    .lead-profile-avatar {
+        width: 45px;
+        height: 45px;
+
+        flex-basis: 45px;
+
+        border-radius: 11px;
+
+        font-size: 14px;
+    }
+
+    .lead-profile-header h3 {
+        font-size: 17px;
+    }
+
+    .lead-profile-body {
+        padding: 15px;
+    }
+
+    .lead-profile-status-bar {
+        padding:
+            10px 15px;
+    }
+
+    .lead-profile-footer {
+        flex-wrap: wrap;
+
+        padding:
+            12px 15px;
+    }
+
+    .lead-profile-footer
+    .leads-btn {
+        flex: 1;
+        min-width: 90px;
+    }
+
+    .lead-profile-delete-button {
+        margin-right: 0;
+    }
+
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 400px) {
+
+    .lead-profile-header {
+        padding: 13px;
+    }
+
+    .lead-profile-body {
+        padding: 13px;
+    }
+
+    .lead-profile-footer {
+        padding: 10px 13px;
+    }
+
+    .lead-profile-footer
+    .leads-btn {
+        min-height: 39px;
+
+        padding:
+            0 10px;
+
+        font-size: 10px;
+    }
+
+}
+
+
+/* ============================================================
+   TENSPICK CRM
+   LEADS
+   ACTION BUTTON + MORE MENU
+   NORMAL RESPONSIVE METHOD
+   ============================================================ */
+
+
+/* ============================================================
+   ACTION CELL
+   ============================================================ */
+
+.leads-table td:last-child {
+    position: relative;
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+
+.lead-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+
+    position: relative;
+
+    min-width: 38px;
+}
+
+
+/* ============================================================
+   MORE WRAPPER
+   ============================================================ */
+
+.lead-more-wrapper {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 auto;
+}
+
+
+/* ============================================================
+   ACTION BUTTON
+   ============================================================ */
+
+.lead-action-btn {
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    margin: 0;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: transparent;
+    color: var(--text-secondary);
+
+    font-family: inherit;
+    font-size: 19px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+
+    transition:
+        background-color .18s ease,
+        color .18s ease,
+        border-color .18s ease,
+        transform .18s ease;
+}
+
+
+/* ============================================================
+   MORE BUTTON
+   ============================================================ */
+
+.lead-more-btn {
+    letter-spacing: 1px;
+}
+
+.lead-more-btn:hover,
+.lead-more-btn:focus-visible,
+.lead-more-btn[aria-expanded="true"] {
+    background: var(--primary-soft);
+    border-color: var(--border);
+    color: var(--primary);
+}
+
+.lead-more-btn:active {
+    transform: scale(.94);
+}
+
+
+/* ============================================================
+   ACTION MENU
+   ============================================================ */
+
+.lead-action-menu {
+    position: absolute;
+
+    top: calc(100% + 7px);
+    right: 0;
+
+    z-index: 1000;
+
+    width: 175px;
+    min-width: 175px;
+
+    padding: 5px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 10px 30px rgba(20, 24, 40, .14);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform:
+        translateY(-4px)
+        scale(.98);
+
+    transform-origin: top right;
+
+    transition:
+        opacity .15s ease,
+        visibility .15s ease,
+        transform .15s ease;
+}
+
+
+/* ============================================================
+   OPEN MENU
+   ============================================================ */
+
+.lead-action-menu.show {
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* ============================================================
+   MENU ITEM
+   ============================================================ */
+
+.lead-menu-item {
+    width: 100%;
+
+    min-height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 8px 10px;
+
+    border: 0;
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background-color .15s ease,
+        color .15s ease;
+}
+
+
+/* ============================================================
+   MENU ICON
+   ============================================================ */
+
+.lead-menu-icon {
+    width: 20px;
+    min-width: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   MENU HOVER
+   ============================================================ */
+
+.lead-menu-item:hover,
+.lead-menu-item:focus-visible {
+    background: var(--surface-hover);
+
+    color: var(--text);
+}
+
+
+/* ============================================================
+   DELETE
+   ============================================================ */
+
+.lead-menu-item.danger {
+    color: var(--danger);
+}
+
+.lead-menu-item.danger:hover,
+.lead-menu-item.danger:focus-visible {
+    background: var(--red-soft);
+
+    color: var(--danger);
+}
+
+
+/* ============================================================
+   DIVIDER
+   ============================================================ */
+
+.lead-menu-divider {
+    height: 1px;
+
+    margin: 4px 5px;
+
+    background: var(--border-light);
+}
+
+
+/* ============================================================
+   FOCUS
+   ============================================================ */
+
+.lead-action-btn:focus,
+.lead-menu-item:focus {
+    outline: none;
+}
+
+.lead-action-btn:focus-visible,
+.lead-menu-item:focus-visible {
+    outline: 2px solid var(--primary);
+
+    outline-offset: 1px;
+}
+
+
+/* ============================================================
+   TABLE MUST ALLOW MENU
+   ============================================================ */
+
+.leads-table-card {
+    overflow: visible;
+}
+
+.leads-table-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/*
+ * Keep table content normal.
+ * Do NOT add overflow hidden to action cells.
+ */
+
+.leads-table td:last-child {
+    overflow: visible;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .lead-action-btn {
+        width: 36px;
+        height: 36px;
+
+        font-size: 20px;
+    }
+
+    .lead-action-menu {
+        width: 180px;
+        min-width: 180px;
+    }
+
+    .lead-menu-item {
+        min-height: 40px;
+
+        padding: 9px 11px;
+
+        font-size: 11px;
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    .lead-actions {
+        gap: 4px;
+    }
+
+    .lead-action-btn {
+        width: 38px;
+        height: 38px;
+
+        border-radius: 8px;
+
+        font-size: 21px;
+    }
+
+    .lead-more-wrapper {
+        position: relative;
+    }
+
+    .lead-action-menu {
+        right: 0;
+
+        width: 190px;
+        min-width: 190px;
+
+        padding: 6px;
+
+        border-radius: 10px;
+
+        box-shadow:
+            0 12px 35px rgba(20, 24, 40, .18);
+    }
+
+    .lead-menu-item {
+        min-height: 42px;
+
+        padding: 10px 11px;
+
+        gap: 10px;
+
+        font-size: 12px;
+    }
+
+    .lead-menu-icon {
+        width: 21px;
+        min-width: 21px;
+
+        font-size: 15px;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 400px) {
+
+    .lead-action-btn {
+        width: 36px;
+        height: 36px;
+
+        font-size: 20px;
+    }
+
+    .lead-action-menu {
+        width: 175px;
+        min-width: 175px;
+    }
+
+    .lead-menu-item {
+        min-height: 40px;
+
+        font-size: 11px;
+    }
+}
+
+
+/* ============================================================
+   VERY SMALL SCREENS
+   ============================================================ */
+
+@media (max-width: 340px) {
+
+    .lead-action-menu {
+        right: -5px;
+
+        width: 165px;
+        min-width: 165px;
+    }
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .lead-action-menu,
+    .lead-action-btn,
+    .lead-menu-item {
+        transition: none;
+    }
+}

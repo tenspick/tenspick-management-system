@@ -1,0 +1,91 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'website-content';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+<section class="website-content-page" id="websiteContentPage">
+    <header class="cms-header">
+        <div>
+            <h1>Website Content Management</h1>
+            <p>Customize public landing page copy, company info, and promotional banners.</p>
+        </div>
+        <button type="button" class="cms-save-btn" id="saveContentBtn">
+            <i class="bi bi-floppy-fill"></i> Save Changes
+        </button>
+    </header>
+
+    <div class="cms-grid">
+        <!-- Main Form -->
+        <div class="cms-main-card">
+            <div class="cms-tabs">
+                <button type="button" class="cms-tab active" data-tab="hero">Hero Section</button>
+                <button type="button" class="cms-tab" data-tab="services">Services</button>
+                <button type="button" class="cms-tab" data-tab="company">Company Info</button>
+            </div>
+
+            <form id="websiteContentForm" class="cms-form">
+                <!-- Hero Tab Content -->
+                <div class="tab-pane active" id="tabHero">
+                    <div class="cms-group">
+                        <label for="heroTitle">Hero Headline</label>
+                        <input type="text" id="heroTitle" value="Empowering Businesses with Cutting-Edge Software Solutions">
+                    </div>
+                    <div class="cms-group">
+                        <label for="heroSubtitle">Hero Subtitle</label>
+                        <textarea id="heroSubtitle" rows="3">Tenspick delivers custom web development, mobile apps, CRM systems, and cloud backend solutions tailored for scaling enterprises.</textarea>
+                    </div>
+                    <div class="cms-group">
+                        <label for="heroCtaText">Primary Call to Action</label>
+                        <input type="text" id="heroCtaText" value="Get Free Consultation">
+                    </div>
+                </div>
+
+                <!-- Services Tab Content -->
+                <div class="tab-pane" id="tabServices" style="display: none;">
+                    <div class="cms-group">
+                        <label for="service1">Service 1 Title</label>
+                        <input type="text" id="service1" value="Custom Web Development">
+                    </div>
+                    <div class="cms-group">
+                        <label for="service2">Service 2 Title</label>
+                        <input type="text" id="service2" value="Mobile App Solutions">
+                    </div>
+                    <div class="cms-group">
+                        <label for="service3">Service 3 Title</label>
+                        <input type="text" id="service3" value="Cloud & Supabase Architecture">
+                    </div>
+                </div>
+
+                <!-- Company Info Tab Content -->
+                <div class="tab-pane" id="tabCompany" style="display: none;">
+                    <div class="cms-group">
+                        <label for="companyAddress">Company Address</label>
+                        <input type="text" id="companyAddress" value="Bazaar Street, Pulampeta, Tirupati">
+                    </div>
+                    <div class="cms-group">
+                        <label for="companyPhone">Contact Phone Number</label>
+                        <input type="text" id="companyPhone" value="+91 86883 86307">
+                    </div>
+                    <div class="cms-group">
+                        <label for="companyEmail">Contact Email Address</label>
+                        <input type="email" id="companyEmail" value="info@tenspick.org">
+                    </div>
+                </div>
+
+                <div id="cmsStatusMessage" class="cms-status-msg"></div>
+            </form>
+        </div>
+
+        <!-- Side Preview -->
+        <aside class="cms-side-card">
+            <h3>Live Preview Card</h3>
+            <div class="preview-hero-box">
+                <span class="preview-badge">Tenspick Software</span>
+                <h4 id="previewTitle">Empowering Businesses with Cutting-Edge Software Solutions</h4>
+                <p id="previewSubtitle">Tenspick delivers custom web development, mobile apps, CRM systems, and cloud backend solutions tailored for scaling enterprises.</p>
+                <button type="button" class="preview-cta" id="previewCta">Get Free Consultation</button>
+            </div>
+        </aside>
+    </div>
+</section>

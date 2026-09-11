@@ -1,0 +1,82 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        window.location.replace('../../index.html#/documents');
+    }
+</script>
+
+<div class="documents-page-wrapper" style="padding: 20px; max-width: 1100px; margin: 0 auto;">
+    <!-- HEADER -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: #ffffff; padding: 20px 24px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB; flex-wrap: wrap; gap: 14px;">
+        <div>
+            <h2 style="margin: 0; font-size: 20px; font-weight: 700; color: #1F2937;" id="documentsHeaderTitle">Assigned Documents</h2>
+            <span style="font-size: 13px; color: #6B7280;">Access project specs, contracts, design assets, and request documents from Admin</span>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <input type="text" id="documentSearchInput" placeholder="Search documents..." style="padding: 9px 14px; border: 1px solid #D1D5DB; border-radius: 8px; font-size: 13px; outline: none; width: 180px;" />
+            <select id="documentCategoryFilter" style="padding: 9px 12px; border: 1px solid #D1D5DB; border-radius: 8px; font-size: 13px; outline: none;">
+                <option value="">All Categories</option>
+                <option value="specification">Project Specs</option>
+                <option value="contract">Contracts</option>
+                <option value="design">Design Assets</option>
+                <option value="template">Templates</option>
+                <option value="other">Other</option>
+            </select>
+            <button id="addDocumentBtn" type="button" style="background: #4B49AC; color: #fff; border: none; padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                + Request / Add Document
+            </button>
+        </div>
+    </div>
+
+    <!-- ADD / REQUEST DOCUMENT FORM BOX (HIDDEN BY DEFAULT) -->
+    <div id="addDocumentFormBox" style="display: none; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB; margin-bottom: 24px;">
+        <h3 style="font-size: 15px; font-weight: 700; color: #1F2937; margin: 0 0 14px 0;" id="docFormTitle">Request or Submit Document</h3>
+        <form id="addDocumentForm" style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px;">
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Document Title *</label>
+                    <input type="text" id="docName" required placeholder="e.g. Salary Slip Aug 2026, Project Specification" style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px;" />
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Category *</label>
+                    <select id="docCategory" style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px;">
+                        <option value="specification">Project Spec</option>
+                        <option value="contract">Contract</option>
+                        <option value="design">Design Asset</option>
+                        <option value="template">Template</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Project / Department</label>
+                    <input type="text" id="docProject" placeholder="e.g. Vanatvam CRM, General" style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px;" />
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">File Format</label>
+                    <select id="docType" style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px;">
+                        <option value="pdf">PDF Document</option>
+                        <option value="docx">Word Document</option>
+                        <option value="xlsx">Excel Spreadsheet</option>
+                        <option value="zip">ZIP Archive</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" style="background: #10B981; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer; align-self: flex-start;">
+                Save Document Request
+            </button>
+        </form>
+    </div>
+
+    <!-- DOCUMENT GRID -->
+    <div id="documentsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px;">
+        <!-- Loaded by JS -->
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div id="documentsEmptyState" hidden style="text-align: center; padding: 60px 20px; color: #9CA3AF; background: #fff; border-radius: 12px; border: 1px dashed #E5E7EB;">
+        <i class="bi bi-folder-x" style="font-size: 48px; display: block; margin-bottom: 12px; color: #D1D5DB;"></i>
+        <strong style="font-size: 18px; color: #4B5563; display: block; margin-bottom: 6px;">No Documents Found</strong>
+        <span style="font-size: 14px;">No documents match your search or filter criteria</span>
+    </div>
+</div>

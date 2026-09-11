@@ -1,0 +1,1284 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'tasks';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+<div class="tasks-page" id="tasksPage">
+
+        <!-- ======================================================
+            PAGE HEADER
+        ======================================================= -->
+        <section class="tasks-page-header">
+
+            <div class="tasks-page-header-content">
+                <span class="tasks-page-eyebrow">Project Management</span>
+
+                <h1 class="tasks-page-title">
+                    Tasks
+                </h1>
+
+                <p class="tasks-page-subtitle">
+                    Manage and track project tasks and staff assignments.
+                </p>
+            </div>
+
+            <div class="tasks-page-header-actions">
+                <button
+                    type="button"
+                    class="tasks-btn tasks-btn-primary"
+                    id="tasksAddBtn"
+                >
+                    <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                    <span>Add New Task</span>
+                </button>
+            </div>
+
+        </section>
+
+
+        <!-- ======================================================
+            STATISTICS
+        ======================================================= -->
+        <section class="tasks-stats-grid" aria-label="Task statistics">
+
+            <!-- Total -->
+            <article class="tasks-stat-card">
+
+                <div class="tasks-stat-icon tasks-stat-icon-primary">
+                    <i class="bi bi-list-task" aria-hidden="true"></i>
+                </div>
+
+                <div class="tasks-stat-content">
+                    <span class="tasks-stat-label">
+                        Total Tasks
+                    </span>
+
+                    <strong
+                        class="tasks-stat-value"
+                        id="tasksTotalCount"
+                    >
+                        0
+                    </strong>
+                </div>
+
+            </article>
+
+
+            <!-- Todo -->
+            <article class="tasks-stat-card">
+
+                <div class="tasks-stat-icon tasks-stat-icon-secondary">
+                    <i class="bi bi-circle" aria-hidden="true"></i>
+                </div>
+
+                <div class="tasks-stat-content">
+                    <span class="tasks-stat-label">
+                        Todo
+                    </span>
+
+                    <strong
+                        class="tasks-stat-value"
+                        id="tasksTodoCount"
+                    >
+                        0
+                    </strong>
+                </div>
+
+            </article>
+
+
+            <!-- In Progress -->
+            <article class="tasks-stat-card">
+
+                <div class="tasks-stat-icon tasks-stat-icon-support">
+                    <i class="bi bi-arrow-repeat" aria-hidden="true"></i>
+                </div>
+
+                <div class="tasks-stat-content">
+                    <span class="tasks-stat-label">
+                        In Progress
+                    </span>
+
+                    <strong
+                        class="tasks-stat-value"
+                        id="tasksInProgressCount"
+                    >
+                        0
+                    </strong>
+                </div>
+
+            </article>
+
+
+            <!-- Overdue -->
+            <article class="tasks-stat-card">
+
+                <div class="tasks-stat-icon tasks-stat-icon-danger">
+                    <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+                </div>
+
+                <div class="tasks-stat-content">
+                    <span class="tasks-stat-label">
+                        Overdue
+                    </span>
+
+                    <strong
+                        class="tasks-stat-value"
+                        id="tasksOverdueCount"
+                    >
+                        0
+                    </strong>
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ======================================================
+            FILTER CARD
+        ======================================================= -->
+        <section class="tasks-filter-card">
+
+            
+
+
+            <div class="tasks-filter-grid">
+
+                <!-- Search -->
+                <div class="tasks-filter-field tasks-filter-search">
+
+                    <label
+                        for="tasksSearchInput"
+                        class="tasks-filter-label"
+                    >
+                        Search Tasks
+                    </label>
+
+                    <div class="tasks-input-icon-wrapper">
+
+                        <i
+                            class="bi bi-search"
+                            aria-hidden="true"
+                        ></i>
+
+                        <input
+                            type="search"
+                            id="tasksSearchInput"
+                            class="tasks-form-control tasks-search-input"
+                            placeholder="Search by task name or code..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Project -->
+                <div class="tasks-filter-field">
+
+                    <label
+                        for="tasksProjectFilter"
+                        class="tasks-filter-label"
+                    >
+                        Project
+                    </label>
+
+                    <select
+                        id="tasksProjectFilter"
+                        class="tasks-form-control"
+                    >
+                        <option value="">
+                            All Projects
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <!-- Staff -->
+                <div class="tasks-filter-field">
+
+                    <label
+                        for="tasksStaffFilter"
+                        class="tasks-filter-label"
+                    >
+                        Assigned Staff
+                    </label>
+
+                    <select
+                        id="tasksStaffFilter"
+                        class="tasks-form-control"
+                    >
+                        <option value="">
+                            All Staff
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <!-- Status -->
+                <div class="tasks-filter-field">
+
+                    <label
+                        for="tasksStatusFilter"
+                        class="tasks-filter-label"
+                    >
+                        Status
+                    </label>
+
+                    <select
+                        id="tasksStatusFilter"
+                        class="tasks-form-control"
+                    >
+                        <option value="">
+                            All Statuses
+                        </option>
+
+                        <option value="todo">
+                            Todo
+                        </option>
+
+                        <option value="assigned">
+                            Assigned
+                        </option>
+
+                        <option value="in_progress">
+                            In Progress
+                        </option>
+
+                        <option value="review">
+                            Review
+                        </option>
+
+                        <option value="completed">
+                            Completed
+                        </option>
+
+                        <option value="cancelled">
+                            Cancelled
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <!-- Reset -->
+                <div class="tasks-filter-actions">
+
+                    <button
+                        type="button"
+                        class="tasks-btn tasks-btn-light"
+                        id="tasksResetFiltersBtn"
+                    >
+                        <i
+                            class="bi bi-arrow-counterclockwise"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span>Reset Filters</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================================
+            TASK TABLE CARD
+        ======================================================= -->
+        <section class="tasks-table-card">
+
+            <!-- Table Header -->
+            <div class="tasks-table-card-header">
+
+                <div>
+                    <span class="tasks-section-eyebrow">
+                        Tasks
+                    </span>
+
+                    <h2 class="tasks-table-title">
+                        Task List
+                    </h2>
+                </div>
+
+                <div
+                    class="tasks-result-info"
+                    id="tasksResultInfo"
+                >
+                    Showing 0 tasks
+                </div>
+
+            </div>
+
+
+            <!-- Loading -->
+            <div
+                class="tasks-table-state tasks-loading-state"
+                id="tasksLoadingState"
+                hidden
+            >
+
+                <div class="tasks-loading-spinner"></div>
+
+                <p>
+                    Loading tasks...
+                </p>
+
+            </div>
+
+
+            <!-- Error -->
+            <div
+                class="tasks-table-state tasks-error-state"
+                id="tasksErrorState"
+                hidden
+            >
+
+                <div class="tasks-state-icon tasks-state-icon-danger">
+                    <i
+                        class="bi bi-exclamation-triangle"
+                        aria-hidden="true"
+                    ></i>
+                </div>
+
+                <h3>
+                    Unable to load tasks
+                </h3>
+
+                <p id="tasksErrorMessage">
+                    Something went wrong while loading tasks.
+                </p>
+
+                <button
+                    type="button"
+                    class="tasks-btn tasks-btn-light"
+                    id="tasksRetryBtn"
+                >
+                    <i
+                        class="bi bi-arrow-clockwise"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>Try Again</span>
+                </button>
+
+            </div>
+
+
+            <!-- Empty -->
+            <div
+                class="tasks-table-state tasks-empty-state"
+                id="tasksEmptyState"
+                hidden
+            >
+
+                <div class="tasks-state-icon">
+                    <i
+                        class="bi bi-list-task"
+                        aria-hidden="true"
+                    ></i>
+                </div>
+
+                <h3>
+                    No tasks found
+                </h3>
+
+                <p>
+                    No tasks match your current search or filters.
+                </p>
+
+                <button
+                    type="button"
+                    class="tasks-btn tasks-btn-primary"
+                    id="tasksEmptyAddBtn"
+                >
+                    <i
+                        class="bi bi-plus-lg"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>Add New Task</span>
+                </button>
+
+            </div>
+
+
+            <!-- Actual Table -->
+            <div
+                class="tasks-table-wrapper"
+                id="tasksTableWrapper"
+            >
+
+                <table class="tasks-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th scope="col">
+                                Task
+                            </th>
+
+                            <th scope="col">
+                                Project
+                            </th>
+
+                            <th scope="col">
+                                Assigned Staff
+                            </th>
+
+                            <th scope="col">
+                                Priority
+                            </th>
+
+                            <th scope="col">
+                                Status
+                            </th>
+
+                            <th scope="col">
+                                Due Date
+                            </th>
+
+                            <th
+                                scope="col"
+                                class="tasks-table-action-column"
+                            >
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tasksTableBody">
+                        <!-- Rows generated by tasks.js -->
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- ==================================================
+                PAGINATION
+            =================================================== -->
+            <div class="tasks-pagination">
+
+                <div
+                    class="tasks-pagination-info"
+                    id="tasksPaginationInfo"
+                >
+                    Showing 0–0 of 0
+                </div>
+
+                <div class="tasks-pagination-controls">
+
+                    <button
+                        type="button"
+                        class="tasks-pagination-btn"
+                        id="tasksPrevPageBtn"
+                        disabled
+                        aria-label="Previous page"
+                    >
+                        <i
+                            class="bi bi-chevron-left"
+                            aria-hidden="true"
+                        ></i>
+                    </button>
+
+                    <div
+                        class="tasks-pagination-pages"
+                        id="tasksPaginationPages"
+                    >
+                        <!-- Generated by JS -->
+                    </div>
+
+                    <button
+                        type="button"
+                        class="tasks-pagination-btn"
+                        id="tasksNextPageBtn"
+                        disabled
+                        aria-label="Next page"
+                    >
+                        <i
+                            class="bi bi-chevron-right"
+                            aria-hidden="true"
+                        ></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================================
+            ADD / EDIT TASK MODAL
+        ======================================================= -->
+        <div
+            class="tasks-modal"
+            id="tasksFormModal"
+            aria-hidden="true"
+            inert
+        >
+
+            <div class="tasks-modal-overlay"></div>
+
+            <div
+                class="tasks-modal-dialog tasks-form-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="tasksFormModalTitle"
+            >
+
+                <div class="tasks-modal-header">
+
+                    <div>
+
+                        <span class="tasks-modal-eyebrow">
+                            Task Management
+                        </span>
+
+                        <h2
+                            class="tasks-modal-title"
+                            id="tasksFormModalTitle"
+                        >
+                            Add New Task
+                        </h2>
+
+                        <p
+                            class="tasks-modal-subtitle"
+                            id="tasksFormModalSubtitle"
+                        >
+                            Create and assign a new project task.
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="tasks-modal-close"
+                        id="tasksFormModalClose"
+                        aria-label="Close"
+                    >
+                        <i
+                            class="bi bi-x-lg"
+                            aria-hidden="true"
+                        ></i>
+                    </button>
+
+                </div>
+
+
+                <form
+                    id="tasksForm"
+                    class="tasks-form"
+                    novalidate
+                >
+
+                    <input
+                        type="hidden"
+                        id="tasksFormId"
+                        value=""
+                    >
+
+
+                    <!-- Task Information -->
+                    <div class="tasks-form-section">
+
+                        <div class="tasks-form-section-header">
+
+                            <div class="tasks-form-section-icon">
+                                <i
+                                    class="bi bi-card-text"
+                                    aria-hidden="true"
+                                ></i>
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Task Information
+                                </h3>
+
+                                <p>
+                                    Enter the main task details.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="tasks-form-grid">
+
+                            <!-- Task Title -->
+                            <div class="tasks-form-group tasks-form-group-full">
+
+                                <label
+                                    for="tasksTaskTitle"
+                                    class="tasks-form-label"
+                                >
+                                    Task Title
+                                    <span class="tasks-required">*</span>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="tasksTaskTitle"
+                                    class="tasks-form-control"
+                                    maxlength="200"
+                                    placeholder="Enter task title"
+                                    autocomplete="off"
+                                >
+
+                                <small
+                                    class="tasks-form-error"
+                                    id="tasksTaskTitleError"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Project -->
+                            <div class="tasks-form-group">
+
+                                <label
+                                    for="tasksProject"
+                                    class="tasks-form-label"
+                                >
+                                    Project
+                                    <span class="tasks-required">*</span>
+                                </label>
+
+                                <select
+                                    id="tasksProject"
+                                    class="tasks-form-control"
+                                >
+                                    <option value="">
+                                        Select Project
+                                    </option>
+                                </select>
+
+                                <small
+                                    class="tasks-form-error"
+                                    id="tasksProjectError"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Staff -->
+                            <div class="tasks-form-group">
+
+                                <label
+                                    for="tasksAssignedStaff"
+                                    class="tasks-form-label"
+                                >
+                                    Assigned Staff
+                                    <span class="tasks-required">*</span>
+                                </label>
+
+                                <select
+                                    id="tasksAssignedStaff"
+                                    class="tasks-form-control"
+                                >
+                                    <option value="">
+                                        Select Staff
+                                    </option>
+                                </select>
+
+                                <small
+                                    class="tasks-form-error"
+                                    id="tasksAssignedStaffError"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Priority -->
+                            <div class="tasks-form-group">
+
+                                <label
+                                    for="tasksPriority"
+                                    class="tasks-form-label"
+                                >
+                                    Priority
+                                </label>
+
+                                <select
+                                    id="tasksPriority"
+                                    class="tasks-form-control"
+                                >
+                                    <option value="low">
+                                        Low
+                                    </option>
+
+                                    <option value="medium" selected>
+                                        Medium
+                                    </option>
+
+                                    <option value="high">
+                                        High
+                                    </option>
+
+                                    <option value="urgent">
+                                        Urgent
+                                    </option>
+                                </select>
+
+                            </div>
+
+
+                            <!-- Status -->
+                            <div class="tasks-form-group">
+
+                                <label
+                                    for="tasksStatus"
+                                    class="tasks-form-label"
+                                >
+                                    Status
+                                </label>
+
+                                <select
+                                    id="tasksStatus"
+                                    class="tasks-form-control"
+                                >
+                                    <option value="todo">
+                                        Todo
+                                    </option>
+
+                                    <option value="assigned">
+                                        Assigned
+                                    </option>
+
+                                    <option value="in_progress">
+                                        In Progress
+                                    </option>
+
+                                    <option value="review">
+                                        Review
+                                    </option>
+
+                                    <option value="completed">
+                                        Completed
+                                    </option>
+
+                                    <option value="cancelled">
+                                        Cancelled
+                                    </option>
+                                </select>
+
+                            </div>
+
+
+                            <!-- Start Date -->
+                            <div class="tasks-form-group">
+
+                                <label
+                                    for="tasksStartDate"
+                                    class="tasks-form-label"
+                                >
+                                    Start Date
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="tasksStartDate"
+                                    class="tasks-form-control"
+                                >
+
+                            </div>
+
+
+                            <!-- Due Date -->
+                            <div class="tasks-form-group">
+
+                                <label
+                                    for="tasksDueDate"
+                                    class="tasks-form-label"
+                                >
+                                    Due Date
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="tasksDueDate"
+                                    class="tasks-form-control"
+                                >
+
+                                <small
+                                    class="tasks-form-error"
+                                    id="tasksDueDateError"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Description -->
+                            <div class="tasks-form-group tasks-form-group-full">
+
+                                <label
+                                    for="tasksDescription"
+                                    class="tasks-form-label"
+                                >
+                                    Description
+                                </label>
+
+                                <textarea
+                                    id="tasksDescription"
+                                    class="tasks-form-control tasks-textarea"
+                                    rows="5"
+                                    maxlength="5000"
+                                    placeholder="Describe the task..."
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Alert -->
+                    <div
+                        class="tasks-form-alert"
+                        id="tasksFormAlert"
+                        hidden
+                    >
+
+                        <i
+                            class="bi bi-exclamation-circle"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span id="tasksFormAlertMessage"></span>
+
+                    </div>
+
+
+                    <!-- Footer -->
+                    <div class="tasks-form-footer">
+
+                        <button
+                            type="button"
+                            class="tasks-btn tasks-btn-light"
+                            id="tasksFormCancelBtn"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="tasks-btn tasks-btn-primary"
+                            id="tasksFormSubmitBtn"
+                        >
+
+                            <span
+                                class="tasks-submit-spinner"
+                                id="tasksSubmitSpinner"
+                                hidden
+                            ></span>
+
+                            <i
+                                class="bi bi-check-lg"
+                                id="tasksSubmitIcon"
+                                aria-hidden="true"
+                            ></i>
+
+                            <span id="tasksFormSubmitText">
+                                Save Task
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================================================
+            VIEW TASK MODAL
+        ======================================================= -->
+        <div
+            class="tasks-modal"
+            id="tasksViewModal"
+            aria-hidden="true"
+            inert
+        >
+
+            <div class="tasks-modal-overlay"></div>
+
+            <div
+                class="tasks-modal-dialog tasks-view-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="tasksViewModalTitle"
+            >
+
+                <div class="tasks-modal-header">
+
+                    <div>
+
+                        <span class="tasks-modal-eyebrow">
+                            Task Management
+                        </span>
+
+                        <h2
+                            class="tasks-modal-title"
+                            id="tasksViewModalTitle"
+                        >
+                            Task Details
+                        </h2>
+
+                        <p class="tasks-modal-subtitle">
+                            View task information and progress.
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="tasks-modal-close"
+                        id="tasksViewModalClose"
+                        aria-label="Close"
+                    >
+                        <i
+                            class="bi bi-x-lg"
+                            aria-hidden="true"
+                        ></i>
+                    </button>
+
+                </div>
+
+
+                <!-- Dynamic Task Details -->
+                <div
+                    class="tasks-view-content"
+                    id="tasksViewContent"
+                >
+                    <!-- Generated by JS -->
+                </div>
+
+
+                <!-- Footer -->
+                <div class="tasks-form-footer">
+
+                    <button
+                        type="button"
+                        class="tasks-btn tasks-btn-light"
+                        id="tasksViewCloseBtn"
+                    >
+                        Close
+                    </button>
+
+                    <button
+                        type="button"
+                        class="tasks-btn tasks-btn-primary"
+                        id="tasksViewEditBtn"
+                    >
+                        <i
+                            class="bi bi-pencil"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span>
+                            Edit Task
+                        </span>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================================================
+            COMPLETE TASK MODAL
+        ======================================================= -->
+        <div
+            class="tasks-confirm-modal"
+            id="tasksCompleteModal"
+            aria-hidden="true"
+            inert
+        >
+
+            <div class="tasks-modal-overlay"></div>
+
+            <div
+                class="tasks-confirm-dialog tasks-complete-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="tasksCompleteModalTitle"
+            >
+
+                <div class="tasks-confirm-content">
+
+                    <div class="tasks-confirm-icon tasks-confirm-icon-success">
+                        <i
+                            class="bi bi-check2-circle"
+                            aria-hidden="true"
+                        ></i>
+                    </div>
+
+                    <h2
+                        id="tasksCompleteModalTitle"
+                        class="tasks-confirm-title"
+                    >
+                        Complete Task
+                    </h2>
+
+                    <p class="tasks-confirm-message">
+                        Complete
+                        <strong id="tasksCompleteTaskName">
+                            this task
+                        </strong>
+                        and record the completion response.
+                    </p>
+
+
+                    <div class="tasks-completion-form">
+
+                        <label
+                            for="tasksCompletionResponse"
+                            class="tasks-form-label"
+                        >
+                            Completion Response
+                            <span class="tasks-required">*</span>
+                        </label>
+
+                        <textarea
+                            id="tasksCompletionResponse"
+                            class="tasks-form-control tasks-textarea"
+                            rows="5"
+                            maxlength="5000"
+                            placeholder="Describe what was completed..."
+                        ></textarea>
+
+                        <small
+                            class="tasks-form-error"
+                            id="tasksCompletionResponseError"
+                        ></small>
+
+                        <p class="tasks-completion-hint">
+                            This response will be saved in the task history.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="tasks-form-alert"
+                        id="tasksCompleteAlert"
+                        hidden
+                    >
+
+                        <i
+                            class="bi bi-exclamation-circle"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span id="tasksCompleteAlertMessage"></span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="tasks-form-footer">
+
+                    <button
+                        type="button"
+                        class="tasks-btn tasks-btn-light"
+                        id="tasksCompleteCancelBtn"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="button"
+                        class="tasks-btn tasks-btn-primary"
+                        id="tasksCompleteConfirmBtn"
+                    >
+
+                        <span
+                            class="tasks-complete-spinner"
+                            id="tasksCompleteSpinner"
+                            hidden
+                        ></span>
+
+                        <i
+                            class="bi bi-check2"
+                            id="tasksCompleteIcon"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span>
+                            Complete Task
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================================================
+            DELETE TASK MODAL
+        ======================================================= -->
+        <div
+            class="tasks-confirm-modal"
+            id="tasksDeleteModal"
+            aria-hidden="true"
+            inert
+        >
+
+            <div class="tasks-modal-overlay"></div>
+
+            <div
+                class="tasks-confirm-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="tasksDeleteModalTitle"
+            >
+
+                <div class="tasks-confirm-content">
+
+                    <div class="tasks-confirm-icon tasks-confirm-icon-danger">
+                        <i
+                            class="bi bi-trash3-fill"
+                            aria-hidden="true"
+                        ></i>
+                    </div>
+
+                    <h2
+                        id="tasksDeleteModalTitle"
+                        class="tasks-confirm-title"
+                    >
+                        Delete Task?
+                    </h2>
+
+                    <p class="tasks-confirm-message">
+                        Are you sure you want to delete
+                        <strong id="tasksDeleteName">
+                            this task
+                        </strong>?
+                        This action cannot be undone.
+                    </p>
+
+
+                    <div
+                        class="tasks-form-alert"
+                        id="tasksDeleteAlert"
+                        hidden
+                    >
+
+                        <i
+                            class="bi bi-exclamation-circle"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span id="tasksDeleteAlertMessage"></span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="tasks-form-footer">
+
+                    <button
+                        type="button"
+                        class="tasks-btn tasks-btn-light"
+                        id="tasksDeleteCancelBtn"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="button"
+                        class="tasks-btn tasks-btn-danger"
+                        id="tasksDeleteConfirmBtn"
+                    >
+
+                        <span
+                            class="tasks-delete-spinner"
+                            id="tasksDeleteSpinner"
+                            hidden
+                        ></span>
+
+                        <i
+                            class="bi bi-trash3-fill"
+                            id="tasksDeleteIcon"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span>
+                            Delete Task
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================================================
+            TOAST
+        ======================================================= -->
+        <div
+            class="tasks-toast"
+            id="tasksToast"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            hidden
+        >
+
+            <div class="tasks-toast-icon">
+
+                <i
+                    class="bi bi-check-circle-fill"
+                    id="tasksToastIcon"
+                    aria-hidden="true"
+                ></i>
+
+            </div>
+
+            <div class="tasks-toast-message">
+                <span id="tasksToastMessage"></span>
+            </div>
+
+            <button
+                type="button"
+                class="tasks-toast-close"
+                id="tasksToastClose"
+                aria-label="Close notification"
+            >
+                <i
+                    class="bi bi-x"
+                    aria-hidden="true"
+                ></i>
+            </button>
+
+        </div>
+
+    </div>

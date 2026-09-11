@@ -1,0 +1,140 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        window.location.replace('../../index.html#/reports');
+    }
+</script>
+
+<div class="reports-page-wrapper" style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+
+    <!-- HEADER -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: #fff; padding: 20px 24px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+        <div>
+            <h2 style="margin: 0; font-size: 20px; font-weight: 700; color: #1F2937;" id="reportsTitle">Work Reports</h2>
+            <span style="font-size: 13px; color: #6B7280;" id="reportsSubtitle">Submit daily work reports and review staff performance summaries</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <span id="reportsRoleBadge" style="background: #EEF2FF; color: #4B49AC; font-weight: 700; font-size: 12px; padding: 6px 14px; border-radius: 20px; border: 1px solid #C7D2FE;">
+                Role View
+            </span>
+            <select id="reportPeriodFilter" style="padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 8px; font-size: 13px; outline: none;">
+                <option value="week">This Week</option>
+                <option value="month" selected>This Month</option>
+                <option value="quarter">This Quarter</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;" id="reportsStatCards">
+        <!-- Rendered by JS -->
+    </div>
+
+    <!-- ADMIN ONLY: UNREVIEWED REPORTS ALERT BOX -->
+    <div id="adminWorkReportsAlert" style="display: none; background: linear-gradient(to right, #EEF2FF, #FFFFFF); border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #C7D2FE; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 38px; height: 38px; border-radius: 10px; background: #E0E7FF; color: #4338CA; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #3730A3;">Staff Submitted Work Reports</h3>
+                    <span style="font-size: 12px; color: #4338CA;">Review work entries submitted by team members</span>
+                </div>
+            </div>
+            <span id="adminPendingReportBadge" style="background: #4B49AC; color: #fff; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 100px;">0 New</span>
+        </div>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #C7D2FE;">
+                        <th style="text-align: left; padding: 8px; color: #3730A3; font-size: 12px; font-weight: 700;">STAFF</th>
+                        <th style="text-align: left; padding: 8px; color: #3730A3; font-size: 12px; font-weight: 700;">PROJECT</th>
+                        <th style="text-align: left; padding: 8px; color: #3730A3; font-size: 12px; font-weight: 700;">HOURS</th>
+                        <th style="text-align: left; padding: 8px; color: #3730A3; font-size: 12px; font-weight: 700;">WORK SUMMARY</th>
+                        <th style="text-align: left; padding: 8px; color: #3730A3; font-size: 12px; font-weight: 700;">DATE</th>
+                        <th style="text-align: right; padding: 8px; color: #3730A3; font-size: 12px; font-weight: 700;">ACTION</th>
+                    </tr>
+                </thead>
+                <tbody id="adminWorkReportsList">
+                    <tr><td colspan="6" style="text-align: center; padding: 20px; color: #6B7280;">No pending staff work reports.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MAIN TWO COLUMN GRID -->
+    <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; margin-bottom: 24px;">
+        
+        <!-- SUBMIT WORK REPORT FORM & HISTORY -->
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+            
+            <!-- SUBMIT WORK REPORT CARD -->
+            <div style="background: #fff; border-radius: 12px; padding: 22px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+                <h3 style="font-size: 16px; font-weight: 700; color: #1F2937; margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px;">
+                    <i class="bi bi-pencil-square" style="color: #4B49AC;"></i> Submit New Work Report
+                </h3>
+                <form id="submitWorkReportForm" style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px;">
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Project Name *</label>
+                            <input type="text" id="reportProjectName" required placeholder="e.g. Vanatvam CRM, Client Onboarding" style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none;" />
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Hours Spent Today *</label>
+                            <input type="number" step="0.5" id="reportHoursSpent" required placeholder="e.g. 8.0" style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none;" />
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px;">Summary of Work Completed *</label>
+                        <textarea id="reportSummary" required rows="3" placeholder="Describe key tasks accomplished, features built, or leads contacted today..." style="width: 100%; padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 13px; outline: none; resize: vertical;"></textarea>
+                    </div>
+                    <button type="submit" style="background: #4B49AC; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; align-self: flex-start;">
+                        <i class="bi bi-send-fill"></i> Submit Report to Admin
+                    </button>
+                </form>
+            </div>
+
+            <!-- TASK LIST -->
+            <div style="background: #fff; border-radius: 12px; padding: 22px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+                <h3 style="font-size: 16px; font-weight: 700; color: #1F2937; margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px;">
+                    <i class="bi bi-list-task" style="color: #4B49AC;"></i> Active Task Progress
+                </h3>
+                <div id="reportsTaskList" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Loaded by JS -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: HOURS CHART & DEADLINES -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <!-- HOURS CHART -->
+            <div style="background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+                <h3 style="font-size: 15px; font-weight: 700; color: #1F2937; margin: 0 0 14px 0;"><i class="bi bi-clock-history" style="color: #10B981; margin-right: 6px;"></i>Hours Logged This Week</h3>
+                <div id="reportsHoursChart" style="display: flex; flex-direction: column; gap: 8px;">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- UPCOMING DEADLINES -->
+            <div style="background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+                <h3 style="font-size: 15px; font-weight: 700; color: #1F2937; margin: 0 0 14px 0;"><i class="bi bi-calendar-event" style="color: #EF4444; margin-right: 6px;"></i>Upcoming Deadlines</h3>
+                <div id="reportsDeadlines" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Loaded by JS -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- WORK REPORTS HISTORY LOG TABLE -->
+    <div style="background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #E5E7EB;">
+        <h3 style="font-size: 16px; font-weight: 700; color: #1F2937; margin: 0 0 16px 0;">
+            <i class="bi bi-journal-text" style="color: #10B981; margin-right: 6px;"></i> Submitted Work Reports History
+        </h3>
+        <div style="overflow-x: auto;" id="workReportsHistoryTable">
+            <!-- Loaded by JS -->
+        </div>
+    </div>
+
+</div>

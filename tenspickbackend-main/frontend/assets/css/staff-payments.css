@@ -1,0 +1,4540 @@
+/**
+ * ============================================================
+ * TENSPICK CRM
+ * STAFF PAYMENTS
+ * COMPLETE WORKING CSS
+ * ============================================================
+ *
+ * Compatible with:
+ * - staff-payments.php
+ * - staff-payments.js
+ *
+ * IMPORTANT STRUCTURE:
+ * #spAddPaymentModal
+ *   └── .sp-modal-dialog
+ *       ├── .sp-modal-header
+ *       └── #spAddPaymentForm
+ *           ├── .sp-modal-body
+ *           └── .sp-modal-footer
+ *
+ * The form is therefore the flex container.
+ * This keeps the modal header/footer fixed while the
+ * payment form body scrolls internally.
+ * ============================================================
+ */
+
+
+/* ============================================================
+   STAFF PAYMENTS ROOT
+============================================================ */
+
+.staff-payments-page {
+
+    --sp-primary: #4B49AC;
+    --sp-primary-dark: #39378D;
+    --sp-primary-light: #7978E9;
+
+    --sp-secondary: #98BDFF;
+    --sp-support: #7DA0FA;
+
+    --sp-success: #16A34A;
+    --sp-success-bg: #ECFDF3;
+
+    --sp-danger: #DC2626;
+    --sp-danger-dark: #B91C1C;
+    --sp-danger-bg: #FEF2F2;
+
+    --sp-warning: #D97706;
+    --sp-warning-bg: #FFFBEB;
+
+    --sp-info: #2563EB;
+    --sp-info-bg: #EFF6FF;
+
+    --sp-text: #1F2937;
+    --sp-text-dark: #111827;
+    --sp-text-muted: #6B7280;
+    --sp-text-light: #9CA3AF;
+
+    --sp-border: #E5E7EB;
+    --sp-border-dark: #D1D5DB;
+
+    --sp-background: #F7F8FC;
+    --sp-card: #FFFFFF;
+    --sp-input: #FFFFFF;
+
+    --sp-radius-sm: 8px;
+    --sp-radius-md: 12px;
+    --sp-radius-lg: 16px;
+
+    --sp-shadow-sm:
+        0 1px 3px rgba(15, 23, 42, 0.06);
+
+    --sp-shadow-md:
+        0 8px 24px rgba(15, 23, 42, 0.08);
+
+    --sp-shadow-lg:
+        0 20px 60px rgba(15, 23, 42, 0.18);
+
+    --sp-transition: 0.2s ease;
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 22px;
+
+    color: #1F2937 !important;
+
+    background: #F7F8FC;
+
+}
+
+
+/* ============================================================
+   BOX SIZING
+============================================================ */
+
+.staff-payments-page *,
+.staff-payments-page *::before,
+.staff-payments-page *::after {
+
+    box-sizing: border-box;
+
+}
+
+
+/* ============================================================
+   HIDDEN ELEMENTS
+============================================================ */
+
+.staff-payments-page [hidden],
+.sp-modal[hidden],
+#spAddPaymentModal[hidden],
+#spViewPaymentModal[hidden],
+#spEditPaymentModal[hidden],
+#spDeletePaymentModal[hidden],
+#spReceiptModal[hidden],
+.sp-btn-loading[hidden],
+.sp-form-alert[hidden],
+.sp-table-loading[hidden],
+.sp-table-error[hidden],
+.sp-table-empty[hidden],
+.sp-pagination[hidden],
+.sp-view-loading[hidden],
+.sp-view-error[hidden],
+.sp-payment-view-content[hidden] {
+
+    display: none !important;
+
+}
+
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+
+.staff-payments-page-header {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 24px;
+
+    margin: 0 0 24px;
+
+}
+
+
+.staff-payments-page-title {
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+}
+
+
+.staff-payments-title-icon {
+
+    width: 52px;
+    height: 52px;
+
+    flex: 0 0 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 14px;
+
+    color: #FFFFFF !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4B49AC,
+            #7978E9
+        ) !important;
+
+    box-shadow:
+        0 8px 20px
+        rgba(75, 73, 172, 0.20);
+
+}
+
+
+.staff-payments-title-icon i {
+
+    color: #FFFFFF !important;
+
+    font-size: 22px;
+
+}
+
+
+.staff-payments-page-title h1 {
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 25px;
+
+    line-height: 1.25;
+
+    font-weight: 700;
+
+    letter-spacing: -0.02em;
+
+}
+
+
+.staff-payments-page-title p {
+
+    margin: 5px 0 0 !important;
+
+    padding: 0 !important;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 13px;
+
+    line-height: 1.45;
+
+}
+
+
+/* ============================================================
+   PAGE ACTIONS
+============================================================ */
+
+.staff-payments-page-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+}
+
+
+/* ============================================================
+   BUTTON BASE
+============================================================ */
+
+.staff-payments-page .sp-btn,
+.sp-modal .sp-btn {
+
+    min-height: 42px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 0 16px;
+
+    margin: 0;
+
+    border: 1px solid transparent !important;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color var(--sp-transition),
+        border-color var(--sp-transition),
+        color var(--sp-transition),
+        box-shadow var(--sp-transition),
+        transform var(--sp-transition),
+        opacity var(--sp-transition);
+
+}
+
+
+.staff-payments-page .sp-btn i,
+.sp-modal .sp-btn i {
+
+    color: inherit !important;
+
+}
+
+
+.staff-payments-page .sp-btn:hover:not(:disabled),
+.sp-modal .sp-btn:hover:not(:disabled) {
+
+    transform: translateY(-1px);
+
+}
+
+
+.staff-payments-page .sp-btn:active:not(:disabled),
+.sp-modal .sp-btn:active:not(:disabled) {
+
+    transform: translateY(0);
+
+}
+
+
+.staff-payments-page .sp-btn:disabled,
+.sp-modal .sp-btn:disabled {
+
+    opacity: 0.55 !important;
+
+    cursor: not-allowed !important;
+
+    transform: none !important;
+
+}
+
+
+/* ============================================================
+   PRIMARY BUTTON
+============================================================ */
+
+.staff-payments-page .sp-btn-primary,
+.sp-modal .sp-btn-primary {
+
+    color: #FFFFFF !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4B49AC,
+            #7978E9
+        ) !important;
+
+    border-color: #4B49AC !important;
+
+    box-shadow:
+        0 5px 14px
+        rgba(75, 73, 172, 0.18);
+
+}
+
+
+.staff-payments-page .sp-btn-primary:hover:not(:disabled),
+.sp-modal .sp-btn-primary:hover:not(:disabled) {
+
+    color: #FFFFFF !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #39378D,
+            #4B49AC
+        ) !important;
+
+    border-color: #39378D !important;
+
+}
+
+
+/* ============================================================
+   SECONDARY BUTTON
+============================================================ */
+
+.staff-payments-page .sp-btn-secondary,
+.sp-modal .sp-btn-secondary {
+
+    color: #374151 !important;
+
+    background: #FFFFFF !important;
+
+    border-color: #D1D5DB !important;
+
+}
+
+
+.staff-payments-page .sp-btn-secondary:hover:not(:disabled),
+.sp-modal .sp-btn-secondary:hover:not(:disabled) {
+
+    color: #111827 !important;
+
+    background: #F9FAFB !important;
+
+    border-color: #9CA3AF !important;
+
+}
+
+
+/* ============================================================
+   OUTLINE BUTTON
+============================================================ */
+
+.staff-payments-page .sp-btn-outline,
+.sp-modal .sp-btn-outline {
+
+    color: #4B49AC !important;
+
+    background: #FFFFFF !important;
+
+    border-color:
+        rgba(75, 73, 172, 0.35) !important;
+
+}
+
+
+.staff-payments-page .sp-btn-outline:hover:not(:disabled),
+.sp-modal .sp-btn-outline:hover:not(:disabled) {
+
+    color: #4B49AC !important;
+
+    background:
+        rgba(75, 73, 172, 0.06) !important;
+
+    border-color: #4B49AC !important;
+
+}
+
+
+/* ============================================================
+   DANGER BUTTON
+============================================================ */
+
+.staff-payments-page .sp-btn-danger,
+.sp-modal .sp-btn-danger {
+
+    color: #FFFFFF !important;
+
+    background: #DC2626 !important;
+
+    border-color: #DC2626 !important;
+
+}
+
+
+.staff-payments-page .sp-btn-danger:hover:not(:disabled),
+.sp-modal .sp-btn-danger:hover:not(:disabled) {
+
+    color: #FFFFFF !important;
+
+    background: #B91C1C !important;
+
+    border-color: #B91C1C !important;
+
+}
+
+
+/* ============================================================
+   SUMMARY CARDS
+============================================================ */
+
+.staff-payments-summary-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.sp-summary-card {
+
+    min-width: 0;
+    min-height: 120px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 19px;
+
+    background: #FFFFFF !important;
+
+    border: 1px solid #E5E7EB !important;
+
+    border-radius: 15px;
+
+    box-shadow: var(--sp-shadow-sm);
+
+}
+
+
+.sp-summary-card-content {
+
+    min-width: 0;
+
+}
+
+
+.sp-summary-card-label {
+
+    display: block;
+
+    margin: 0 0 8px !important;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+}
+
+
+.sp-summary-card-value {
+
+    display: block;
+
+    margin: 0 !important;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 22px;
+
+    line-height: 1.2;
+
+    font-weight: 700;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+.sp-summary-card-icon {
+
+    width: 46px;
+    height: 46px;
+
+    flex: 0 0 46px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    color: #4B49AC !important;
+
+    background:
+        rgba(75, 73, 172, 0.09) !important;
+
+}
+
+
+.sp-summary-card-icon i {
+
+    color: #4B49AC !important;
+
+    font-size: 20px;
+
+}
+
+
+/* ============================================================
+   FILTER CARD
+============================================================ */
+
+.sp-filter-card {
+
+    margin-bottom: 20px;
+
+    background: #FFFFFF !important;
+
+    border: 1px solid #E5E7EB !important;
+
+    border-radius: 15px;
+
+    box-shadow: var(--sp-shadow-sm);
+
+    overflow: visible;
+
+}
+
+
+.sp-filter-header {
+
+    min-height: 58px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 13px 18px;
+
+    background: #FFFFFF !important;
+
+    border-bottom: 1px solid #E5E7EB !important;
+
+}
+
+
+.sp-filter-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+.sp-filter-title i {
+
+    color: #4B49AC !important;
+
+}
+
+
+.sp-filter-clear {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    padding: 7px 10px;
+
+    border: 0 !important;
+
+    border-radius: 7px;
+
+    color: #4B49AC !important;
+
+    background: transparent !important;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.sp-filter-clear:hover {
+
+    color: #39378D !important;
+
+    background:
+        rgba(75, 73, 172, 0.07) !important;
+
+}
+
+
+.sp-filter-body {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(190px, 1.4fr)
+        repeat(3, minmax(145px, 1fr))
+        minmax(155px, 1fr)
+        minmax(145px, 1fr)
+        minmax(145px, 1fr);
+
+    gap: 13px;
+
+    padding: 17px;
+
+    background: #FFFFFF !important;
+
+}
+
+
+/* ============================================================
+   FORM GROUP
+============================================================ */
+
+.staff-payments-page .sp-form-group,
+.sp-modal .sp-form-group {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+}
+
+
+.staff-payments-page .sp-form-group > label,
+.sp-modal .sp-form-group > label {
+
+    display: block;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    color: #374151 !important;
+
+    background: transparent !important;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    font-weight: 600;
+
+}
+
+
+/* ============================================================
+   FORM CONTROLS
+============================================================ */
+
+.staff-payments-page input.sp-form-control,
+.staff-payments-page select.sp-form-control,
+.staff-payments-page textarea.sp-form-control,
+
+.sp-modal input.sp-form-control,
+.sp-modal select.sp-form-control,
+.sp-modal textarea.sp-form-control {
+
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    min-height: 44px !important;
+
+    display: block;
+
+    margin: 0 !important;
+
+    padding: 10px 13px !important;
+
+    border: 1px solid #D1D5DB !important;
+
+    border-radius: 8px !important;
+
+    outline: none !important;
+
+    color: #1F2937 !important;
+
+    -webkit-text-fill-color: #1F2937 !important;
+
+    background-color: #FFFFFF !important;
+
+    background-image: none !important;
+
+    box-shadow: none !important;
+
+    opacity: 1 !important;
+
+    font-family: inherit !important;
+
+    font-size: 13px !important;
+
+    font-weight: 400 !important;
+
+    line-height: 1.4 !important;
+
+    transition:
+        border-color var(--sp-transition),
+        box-shadow var(--sp-transition),
+        background-color var(--sp-transition);
+
+}
+
+
+/* ============================================================
+   PLACEHOLDER
+============================================================ */
+
+.staff-payments-page input.sp-form-control::placeholder,
+.staff-payments-page textarea.sp-form-control::placeholder,
+
+.sp-modal input.sp-form-control::placeholder,
+.sp-modal textarea.sp-form-control::placeholder {
+
+    color: #9CA3AF !important;
+
+    -webkit-text-fill-color: #9CA3AF !important;
+
+    opacity: 1 !important;
+
+}
+
+
+/* ============================================================
+   SELECT
+============================================================ */
+
+.staff-payments-page select.sp-form-control,
+.sp-modal select.sp-form-control {
+
+    color: #1F2937 !important;
+
+    -webkit-text-fill-color: #1F2937 !important;
+
+    background-color: #FFFFFF !important;
+
+    cursor: pointer;
+
+}
+
+
+/* ============================================================
+   SELECT OPTIONS
+============================================================ */
+
+.staff-payments-page select.sp-form-control option,
+.sp-modal select.sp-form-control option {
+
+    color: #1F2937 !important;
+
+    -webkit-text-fill-color: #1F2937 !important;
+
+    background-color: #FFFFFF !important;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+}
+
+
+/* ============================================================
+   FORM HOVER
+============================================================ */
+
+.staff-payments-page input.sp-form-control:hover,
+.staff-payments-page select.sp-form-control:hover,
+.staff-payments-page textarea.sp-form-control:hover,
+
+.sp-modal input.sp-form-control:hover,
+.sp-modal select.sp-form-control:hover,
+.sp-modal textarea.sp-form-control:hover {
+
+    color: #1F2937 !important;
+
+    background-color: #FFFFFF !important;
+
+    border-color: #9CA3AF !important;
+
+}
+
+
+/* ============================================================
+   FORM FOCUS
+============================================================ */
+
+.staff-payments-page input.sp-form-control:focus,
+.staff-payments-page select.sp-form-control:focus,
+.staff-payments-page textarea.sp-form-control:focus,
+
+.sp-modal input.sp-form-control:focus,
+.sp-modal select.sp-form-control:focus,
+.sp-modal textarea.sp-form-control:focus {
+
+    color: #111827 !important;
+
+    -webkit-text-fill-color: #111827 !important;
+
+    background-color: #FFFFFF !important;
+
+    border-color: #4B49AC !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(75, 73, 172, 0.10) !important;
+
+}
+
+
+/* ============================================================
+   DISABLED
+============================================================ */
+
+.staff-payments-page input.sp-form-control:disabled,
+.staff-payments-page select.sp-form-control:disabled,
+.staff-payments-page textarea.sp-form-control:disabled,
+
+.sp-modal input.sp-form-control:disabled,
+.sp-modal select.sp-form-control:disabled,
+.sp-modal textarea.sp-form-control:disabled {
+
+    color: #9CA3AF !important;
+
+    -webkit-text-fill-color: #9CA3AF !important;
+
+    background-color: #F3F4F6 !important;
+
+    border-color: #E5E7EB !important;
+
+    opacity: 1 !important;
+
+    cursor: not-allowed;
+
+}
+
+
+/* ============================================================
+   DATE INPUT
+============================================================ */
+
+.sp-modal input[type="date"].sp-form-control {
+
+    color: #1F2937 !important;
+
+    -webkit-text-fill-color: #1F2937 !important;
+
+    background-color: #FFFFFF !important;
+
+    color-scheme: light;
+
+}
+
+
+/* ============================================================
+   SEARCH ICON
+============================================================ */
+
+.sp-input-icon {
+
+    position: relative;
+
+    width: 100%;
+
+}
+
+
+.sp-input-icon > i {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 13px;
+
+    z-index: 3;
+
+    transform: translateY(-50%);
+
+    color: #9CA3AF !important;
+
+    pointer-events: none;
+
+}
+
+
+.sp-input-icon .sp-form-control {
+
+    padding-left: 38px !important;
+
+}
+
+
+/* ============================================================
+   CURRENCY PREFIX
+============================================================ */
+
+.sp-input-prefix {
+
+    position: relative;
+
+    width: 100%;
+
+}
+
+
+.sp-input-prefix > span {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 13px;
+
+    z-index: 3;
+
+    transform: translateY(-50%);
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    pointer-events: none;
+
+}
+
+
+.sp-input-prefix .sp-form-control {
+
+    padding-left: 31px !important;
+
+}
+
+
+/* ============================================================
+   REQUIRED
+============================================================ */
+
+.sp-required {
+
+    color: #DC2626 !important;
+
+    background: transparent !important;
+
+}
+
+
+/* ============================================================
+   FIELD ERROR
+============================================================ */
+
+.sp-field-error {
+
+    display: block;
+
+    margin: 0;
+
+    color: #DC2626 !important;
+
+    background: transparent !important;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+
+}
+
+
+/* ============================================================
+   INVALID FIELD
+============================================================ */
+
+.sp-form-control.is-invalid,
+.sp-form-control.sp-input-error {
+
+    border-color: #DC2626 !important;
+
+}
+
+
+.sp-form-control.is-invalid:focus,
+.sp-form-control.sp-input-error:focus {
+
+    border-color: #DC2626 !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(220, 38, 38, 0.08) !important;
+
+}
+
+
+/* ============================================================
+   TABLE CARD
+============================================================ */
+
+.sp-table-card {
+
+    position: relative;
+
+    min-width: 0;
+
+    background: #FFFFFF !important;
+
+    border: 1px solid #E5E7EB !important;
+
+    border-radius: 15px;
+
+    box-shadow: var(--sp-shadow-sm);
+
+    overflow: visible;
+
+}
+
+
+.sp-table-header {
+
+    min-height: 68px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 14px 18px;
+
+    background: #FFFFFF !important;
+
+    border-bottom: 1px solid #E5E7EB !important;
+
+}
+
+
+.sp-table-header h2 {
+
+    margin: 0 !important;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+}
+
+
+.sp-table-header p {
+
+    margin: 4px 0 0 !important;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 11px;
+
+}
+
+
+.sp-table-header-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+}
+
+
+/* ============================================================
+   ICON BUTTON
+============================================================ */
+
+.sp-icon-btn {
+
+    width: 37px;
+    height: 37px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid #D1D5DB !important;
+
+    border-radius: 8px;
+
+    color: #4B5563 !important;
+
+    background: #FFFFFF !important;
+
+    cursor: pointer;
+
+}
+
+
+.sp-icon-btn i {
+
+    color: inherit !important;
+
+}
+
+
+.sp-icon-btn:hover {
+
+    color: #4B49AC !important;
+
+    background:
+        rgba(75, 73, 172, 0.05) !important;
+
+    border-color:
+        rgba(75, 73, 172, 0.35) !important;
+
+}
+
+
+/* ============================================================
+   TABLE WRAPPER
+============================================================ */
+
+.sp-table-wrapper {
+
+    width: 100%;
+
+    max-width: 100%;
+
+    overflow-x: auto;
+
+    overflow-y: visible;
+
+    -webkit-overflow-scrolling: touch;
+
+}
+
+
+.sp-payments-table {
+
+    width: 100%;
+
+    min-width: 1180px;
+
+    border-collapse: separate;
+
+    border-spacing: 0;
+
+}
+
+
+.sp-payments-table thead th {
+
+    height: 46px;
+
+    padding: 0 13px;
+
+    color: #6B7280 !important;
+
+    background: #FAFBFC !important;
+
+    border-bottom: 1px solid #E5E7EB !important;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    text-align: left;
+
+    white-space: nowrap;
+
+}
+
+
+.sp-payments-table tbody td {
+
+    padding: 13px;
+
+    color: #374151 !important;
+
+    background: #FFFFFF !important;
+
+    border-bottom: 1px solid #EEF0F3 !important;
+
+    font-size: 12px;
+
+    vertical-align: middle;
+
+}
+
+
+.sp-payments-table tbody tr:hover td {
+
+    color: #1F2937 !important;
+
+    background: #FBFBFE !important;
+
+}
+
+
+.sp-actions-column {
+
+    width: 65px;
+
+    text-align: center !important;
+
+}
+
+
+/* ============================================================
+   PERSON CELL
+============================================================ */
+
+.sp-table-person {
+
+    min-width: 170px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+}
+
+
+.sp-person-avatar {
+
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #4B49AC !important;
+
+    background:
+        rgba(75, 73, 172, 0.10) !important;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+}
+
+
+.sp-person-info {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+}
+
+
+.sp-person-info strong {
+
+    max-width: 180px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 12px;
+
+}
+
+
+.sp-person-info span {
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 10px;
+
+}
+
+
+/* ============================================================
+   PAYMENT TYPE BADGE
+============================================================ */
+
+.sp-payment-type-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 25px;
+
+    padding: 4px 9px;
+
+    border-radius: 999px;
+
+    color: #4B49AC !important;
+
+    background:
+        rgba(75, 73, 172, 0.08) !important;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+}
+
+
+.sp-payment-type-salary {
+
+    color: #15803D !important;
+
+    background: #ECFDF3 !important;
+
+}
+
+
+.sp-payment-type-advance {
+
+    color: #B45309 !important;
+
+    background: #FFF7ED !important;
+
+}
+
+
+.sp-payment-type-bonus {
+
+    color: #7C3AED !important;
+
+    background: #F5F3FF !important;
+
+}
+
+
+.sp-payment-type-incentive {
+
+    color: #0369A1 !important;
+
+    background: #F0F9FF !important;
+
+}
+
+
+.sp-payment-type-reimbursement {
+
+    color: #047857 !important;
+
+    background: #ECFDF5 !important;
+
+}
+
+
+.sp-payment-type-other {
+
+    color: #4B5563 !important;
+
+    background: #F3F4F6 !important;
+
+}
+
+
+/* ============================================================
+   PAYMENT METHOD
+============================================================ */
+
+.sp-payment-method-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 25px;
+
+    padding: 4px 9px;
+
+    border-radius: 999px;
+
+    color: #4B5563 !important;
+
+    background: #F3F4F6 !important;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+}
+
+
+/* ============================================================
+   TABLE TEXT
+============================================================ */
+
+.sp-table-primary {
+
+    color: #4B49AC !important;
+
+    font-weight: 700;
+
+}
+
+
+.sp-amount-cell {
+
+    color: #111827 !important;
+
+    font-weight: 700;
+
+}
+
+
+.sp-table-date,
+.sp-table-period,
+.sp-added-by {
+
+    color: #4B5563 !important;
+
+}
+
+
+.sp-table-remarks {
+
+    display: block;
+
+    width: 150px;
+
+    max-width: 150px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #6B7280 !important;
+
+}
+
+
+/* ============================================================
+   ACTION BUTTON
+============================================================ */
+
+.sp-payment-action-wrapper {
+
+    position: relative;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.sp-action-btn {
+
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid transparent !important;
+
+    border-radius: 8px;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    cursor: pointer;
+
+}
+
+
+.sp-action-btn i {
+
+    color: inherit !important;
+
+}
+
+
+.sp-action-btn:hover,
+.sp-action-btn[aria-expanded="true"] {
+
+    color: #4B49AC !important;
+
+    background:
+        rgba(75, 73, 172, 0.08) !important;
+
+}
+
+
+/* ============================================================
+   FIXED ACTION MENU
+============================================================ */
+
+.staff-payment-action-menu,
+.sp-payment-action-menu {
+
+    position: fixed !important;
+
+    z-index: 999999 !important;
+
+    width: 190px;
+
+    min-width: 190px;
+
+    padding: 6px;
+
+    background: #FFFFFF !important;
+
+    border: 1px solid #E5E7EB !important;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 16px 40px
+        rgba(15, 23, 42, 0.18);
+
+    overflow: hidden;
+
+}
+
+
+.staff-payment-action-menu button,
+.sp-payment-action-menu button,
+.sp-action-menu-item {
+
+    width: 100%;
+
+    min-height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 8px 10px;
+
+    border: 0 !important;
+
+    border-radius: 7px;
+
+    color: #374151 !important;
+
+    background: transparent !important;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    text-align: left;
+
+    cursor: pointer;
+
+}
+
+
+.staff-payment-action-menu button i,
+.sp-payment-action-menu button i,
+.sp-action-menu-item i {
+
+    width: 17px;
+
+    color: #6B7280 !important;
+
+}
+
+
+.staff-payment-action-menu button:hover,
+.sp-payment-action-menu button:hover,
+.sp-action-menu-item:hover {
+
+    color: #4B49AC !important;
+
+    background:
+        rgba(75, 73, 172, 0.07) !important;
+
+}
+
+
+.staff-payment-action-menu button:hover i,
+.sp-payment-action-menu button:hover i,
+.sp-action-menu-item:hover i {
+
+    color: #4B49AC !important;
+
+}
+
+
+.sp-action-menu-danger {
+
+    color: #DC2626 !important;
+
+}
+
+
+.sp-action-menu-danger i {
+
+    color: #DC2626 !important;
+
+}
+
+
+.sp-action-menu-danger:hover {
+
+    color: #B91C1C !important;
+
+    background: #FEF2F2 !important;
+
+}
+
+
+/* ============================================================
+   TABLE LOADING
+============================================================ */
+
+.sp-table-loading {
+
+    min-height: 250px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    padding: 40px 20px;
+
+    color: #6B7280 !important;
+
+    background: #FFFFFF !important;
+
+    font-size: 12px;
+
+}
+
+
+.sp-loading-spinner {
+
+    width: 32px;
+    height: 32px;
+
+    border: 3px solid
+        rgba(75, 73, 172, 0.15);
+
+    border-top-color: #4B49AC;
+
+    border-radius: 50%;
+
+    animation:
+        spSpin 0.75s linear infinite;
+
+}
+
+
+.sp-button-spinner {
+
+    width: 15px;
+    height: 15px;
+
+    border: 2px solid
+        rgba(255, 255, 255, 0.35);
+
+    border-top-color: #FFFFFF;
+
+    border-radius: 50%;
+
+    animation:
+        spSpin 0.75s linear infinite;
+
+}
+
+
+@keyframes spSpin {
+
+    to {
+
+        transform: rotate(360deg);
+
+    }
+
+}
+
+
+/* ============================================================
+   TABLE ERROR
+============================================================ */
+
+.sp-table-error {
+
+    min-height: 210px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 13px;
+
+    padding: 30px;
+
+    background: #FFFFFF !important;
+
+}
+
+
+.sp-error-icon {
+
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #DC2626 !important;
+
+    background: #FEF2F2 !important;
+
+}
+
+
+.sp-error-content strong {
+
+    display: block;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 13px;
+
+}
+
+
+.sp-error-content span {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 11px;
+
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.sp-table-empty {
+
+    min-height: 270px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 40px 20px;
+
+    color: #6B7280 !important;
+
+    background: #FFFFFF !important;
+
+    text-align: center;
+
+}
+
+
+.sp-empty-icon {
+
+    width: 56px;
+    height: 56px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 13px;
+
+    border-radius: 15px;
+
+    color: #4B49AC !important;
+
+    background:
+        rgba(75, 73, 172, 0.08) !important;
+
+}
+
+
+.sp-table-empty h3 {
+
+    margin: 0 !important;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 15px;
+
+}
+
+
+.sp-table-empty p {
+
+    max-width: 420px;
+
+    margin: 7px 0 17px !important;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 12px;
+
+}
+
+
+/* ============================================================
+   PAGINATION
+============================================================ */
+
+.sp-pagination {
+
+    min-height: 60px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 11px 18px;
+
+    background: #FFFFFF !important;
+
+    border-top: 1px solid #E5E7EB !important;
+
+}
+
+
+.sp-pagination-info {
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 11px;
+
+}
+
+
+.sp-pagination-controls {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+}
+
+
+.sp-pagination-pages {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+}
+
+
+.sp-pagination-btn {
+
+    min-width: 34px;
+
+    height: 34px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0 8px;
+
+    border: 1px solid #D1D5DB !important;
+
+    border-radius: 7px;
+
+    color: #4B5563 !important;
+
+    background: #FFFFFF !important;
+
+    cursor: pointer;
+
+}
+
+
+.sp-pagination-btn:hover:not(:disabled) {
+
+    color: #4B49AC !important;
+
+    background:
+        rgba(75, 73, 172, 0.05) !important;
+
+    border-color:
+        rgba(75, 73, 172, 0.35) !important;
+
+}
+
+
+.sp-pagination-btn.active {
+
+    color: #FFFFFF !important;
+
+    background: #4B49AC !important;
+
+    border-color: #4B49AC !important;
+
+}
+
+
+/* ============================================================
+   MODAL
+============================================================ */
+
+.sp-modal {
+
+    position: fixed !important;
+
+    inset: 0 !important;
+
+    z-index: 1000000 !important;
+
+    width: 100% !important;
+
+    height: 100% !important;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    overflow: hidden !important;
+
+}
+
+
+/* ============================================================
+   MODAL BACKDROP
+============================================================ */
+
+.sp-modal-backdrop {
+
+    position: absolute !important;
+
+    inset: 0 !important;
+
+    background:
+        rgba(15, 23, 42, 0.58) !important;
+
+    backdrop-filter: blur(2px);
+
+    -webkit-backdrop-filter: blur(2px);
+
+}
+
+
+/* ============================================================
+   MODAL DIALOG
+============================================================ */
+
+.sp-modal-dialog {
+
+    position: relative;
+
+    z-index: 1;
+
+    width: 100%;
+
+    min-height: 0;
+
+    max-height:
+        calc(100vh - 40px);
+
+    display: flex;
+
+    flex-direction: column;
+
+    background: #FFFFFF !important;
+
+    border: 1px solid #E5E7EB !important;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 24px 70px
+        rgba(15, 23, 42, 0.24);
+
+    overflow: hidden !important;
+
+}
+
+
+.sp-modal-sm {
+
+    max-width: 460px;
+
+}
+
+
+.sp-modal-md {
+
+    max-width: 560px;
+
+}
+
+
+.sp-modal-lg {
+
+    max-width: 940px;
+
+}
+
+
+/* ============================================================
+   ADD PAYMENT MODAL
+============================================================ */
+
+#spAddPaymentModal {
+
+    position: fixed !important;
+
+    inset: 0 !important;
+
+    width: 100% !important;
+
+    height: 100% !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    padding: 20px !important;
+
+    overflow: hidden !important;
+
+}
+
+
+/* ============================================================
+   ADD PAYMENT DIALOG
+============================================================ */
+
+#spAddPaymentModal .sp-modal-dialog {
+
+    width: 100% !important;
+
+    max-width: 940px !important;
+
+    height:
+        calc(100vh - 40px) !important;
+
+    max-height:
+        calc(100vh - 40px) !important;
+
+    min-height: 0 !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+
+}
+
+
+/* ============================================================
+   CRITICAL FORM FLEX FIX
+============================================================ */
+
+/*
+ * The uploaded PHP places:
+ *
+ * .sp-modal-header
+ *
+ * #spAddPaymentForm
+ *     ├── .sp-modal-body
+ *     └── .sp-modal-footer
+ *
+ * Therefore #spAddPaymentForm itself MUST be flex.
+ */
+
+#spAddPaymentForm {
+
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    min-height: 0 !important;
+
+    flex: 1 1 auto !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+}
+
+
+/* ============================================================
+   MODAL HEADER
+============================================================ */
+
+.sp-modal-header {
+
+    position: relative;
+
+    min-height: 88px;
+
+    flex: 0 0 auto !important;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 16px;
+
+    padding: 17px 22px;
+
+    background: #FFFFFF !important;
+
+    border-bottom: 1px solid #EEF0F4 !important;
+
+}
+
+
+/* ============================================================
+   ADD MODAL HEADER
+============================================================ */
+
+#spAddPaymentModal .sp-modal-header {
+
+    min-height: 88px !important;
+
+    flex: 0 0 auto !important;
+
+}
+
+
+/* ============================================================
+   MODAL TITLE
+============================================================ */
+
+.sp-modal-title-wrapper {
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+}
+
+
+.sp-modal-icon {
+
+    width: 50px;
+    height: 50px;
+
+    flex: 0 0 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 13px;
+
+    color: #4B49AC !important;
+
+    background:
+        rgba(75, 73, 172, 0.09) !important;
+
+}
+
+
+.sp-modal-icon i {
+
+    color: #4B49AC !important;
+
+    font-size: 21px;
+
+}
+
+
+.sp-modal-title-wrapper h2 {
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 18px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+}
+
+
+.sp-modal-title-wrapper p {
+
+    margin: 4px 0 0 !important;
+
+    padding: 0 !important;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 11px;
+
+}
+
+
+/* ============================================================
+   MODAL CLOSE
+============================================================ */
+
+.sp-modal-close {
+
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    border: 0 !important;
+
+    border-radius: 8px;
+
+    color: #667085 !important;
+
+    background: transparent !important;
+
+    cursor: pointer;
+
+}
+
+
+.sp-modal-close i {
+
+    color: inherit !important;
+
+}
+
+
+.sp-modal-close:hover {
+
+    color: #111827 !important;
+
+    background: #F3F4F6 !important;
+
+}
+
+
+/* ============================================================
+   MODAL BODY
+============================================================ */
+
+.sp-modal-body {
+
+    width: 100%;
+
+    min-height: 0 !important;
+
+    flex: 1 1 auto !important;
+
+    overflow-y: auto !important;
+
+    overflow-x: hidden !important;
+
+    padding: 23px;
+
+    background: #FFFFFF !important;
+
+    overscroll-behavior: contain;
+
+    -webkit-overflow-scrolling: touch;
+
+}
+
+
+/* ============================================================
+   ADD PAYMENT BODY
+============================================================ */
+
+#spAddPaymentModal .sp-modal-body {
+
+    width: 100% !important;
+
+    min-height: 0 !important;
+
+    flex: 1 1 auto !important;
+
+    overflow-y: auto !important;
+
+    overflow-x: hidden !important;
+
+    padding: 23px !important;
+
+}
+
+
+/* ============================================================
+   MODAL BODY SCROLLBAR
+============================================================ */
+
+.sp-modal-body {
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        #C7CAD3
+        #F3F4F6;
+
+}
+
+
+.sp-modal-body::-webkit-scrollbar {
+
+    width: 8px;
+
+}
+
+
+.sp-modal-body::-webkit-scrollbar-track {
+
+    background: #F3F4F6;
+
+}
+
+
+.sp-modal-body::-webkit-scrollbar-thumb {
+
+    background: #C7CAD3;
+
+    border-radius: 10px;
+
+}
+
+
+.sp-modal-body::-webkit-scrollbar-thumb:hover {
+
+    background: #9CA3AF;
+
+}
+
+
+/* ============================================================
+   MODAL FOOTER
+============================================================ */
+
+.sp-modal-footer {
+
+    min-height: 70px;
+
+    flex: 0 0 auto !important;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 13px 22px;
+
+    background: #FFFFFF !important;
+
+    border-top: 1px solid #EEF0F4 !important;
+
+}
+
+
+/* ============================================================
+   ADD PAYMENT FOOTER
+============================================================ */
+
+#spAddPaymentModal .sp-modal-footer {
+
+    min-height: 70px !important;
+
+    flex: 0 0 auto !important;
+
+    background: #FFFFFF !important;
+
+    border-top: 1px solid #E5E7EB !important;
+
+}
+
+
+/* ============================================================
+   FORM SECTION
+============================================================ */
+
+.sp-form-section {
+
+    width: 100%;
+
+    background: transparent !important;
+
+}
+
+
+.sp-form-section-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin: 0 0 23px;
+
+}
+
+
+.sp-form-section-heading > i {
+
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    color: #4B49AC !important;
+
+    background:
+        rgba(75, 73, 172, 0.08) !important;
+
+}
+
+
+.sp-form-section-heading h3 {
+
+    margin: 0 !important;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+}
+
+
+.sp-form-section-heading p {
+
+    margin: 3px 0 0 !important;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 11px;
+
+}
+
+
+/* ============================================================
+   FORM GRID
+============================================================ */
+
+.sp-form-grid {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+    column-gap: 28px;
+
+    row-gap: 17px;
+
+}
+
+
+.sp-field-full {
+
+    grid-column: 1 / -1;
+
+}
+
+
+/* ============================================================
+   ADD PAYMENT FORM CONTROLS
+============================================================ */
+
+#spAddPaymentForm input.sp-form-control,
+#spAddPaymentForm select.sp-form-control,
+#spAddPaymentForm textarea.sp-form-control {
+
+    width: 100% !important;
+
+    background: #FFFFFF !important;
+
+    color: #1F2937 !important;
+
+    -webkit-text-fill-color: #1F2937 !important;
+
+    border-color: #D1D5DB !important;
+
+}
+
+
+/* ============================================================
+   ADD PAYMENT TEXTAREA
+============================================================ */
+
+#spAddRemarks {
+
+    min-height: 130px !important;
+
+    padding: 13px 14px !important;
+
+    resize: vertical;
+
+}
+
+
+/* ============================================================
+   FORM ALERT
+============================================================ */
+
+.sp-form-alert {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 9px;
+
+    margin: 0 0 17px;
+
+    padding: 11px 12px;
+
+    color: #B91C1C !important;
+
+    background: #FEF2F2 !important;
+
+    border: 1px solid #FECACA !important;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+}
+
+
+.sp-form-alert i {
+
+    color: #DC2626 !important;
+
+}
+
+
+/* ============================================================
+   TEXTAREA FOOTER
+============================================================ */
+
+.sp-textarea-footer {
+
+    min-height: 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin: 0;
+
+    color: #9CA3AF !important;
+
+    background: transparent !important;
+
+    font-size: 10px;
+
+}
+
+
+.sp-textarea-footer span {
+
+    color: #9CA3AF !important;
+
+    background: transparent !important;
+
+}
+
+
+.sp-textarea-footer strong {
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-weight: 600;
+
+}
+
+
+/* ============================================================
+   VIEW PAYMENT
+============================================================ */
+
+.sp-view-loading {
+
+    min-height: 250px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    color: #6B7280 !important;
+
+    background: #FFFFFF !important;
+
+    font-size: 12px;
+
+}
+
+
+.sp-view-error {
+
+    min-height: 180px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    color: #DC2626 !important;
+
+    background: #FFFFFF !important;
+
+    font-size: 12px;
+
+}
+
+
+.sp-payment-view-content {
+
+    width: 100%;
+
+    background: #FFFFFF !important;
+
+}
+
+
+.sp-detail-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-bottom: 18px;
+
+    padding: 14px;
+
+    border: 1px solid
+        rgba(75, 73, 172, 0.12) !important;
+
+    border-radius: 10px;
+
+    background:
+        rgba(75, 73, 172, 0.04) !important;
+
+}
+
+
+.sp-detail-label {
+
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 10px;
+
+}
+
+
+.sp-detail-code {
+
+    color: #4B49AC !important;
+
+    background: transparent !important;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+}
+
+
+.sp-detail-section {
+
+    margin-bottom: 17px;
+
+    padding-bottom: 17px;
+
+    border-bottom: 1px solid #E5E7EB !important;
+
+}
+
+
+.sp-detail-section-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 13px;
+
+}
+
+
+.sp-detail-section-heading i {
+
+    color: #4B49AC !important;
+
+}
+
+
+.sp-detail-section-heading h3 {
+
+    margin: 0 !important;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 13px;
+
+}
+
+
+.sp-detail-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 11px;
+
+}
+
+
+.sp-detail-item {
+
+    min-width: 0;
+
+    padding: 11px;
+
+    border: 1px solid #EDF0F3 !important;
+
+    border-radius: 8px;
+
+    background: #FAFBFC !important;
+
+}
+
+
+.sp-detail-item span {
+
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 10px;
+
+}
+
+
+.sp-detail-item strong {
+
+    display: block;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 12px;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+.sp-detail-amount {
+
+    color: #16A34A !important;
+
+}
+
+
+.sp-detail-remarks {
+
+    padding: 13px;
+
+    border: 1px solid #EDF0F3 !important;
+
+    border-radius: 8px;
+
+    background: #FAFBFC !important;
+
+}
+
+
+.sp-detail-remarks p {
+
+    margin: 0 !important;
+
+    color: #4B5563 !important;
+
+    background: transparent !important;
+
+    font-size: 12px;
+
+    line-height: 1.55;
+
+    white-space: pre-wrap;
+
+}
+
+
+/* ============================================================
+   EDIT SUMMARY
+============================================================ */
+
+.sp-edit-summary {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+
+}
+
+
+.sp-edit-summary > div {
+
+    padding: 12px;
+
+    border: 1px solid #E5E7EB !important;
+
+    border-radius: 8px;
+
+    background: #FAFBFC !important;
+
+}
+
+
+.sp-edit-summary span {
+
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 10px;
+
+}
+
+
+.sp-edit-summary strong {
+
+    display: block;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 12px;
+
+}
+
+
+/* ============================================================
+   DELETE
+============================================================ */
+
+.sp-delete-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    padding: 8px;
+
+    text-align: center;
+
+}
+
+
+.sp-delete-icon {
+
+    width: 62px;
+    height: 62px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 14px;
+
+    border-radius: 50%;
+
+    color: #DC2626 !important;
+
+    background: #FEF2F2 !important;
+
+}
+
+
+.sp-delete-icon i {
+
+    color: #DC2626 !important;
+
+}
+
+
+.sp-delete-content h3 {
+
+    margin: 0 !important;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 15px;
+
+}
+
+
+.sp-delete-content p {
+
+    max-width: 370px;
+
+    margin: 7px auto 0 !important;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 12px;
+
+    line-height: 1.55;
+
+}
+
+
+.sp-delete-warning {
+
+    color: #92400E !important;
+
+}
+
+
+.sp-confirm-payment-code {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 17px;
+
+    padding: 11px 13px;
+
+    border: 1px solid #E5E7EB !important;
+
+    border-radius: 8px;
+
+    background: #FAFBFC !important;
+
+}
+
+
+.sp-confirm-payment-code span {
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+}
+
+
+.sp-confirm-payment-code strong {
+
+    color: #4B49AC !important;
+
+    background: transparent !important;
+
+}
+
+
+/* ============================================================
+   RECEIPT
+============================================================ */
+
+.sp-receipt-preview-wrapper {
+
+    min-height: 0;
+
+    flex: 1 1 auto;
+
+    overflow: auto;
+
+    padding: 20px;
+
+    background: #EEF0F4 !important;
+
+}
+
+
+.sp-payment-receipt {
+
+    width: 100%;
+
+    max-width: 780px;
+
+    min-height: 1000px;
+
+    margin: 0 auto;
+
+    padding: 35px;
+
+    color: #1F2937 !important;
+
+    background: #FFFFFF !important;
+
+    border: 1px solid #E5E7EB !important;
+
+    box-shadow:
+        0 8px 30px
+        rgba(15, 23, 42, 0.10);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+}
+
+
+/* ============================================================
+   RECEIPT HEADER
+============================================================ */
+
+.sp-receipt-company-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-bottom: 18px;
+
+    border-bottom: 2px solid #4B49AC;
+
+}
+
+
+.sp-receipt-company-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+}
+
+
+.sp-receipt-company-logo {
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    color: #FFFFFF !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4B49AC,
+            #7978E9
+        ) !important;
+
+}
+
+
+.sp-receipt-company-logo span {
+
+    color: #FFFFFF !important;
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+}
+
+
+.sp-receipt-company-brand h2 {
+
+    margin: 0 !important;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 21px;
+
+    font-weight: 800;
+
+}
+
+
+.sp-receipt-company-brand p {
+
+    margin: 3px 0 0 !important;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 9px;
+
+}
+
+
+.sp-receipt-title-block {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 4px;
+
+    text-align: right;
+
+}
+
+
+.sp-receipt-title-block strong {
+
+    color: #4B49AC !important;
+
+    background: transparent !important;
+
+    font-size: 14px;
+
+}
+
+
+.sp-receipt-title-block span {
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 10px;
+
+}
+
+
+/* ============================================================
+   RECEIPT COMPANY INFO
+============================================================ */
+
+.sp-receipt-company-info {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 7px 18px;
+
+    padding: 11px 0 18px;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 9px;
+
+}
+
+
+.sp-receipt-company-info span {
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+}
+
+
+/* ============================================================
+   RECEIPT SECTION
+============================================================ */
+
+.sp-receipt-section {
+
+    margin-bottom: 16px;
+
+    padding: 14px;
+
+    border: 1px solid #E5E7EB !important;
+
+    border-radius: 8px;
+
+    background: #FFFFFF !important;
+
+}
+
+
+.sp-receipt-section-title {
+
+    margin-bottom: 12px;
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+}
+
+
+.sp-receipt-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 11px 20px;
+
+}
+
+
+.sp-receipt-grid span {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #9CA3AF !important;
+
+    background: transparent !important;
+
+    font-size: 8px;
+
+}
+
+
+.sp-receipt-grid strong {
+
+    display: block;
+
+    color: #1F2937 !important;
+
+    background: transparent !important;
+
+    font-size: 10px;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+/* ============================================================
+   RECEIPT AMOUNT
+============================================================ */
+
+.sp-receipt-amount-box {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin: 17px 0;
+
+    padding: 16px 17px;
+
+    border: 1px solid
+        rgba(75, 73, 172, 0.14) !important;
+
+    border-radius: 8px;
+
+    background:
+        rgba(75, 73, 172, 0.06) !important;
+
+}
+
+
+.sp-receipt-amount-box span {
+
+    color: #4B5563 !important;
+
+    background: transparent !important;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+}
+
+
+.sp-receipt-amount-box strong {
+
+    color: #4B49AC !important;
+
+    background: transparent !important;
+
+    font-size: 21px;
+
+}
+
+
+/* ============================================================
+   RECEIPT REMARKS
+============================================================ */
+
+.sp-receipt-remarks {
+
+    margin-bottom: 28px;
+
+    padding: 13px;
+
+    border-left: 3px solid #4B49AC;
+
+    background: #FAFBFC !important;
+
+}
+
+
+.sp-receipt-remarks > span {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 8px;
+
+}
+
+
+.sp-receipt-remarks p {
+
+    margin: 0 !important;
+
+    color: #374151 !important;
+
+    background: transparent !important;
+
+    font-size: 9px;
+
+    line-height: 1.55;
+
+}
+
+
+/* ============================================================
+   RECEIPT SIGNATURE
+============================================================ */
+
+.sp-receipt-signature-area {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 50px;
+
+    margin-top: 45px;
+
+}
+
+
+.sp-receipt-signature-area > div {
+
+    min-height: 45px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: center;
+
+    padding-top: 27px;
+
+    border-top: 1px solid #9CA3AF;
+
+}
+
+
+.sp-receipt-signature-area span {
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 8px;
+
+}
+
+
+/* ============================================================
+   RECEIPT FOOTER
+============================================================ */
+
+.sp-receipt-footer {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1.5fr
+        1fr;
+
+    gap: 18px;
+
+    margin-top: 40px;
+
+    padding-top: 14px;
+
+    border-top: 1px solid #D1D5DB;
+
+}
+
+
+.sp-receipt-footer > div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+}
+
+
+.sp-receipt-footer strong {
+
+    color: #111827 !important;
+
+    background: transparent !important;
+
+    font-size: 9px;
+
+}
+
+
+.sp-receipt-footer span {
+
+    color: #6B7280 !important;
+
+    background: transparent !important;
+
+    font-size: 8px;
+
+}
+
+
+/* ============================================================
+   TOAST
+============================================================ */
+
+.sp-toast-container {
+
+    position: fixed;
+
+    right: 20px;
+
+    bottom: 20px;
+
+    z-index: 2000000;
+
+    width:
+        min(
+            380px,
+            calc(100vw - 40px)
+        );
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+
+    pointer-events: none;
+
+}
+
+
+.sp-toast {
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding: 12px;
+
+    background: #FFFFFF !important;
+
+    border: 1px solid #E5E7EB !important;
+
+    border-radius: 9px;
+
+    box-shadow:
+        0 12px 30px
+        rgba(15, 23, 42, 0.15);
+
+    pointer-events: auto;
+
+}
+
+
+.sp-toast-message {
+
+    color: #374151 !important;
+
+    background: transparent !important;
+
+    font-size: 12px;
+
+    line-height: 1.45;
+
+}
+
+
+/* ============================================================
+   BODY MODAL LOCK
+============================================================ */
+
+body.sp-modal-open {
+
+    overflow: hidden !important;
+
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+============================================================ */
+
+.staff-payments-page button:focus-visible,
+.staff-payments-page input:focus-visible,
+.staff-payments-page select:focus-visible,
+.staff-payments-page textarea:focus-visible,
+
+.sp-modal button:focus-visible,
+.sp-modal input:focus-visible,
+.sp-modal select:focus-visible,
+.sp-modal textarea:focus-visible {
+
+    outline: 2px solid
+        rgba(75, 73, 172, 0.35) !important;
+
+    outline-offset: 2px;
+
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 1200px) {
+
+    .staff-payments-summary-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+
+    .sp-filter-body {
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+    }
+
+}
+
+
+/* ============================================================
+   SMALL LAPTOP / TABLET
+============================================================ */
+
+@media (max-width: 950px) {
+
+    .staff-payments-page-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .staff-payments-page-actions {
+
+        width: 100%;
+
+        justify-content: flex-start;
+
+    }
+
+
+    .sp-filter-body {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+
+    .sp-filter-search {
+
+        grid-column: 1 / -1;
+
+    }
+
+
+    .sp-modal-lg {
+
+        max-width: 850px;
+
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 700px) {
+
+    .staff-payments-page {
+
+        padding: 14px;
+
+    }
+
+
+    .staff-payments-summary-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+
+    }
+
+
+    .sp-filter-body {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .sp-filter-search {
+
+        grid-column: auto;
+
+    }
+
+
+    .sp-table-wrapper {
+
+        overflow-x: auto;
+
+    }
+
+
+    /* --------------------------------------------------------
+       ADD PAYMENT MODAL
+    -------------------------------------------------------- */
+
+    #spAddPaymentModal {
+
+        align-items: flex-end !important;
+
+        padding: 0 !important;
+
+    }
+
+
+    #spAddPaymentModal .sp-modal-dialog {
+
+        width: 100% !important;
+
+        max-width: none !important;
+
+        height: 94vh !important;
+
+        max-height: 94vh !important;
+
+        min-height: 0 !important;
+
+        border-radius:
+            17px 17px 0 0 !important;
+
+    }
+
+
+    #spAddPaymentModal #spAddPaymentForm {
+
+        min-height: 0 !important;
+
+        flex: 1 1 auto !important;
+
+        overflow: hidden !important;
+
+    }
+
+
+    #spAddPaymentModal .sp-modal-header {
+
+        min-height: 76px !important;
+
+        padding: 14px 16px !important;
+
+    }
+
+
+    #spAddPaymentModal .sp-modal-body {
+
+        min-height: 0 !important;
+
+        flex: 1 1 auto !important;
+
+        overflow-y: auto !important;
+
+        overflow-x: hidden !important;
+
+        padding: 18px 16px !important;
+
+    }
+
+
+    #spAddPaymentModal .sp-modal-footer {
+
+        min-height: 65px !important;
+
+        flex: 0 0 auto !important;
+
+        padding: 10px 16px !important;
+
+        flex-wrap: wrap !important;
+
+    }
+
+
+    /* --------------------------------------------------------
+       FORM SINGLE COLUMN
+    -------------------------------------------------------- */
+
+    #spAddPaymentModal .sp-form-grid {
+
+        grid-template-columns: 1fr !important;
+
+        row-gap: 15px !important;
+
+    }
+
+
+    #spAddPaymentModal .sp-field-full {
+
+        grid-column: auto !important;
+
+    }
+
+
+    /* --------------------------------------------------------
+       OTHER MODALS
+    -------------------------------------------------------- */
+
+    .sp-modal {
+
+        align-items: flex-end;
+
+        padding: 0;
+
+    }
+
+
+    .sp-modal-dialog {
+
+        width: 100%;
+
+        max-width: none;
+
+        max-height: 94vh;
+
+        border-radius:
+            17px 17px 0 0;
+
+    }
+
+
+    .sp-modal-header {
+
+        padding: 14px 16px;
+
+    }
+
+
+    .sp-modal-body {
+
+        padding: 18px 16px;
+
+    }
+
+
+    .sp-modal-footer {
+
+        padding: 10px 16px;
+
+    }
+
+
+    .sp-modal-footer .sp-btn {
+
+        flex: 1 1 auto;
+
+    }
+
+
+    .sp-detail-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .sp-edit-summary {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .sp-detail-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    /* --------------------------------------------------------
+       RECEIPT
+    -------------------------------------------------------- */
+
+    .sp-receipt-preview-wrapper {
+
+        padding: 10px;
+
+    }
+
+
+    .sp-payment-receipt {
+
+        min-height: auto;
+
+        padding: 20px;
+
+    }
+
+
+    .sp-receipt-company-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .sp-receipt-title-block {
+
+        align-items: flex-start;
+
+        text-align: left;
+
+    }
+
+
+    .sp-receipt-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .sp-receipt-amount-box {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .sp-receipt-signature-area {
+
+        grid-template-columns: 1fr;
+
+        gap: 28px;
+
+        margin-top: 35px;
+
+    }
+
+
+    .sp-receipt-footer {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .staff-payments-page {
+
+        padding: 10px;
+
+    }
+
+
+    .staff-payments-page-title h1 {
+
+        font-size: 21px;
+
+    }
+
+
+    .staff-payments-title-icon {
+
+        width: 45px;
+        height: 45px;
+
+        flex-basis: 45px;
+
+    }
+
+
+    .sp-summary-card {
+
+        min-height: 100px;
+
+        padding: 15px;
+
+    }
+
+
+    .sp-summary-card-value {
+
+        font-size: 20px;
+
+    }
+
+
+    /* --------------------------------------------------------
+       ADD PAYMENT
+    -------------------------------------------------------- */
+
+    #spAddPaymentModal .sp-modal-dialog {
+
+        height: 95vh !important;
+
+        max-height: 95vh !important;
+
+    }
+
+
+    #spAddPaymentModal .sp-modal-body {
+
+        padding: 16px 14px !important;
+
+    }
+
+
+    #spAddPaymentModal .sp-modal-footer {
+
+        min-height: 63px !important;
+
+        padding: 9px 14px !important;
+
+    }
+
+
+    .sp-modal-title-wrapper {
+
+        gap: 10px;
+
+    }
+
+
+    .sp-modal-icon {
+
+        width: 43px;
+        height: 43px;
+
+        flex-basis: 43px;
+
+    }
+
+
+    .sp-modal-title-wrapper h2 {
+
+        font-size: 16px;
+
+    }
+
+
+    .sp-modal-title-wrapper p {
+
+        font-size: 10px;
+
+    }
+
+
+    .sp-modal-footer {
+
+        gap: 7px;
+
+    }
+
+
+    .sp-modal-footer .sp-btn {
+
+        min-height: 40px;
+
+        padding: 0 10px;
+
+        font-size: 11px;
+
+    }
+
+
+    .sp-payment-receipt {
+
+        padding: 15px;
+
+    }
+
+
+    .sp-confirm-payment-code {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 5px;
+
+    }
+
+
+    .sp-toast-container {
+
+        right: 10px;
+
+        bottom: 10px;
+
+        width:
+            calc(100vw - 20px);
+
+    }
+
+}
+
+
+/* ============================================================
+   PRINT RECEIPT
+============================================================ */
+
+@media print {
+
+    body {
+
+        margin: 0 !important;
+
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+
+    }
+
+
+    body * {
+
+        visibility: hidden !important;
+
+    }
+
+
+    #spPaymentReceipt,
+    #spPaymentReceipt * {
+
+        visibility: visible !important;
+
+    }
+
+
+    #spPaymentReceipt {
+
+        position: absolute !important;
+
+        top: 0 !important;
+
+        left: 0 !important;
+
+        width: 100% !important;
+
+        max-width: none !important;
+
+        min-height: auto !important;
+
+        margin: 0 !important;
+
+        padding: 0 !important;
+
+        border: 0 !important;
+
+        box-shadow: none !important;
+
+    }
+
+
+    .sp-receipt-preview-wrapper {
+
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+
+        overflow: visible !important;
+
+    }
+
+
+    .sp-payment-receipt {
+
+        width: 100% !important;
+
+        max-width: none !important;
+
+        min-height: auto !important;
+
+        margin: 0 !important;
+
+        padding: 0 !important;
+
+        border: 0 !important;
+
+        box-shadow: none !important;
+
+    }
+
+
+    @page {
+
+        size: A4;
+
+        margin: 12mm;
+
+    }
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .staff-payments-page *,
+    .staff-payments-page *::before,
+    .staff-payments-page *::after,
+    .sp-modal *,
+    .sp-modal *::before,
+    .sp-modal *::after {
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+
+        scroll-behavior: auto !important;
+
+    }
+
+}
+
+
+/* ============================================================
+   END STAFF PAYMENTS CSS
+============================================================ */

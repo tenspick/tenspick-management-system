@@ -1,0 +1,1263 @@
+<!-- ============================================================
+     TENSPICK CRM
+     CLIENTS PAGE
+     SPA SAFE
+     ============================================================ -->
+
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'clients';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+
+<div
+    class="clients-page"
+    id="clientsPage"
+>
+
+    <!-- ========================================================
+         PAGE HEADER
+         ======================================================== -->
+
+    <div class="clients-page-header">
+
+        <div class="clients-page-heading">
+
+            <span class="clients-eyebrow">
+                CLIENT MANAGEMENT
+            </span>
+
+            <h2>
+                Clients
+            </h2>
+
+            <p>
+                Manage your active clients, business information
+                and client relationships.
+            </p>
+
+        </div>
+
+
+        <div class="clients-header-actions">
+
+            <button
+                type="button"
+                class="clients-btn clients-btn-primary"
+                id="addClientButton"
+            >
+
+                <span class="clients-btn-plus">
+                    +
+                </span>
+
+                Add Client
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         STATISTICS
+         ======================================================== -->
+
+    <div class="clients-stat-grid">
+
+        <!-- TOTAL -->
+
+        <div class="clients-stat-card">
+
+            <div class="clients-stat-icon blue">
+                👥
+            </div>
+
+            <div class="clients-stat-content">
+
+                <span>
+                    Total Clients
+                </span>
+
+                <strong id="totalClientsCount">
+                    0
+                </strong>
+
+                <small>
+                    All registered clients
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIVE -->
+
+        <div class="clients-stat-card">
+
+            <div class="clients-stat-icon green">
+                ✓
+            </div>
+
+            <div class="clients-stat-content">
+
+                <span>
+                    Active Clients
+                </span>
+
+                <strong id="activeClientsCount">
+                    0
+                </strong>
+
+                <small>
+                    Currently active
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- INACTIVE -->
+
+        <div class="clients-stat-card">
+
+            <div class="clients-stat-icon yellow">
+                ◷
+            </div>
+
+            <div class="clients-stat-content">
+
+                <span>
+                    Inactive Clients
+                </span>
+
+                <strong id="inactiveClientsCount">
+                    0
+                </strong>
+
+                <small>
+                    Currently inactive
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUSPENDED -->
+
+        <div class="clients-stat-card">
+
+            <div class="clients-stat-icon purple">
+                !
+            </div>
+
+            <div class="clients-stat-content">
+
+                <span>
+                    Suspended
+                </span>
+
+                <strong id="suspendedClientsCount">
+                    0
+                </strong>
+
+                <small>
+                    Suspended accounts
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         FILTER CARD
+         ======================================================== -->
+
+    <div class="clients-card clients-filter-card">
+
+        <div class="clients-filter-header">
+
+            <h3>
+                Find Clients
+            </h3>
+
+            <p>
+                Search and filter your client records.
+            </p>
+
+        </div>
+
+
+        <div class="clients-filter-row">
+
+            <!-- SEARCH -->
+
+            <div class="clients-search-wrapper">
+
+                <span class="clients-search-icon">
+                    ⌕
+                </span>
+
+                <input
+                    type="search"
+                    id="clientSearch"
+                    class="clients-form-control clients-search-input"
+                    placeholder="Search by name, company, mobile or client code..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <select
+                id="clientStatusFilter"
+                class="clients-form-control"
+            >
+
+                <option value="">
+                    All Status
+                </option>
+
+                <option value="active">
+                    Active
+                </option>
+
+                <option value="inactive">
+                    Inactive
+                </option>
+
+                <option value="suspended">
+                    Suspended
+                </option>
+
+            </select>
+
+
+            <!-- INDUSTRY -->
+
+            <select
+                id="clientIndustryFilter"
+                class="clients-form-control"
+            >
+
+                <option value="">
+                    All Industries
+                </option>
+
+            </select>
+
+
+            <!-- CLEAR -->
+
+            <button
+                type="button"
+                class="clients-btn clients-btn-secondary"
+                id="clearClientFilters"
+            >
+                Clear
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         CLIENT TABLE
+         ======================================================== -->
+
+    <div class="clients-card clients-table-card">
+
+        <!-- TABLE HEADER -->
+
+        <div class="clients-card-header">
+
+            <div>
+
+                <h3>
+                    Client List
+                </h3>
+
+                <p>
+                    View and manage registered clients.
+                </p>
+
+            </div>
+
+            <span
+                class="clients-result-count"
+                id="clientResultCount"
+            >
+                0 clients
+            </span>
+
+        </div>
+
+
+        <!-- ====================================================
+             HORIZONTAL TABLE SCROLL
+             ==================================================== -->
+
+        <div class="clients-table-scroll">
+
+            <table class="clients-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            CLIENT
+                        </th>
+
+                        <th>
+                            COMPANY
+                        </th>
+
+                        <th>
+                            MOBILE
+                        </th>
+
+                        <th>
+                            EMAIL
+                        </th>
+
+                        <th>
+                            INDUSTRY
+                        </th>
+
+                        <th>
+                            CLIENT CODE
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                        <th>
+                            CREATED
+                        </th>
+
+                        <th>
+                            ACTIONS
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="clientsTableBody">
+
+                    <tr>
+
+                        <td
+                            colspan="9"
+                            class="clients-table-message"
+                        >
+                            Loading clients...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ====================================================
+             PAGINATION
+             ==================================================== -->
+
+        <div
+            class="clients-pagination"
+            id="clientsPagination"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     ADD / EDIT CLIENT MODAL
+     ============================================================ -->
+
+<div
+    class="clients-modal"
+    id="clientModal"
+    hidden
+>
+
+    <div
+        class="clients-modal-backdrop"
+        data-close-client-modal
+    ></div>
+
+
+    <div
+        class="clients-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="clientModalTitle"
+    >
+
+        <!-- ====================================================
+             HEADER
+             ==================================================== -->
+
+        <div class="clients-modal-header">
+
+            <div>
+
+                <span class="clients-modal-eyebrow">
+                    CLIENT MANAGEMENT
+                </span>
+
+                <h3 id="clientModalTitle">
+                    Add New Client
+                </h3>
+
+                <p>
+                    Enter the client information below.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="clients-modal-close"
+                id="closeClientModal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- ====================================================
+             FORM
+             ==================================================== -->
+
+        <form
+            id="clientForm"
+            novalidate
+        >
+
+            <input
+                type="hidden"
+                id="clientId"
+                name="id"
+            >
+
+
+            <div class="clients-modal-body">
+
+                <div class="clients-form-grid">
+
+
+                    <!-- ==================================================
+                         BASIC INFORMATION
+                         ================================================== -->
+
+                    <div class="clients-form-section">
+
+                        <div class="clients-form-section-title">
+                            Basic Information
+                        </div>
+
+                    </div>
+
+
+                    <!-- CLIENT NAME -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientName">
+                            Client Name
+                            <span>*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientName"
+                            name="client_name"
+                            class="clients-form-control"
+                            placeholder="Enter client name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- COMPANY -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientCompanyName">
+                            Company Name
+                            <span>*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientCompanyName"
+                            name="company_name"
+                            class="clients-form-control"
+                            placeholder="Enter company name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- MOBILE -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientMobile">
+                            Mobile
+                            <span>*</span>
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="clientMobile"
+                            name="mobile"
+                            class="clients-form-control"
+                            placeholder="Mobile number"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- WHATSAPP -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientWhatsapp">
+                            WhatsApp
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="clientWhatsapp"
+                            name="whatsapp"
+                            class="clients-form-control"
+                            placeholder="WhatsApp number"
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientEmail">
+                            Email
+                            <span>*</span>
+                        </label>
+
+                        <input
+                            type="email"
+                            id="clientEmail"
+                            name="email"
+                            class="clients-form-control"
+                            placeholder="Email address"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- ALTERNATE PHONE -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientAlternatePhone">
+                            Alternate Phone
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="clientAlternatePhone"
+                            name="alternate_phone"
+                            class="clients-form-control"
+                            placeholder="Alternate phone"
+                        >
+
+                    </div>
+
+
+                    <!-- ==================================================
+                         BUSINESS INFORMATION
+                         ================================================== -->
+
+                    <div class="clients-form-section">
+
+                        <div class="clients-form-section-title">
+                            Business Information
+                        </div>
+
+                    </div>
+
+
+                    <!-- BUSINESS TYPE -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientBusinessType">
+                            Business Type
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientBusinessType"
+                            name="business_type"
+                            class="clients-form-control"
+                            placeholder="Company, Shop, Agency..."
+                        >
+
+                    </div>
+
+
+                    <!-- INDUSTRY -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientIndustry">
+                            Industry
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientIndustry"
+                            name="industry"
+                            class="clients-form-control"
+                            placeholder="IT, Education, Retail..."
+                        >
+
+                    </div>
+
+
+                    <!-- WEBSITE -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientWebsite">
+                            Website
+                        </label>
+
+                        <input
+                            type="url"
+                            id="clientWebsite"
+                            name="website"
+                            class="clients-form-control"
+                            placeholder="https://example.com"
+                        >
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientAddress">
+                            Address
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientAddress"
+                            name="address"
+                            class="clients-form-control"
+                            placeholder="Business address"
+                        >
+
+                    </div>
+
+
+                    <!-- CITY -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientCity">
+                            City
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientCity"
+                            name="city"
+                            class="clients-form-control"
+                            placeholder="City"
+                        >
+
+                    </div>
+
+
+                    <!-- STATE -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientState">
+                            State
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientState"
+                            name="state"
+                            class="clients-form-control"
+                            placeholder="State"
+                        >
+
+                    </div>
+
+
+                    <!-- PINCODE -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientPincode">
+                            Pincode
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientPincode"
+                            name="pincode"
+                            class="clients-form-control"
+                            placeholder="Pincode"
+                        >
+
+                    </div>
+
+
+                    <!-- BUSINESS DESCRIPTION -->
+
+                    <div class="clients-form-group clients-form-group-full">
+
+                        <label for="clientBusinessDescription">
+                            Business Description
+                        </label>
+
+                        <textarea
+                            id="clientBusinessDescription"
+                            name="business_description"
+                            class="clients-form-control"
+                            rows="3"
+                            placeholder="Describe the client's business..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- ==================================================
+                         CONTACT PERSON
+                         ================================================== -->
+
+                    <div class="clients-form-section">
+
+                        <div class="clients-form-section-title">
+                            Contact Person
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONTACT NAME -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientContactPersonName">
+                            Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientContactPersonName"
+                            name="contact_person_name"
+                            class="clients-form-control"
+                            placeholder="Contact person name"
+                        >
+
+                    </div>
+
+
+                    <!-- DESIGNATION -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientContactPersonDesignation">
+                            Designation
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientContactPersonDesignation"
+                            name="contact_person_designation"
+                            class="clients-form-control"
+                            placeholder="Manager, Owner..."
+                        >
+
+                    </div>
+
+
+                    <!-- CONTACT MOBILE -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientContactPersonMobile">
+                            Mobile
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="clientContactPersonMobile"
+                            name="contact_person_mobile"
+                            class="clients-form-control"
+                            placeholder="Contact mobile"
+                        >
+
+                    </div>
+
+
+                    <!-- CONTACT EMAIL -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientContactPersonEmail">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="clientContactPersonEmail"
+                            name="contact_person_email"
+                            class="clients-form-control"
+                            placeholder="Contact email"
+                        >
+
+                    </div>
+
+
+                    <!-- ==================================================
+                         BILLING INFORMATION
+                         ================================================== -->
+
+                    <div class="clients-form-section">
+
+                        <div class="clients-form-section-title">
+                            Billing Information
+                        </div>
+
+                    </div>
+
+
+                    <!-- BILLING NAME -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientBillingName">
+                            Billing Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientBillingName"
+                            name="billing_name"
+                            class="clients-form-control"
+                            placeholder="Billing name"
+                        >
+
+                    </div>
+
+
+                    <!-- GST -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientGstNumber">
+                            GST Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientGstNumber"
+                            name="gst_number"
+                            class="clients-form-control"
+                            placeholder="GST number"
+                        >
+
+                    </div>
+
+
+                    <!-- PAN -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientPanNumber">
+                            PAN Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientPanNumber"
+                            name="pan_number"
+                            class="clients-form-control"
+                            placeholder="PAN number"
+                        >
+
+                    </div>
+
+
+                    <!-- BILLING ADDRESS -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientBillingAddress">
+                            Billing Address
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clientBillingAddress"
+                            name="billing_address"
+                            class="clients-form-control"
+                            placeholder="Billing address"
+                        >
+
+                    </div>
+
+
+                    <!-- ==================================================
+                         CLIENT PORTAL
+                         ================================================== -->
+
+                    <div class="clients-form-section">
+
+                        <div class="clients-form-section-title">
+                            Client Portal
+                        </div>
+
+                    </div>
+
+
+                    <!-- LOGIN EMAIL -->
+
+                    <div class="clients-form-group clients-form-group-full">
+
+                        <label for="clientLoginEmail">
+                            Login Email
+                            <span>*</span>
+                        </label>
+
+                        <input
+                            type="email"
+                            id="clientLoginEmail"
+                            name="login_email"
+                            class="clients-form-control"
+                            placeholder="Client portal login email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientPassword">
+                            Password
+                            <span>*</span>
+                        </label>
+
+                        <input
+                            type="password"
+                            id="clientPassword"
+                            name="password"
+                            class="clients-form-control"
+                            placeholder="Minimum 8 characters"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="clients-form-group">
+
+                        <label for="clientConfirmPassword">
+                            Confirm Password
+                            <span>*</span>
+                        </label>
+
+                        <input
+                            type="password"
+                            id="clientConfirmPassword"
+                            name="confirm_password"
+                            class="clients-form-control"
+                            placeholder="Confirm password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- ==================================================
+                         STATUS
+                         ================================================== -->
+
+                    <div class="clients-form-section">
+
+                        <div class="clients-form-section-title">
+                            Status
+                        </div>
+
+                    </div>
+
+
+                    <div class="clients-form-group clients-form-group-full">
+
+                        <label for="clientStatus">
+                            Client Status
+                        </label>
+
+                        <select
+                            id="clientStatus"
+                            name="status"
+                            class="clients-form-control"
+                        >
+
+                            <option value="active">
+                                Active
+                            </option>
+
+                            <option value="inactive">
+                                Inactive
+                            </option>
+
+                            <option value="suspended">
+                                Suspended
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ==================================================
+                         INTERNAL NOTES
+                         ================================================== -->
+
+                    <div class="clients-form-section">
+
+                        <div class="clients-form-section-title">
+                            Internal Notes
+                        </div>
+
+                    </div>
+
+
+                    <div class="clients-form-group clients-form-group-full">
+
+                        <label for="clientInternalNotes">
+                            Notes
+                        </label>
+
+                        <textarea
+                            id="clientInternalNotes"
+                            name="internal_notes"
+                            class="clients-form-control"
+                            rows="4"
+                            placeholder="Internal notes about this client..."
+                        ></textarea>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- ====================================================
+                 FOOTER
+                 ==================================================== -->
+
+            <div class="clients-modal-footer">
+
+                <button
+                    type="button"
+                    class="clients-btn clients-btn-secondary"
+                    id="cancelClientModal"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="clients-btn clients-btn-primary"
+                    id="saveClientButton"
+                >
+                    Create Client
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     CLIENT PROFILE MODAL
+     ============================================================ -->
+
+<div
+    class="client-profile-modal"
+    id="clientProfileModal"
+    hidden
+>
+
+    <div
+        class="client-profile-backdrop"
+        data-close-client-profile
+    ></div>
+
+
+    <div
+        class="client-profile-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="clientProfileTitle"
+    >
+
+        <!-- PROFILE HEADER -->
+
+        <div class="client-profile-header">
+
+            <div class="client-profile-heading">
+
+                <div
+                    class="client-profile-avatar"
+                    id="clientProfileAvatar"
+                >
+                    C
+                </div>
+
+                <div class="client-profile-title">
+
+                    <span class="client-profile-eyebrow">
+                        CLIENT PROFILE
+                    </span>
+
+                    <h3 id="clientProfileTitle">
+                        Client
+                    </h3>
+
+                    <span
+                        class="client-profile-code"
+                        id="clientProfileCode"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="client-profile-close"
+                id="closeClientProfile"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div
+            class="client-profile-status-bar"
+            id="clientProfileStatusBar"
+        ></div>
+
+
+        <!-- BODY -->
+
+        <div
+            class="client-profile-body"
+            id="clientProfileBody"
+        >
+
+            <!-- Content populated by clients.js -->
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="client-profile-footer">
+
+            <button
+                type="button"
+                class="
+                    clients-btn
+                    clients-btn-secondary
+                    client-profile-delete-button
+                "
+                id="clientProfileDeleteButton"
+            >
+                Delete
+            </button>
+
+            <button
+                type="button"
+                class="clients-btn clients-btn-secondary"
+                id="clientProfileCloseButton"
+            >
+                Close
+            </button>
+
+            <button
+                type="button"
+                class="clients-btn clients-btn-primary"
+                id="clientProfileEditButton"
+            >
+                Edit Client
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

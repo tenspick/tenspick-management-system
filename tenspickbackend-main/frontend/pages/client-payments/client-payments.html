@@ -1,0 +1,2137 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'client-payments';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+<section
+    class="client-payments-page"
+    id="clientPaymentsPage"
+    data-module="client-payments"
+    aria-labelledby="clientPaymentsPageTitle"
+>
+
+    <!-- ========================================================
+         PAGE HEADER
+    ========================================================= -->
+    <header class="client-payments-page-header">
+
+        <div class="client-payments-page-heading">
+
+            <div class="client-payments-title-icon" aria-hidden="true">
+                <i class="bi bi-wallet2"></i>
+            </div>
+
+            <div>
+                <h1
+                    class="client-payments-page-title"
+                    id="clientPaymentsPageTitle"
+                >
+                    Client Payments
+                </h1>
+
+                <p class="client-payments-page-subtitle">
+                    Manage client payments, balances and payment receipts.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="client-payments-header-actions">
+
+            <button
+                type="button"
+                class="cp-btn cp-btn-secondary"
+                id="refreshPaymentsBtn"
+            >
+                <i class="bi bi-arrow-clockwise"></i>
+                <span>Refresh</span>
+            </button>
+
+            <button
+                type="button"
+                class="cp-btn cp-btn-primary"
+                id="openAddPaymentBtn"
+            >
+                <i class="bi bi-plus-lg"></i>
+                <span>Add Payment</span>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ========================================================
+         SUMMARY CARDS
+    ========================================================= -->
+    <section
+        class="client-payments-summary-grid"
+        aria-label="Payment summary"
+    >
+
+        <!-- Total Payments -->
+        <article class="cp-summary-card">
+
+            <div class="cp-summary-icon cp-summary-icon-blue">
+                <i class="bi bi-receipt"></i>
+            </div>
+
+            <div class="cp-summary-content">
+
+                <span class="cp-summary-label">
+                    Total Payments
+                </span>
+
+                <strong
+                    class="cp-summary-value"
+                    id="totalPaymentsCount"
+                >
+                    0
+                </strong>
+
+                <span class="cp-summary-description">
+                    Recorded transactions
+                </span>
+
+            </div>
+
+        </article>
+
+
+        <!-- Total Received -->
+        <article class="cp-summary-card">
+
+            <div class="cp-summary-icon cp-summary-icon-green">
+                <i class="bi bi-cash-stack"></i>
+            </div>
+
+            <div class="cp-summary-content">
+
+                <span class="cp-summary-label">
+                    Total Received
+                </span>
+
+                <strong
+                    class="cp-summary-value"
+                    id="totalReceivedAmount"
+                >
+                    ₹0.00
+                </strong>
+
+                <span class="cp-summary-description">
+                    Amount received
+                </span>
+
+            </div>
+
+        </article>
+
+
+        <!-- Outstanding -->
+        <article class="cp-summary-card">
+
+            <div class="cp-summary-icon cp-summary-icon-orange">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+
+            <div class="cp-summary-content">
+
+                <span class="cp-summary-label">
+                    Outstanding
+                </span>
+
+                <strong
+                    class="cp-summary-value"
+                    id="totalOutstandingAmount"
+                >
+                    ₹0.00
+                </strong>
+
+                <span class="cp-summary-description">
+                    Amount remaining
+                </span>
+
+            </div>
+
+        </article>
+
+
+        <!-- Current Month -->
+        <article class="cp-summary-card">
+
+            <div class="cp-summary-icon cp-summary-icon-purple">
+                <i class="bi bi-calendar2-check"></i>
+            </div>
+
+            <div class="cp-summary-content">
+
+                <span class="cp-summary-label">
+                    This Month
+                </span>
+
+                <strong
+                    class="cp-summary-value"
+                    id="currentMonthAmount"
+                >
+                    ₹0.00
+                </strong>
+
+                <span class="cp-summary-description">
+                    Payments received this month
+                </span>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- ========================================================
+         FILTER CARD
+    ========================================================= -->
+    <section class="client-payments-filter-card">
+
+        <div class="cp-filter-header">
+
+            <div class="cp-filter-heading">
+
+                <div class="cp-filter-title-icon">
+                    <i class="bi bi-funnel"></i>
+                </div>
+
+                <div>
+                    <h2 class="cp-filter-title">
+                        Payment Filters
+                    </h2>
+
+                    <p class="cp-filter-subtitle">
+                        Search and filter payment records.
+                    </p>
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="cp-btn cp-btn-light"
+                id="resetPaymentFiltersBtn"
+            >
+                <i class="bi bi-arrow-counterclockwise"></i>
+                <span>Reset</span>
+            </button>
+
+        </div>
+
+
+        <div class="cp-filter-grid">
+
+            <!-- Search -->
+            <div class="cp-form-group cp-search-group">
+
+                <label
+                    class="cp-form-label"
+                    for="paymentSearch"
+                >
+                    Search
+                </label>
+
+                <div class="cp-input-with-icon">
+
+                    <i class="bi bi-search"></i>
+
+                    <input
+                        type="search"
+                        id="paymentSearch"
+                        class="cp-form-control"
+                        placeholder="Payment ID, client, project or transaction..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Client -->
+            <div class="cp-form-group">
+
+                <label
+                    class="cp-form-label"
+                    for="paymentClientFilter"
+                >
+                    Client
+                </label>
+
+                <select
+                    id="paymentClientFilter"
+                    class="cp-form-control"
+                >
+                    <option value="">
+                        All Clients
+                    </option>
+                </select>
+
+            </div>
+
+
+            <!-- Project -->
+            <div class="cp-form-group">
+
+                <label
+                    class="cp-form-label"
+                    for="paymentProjectFilter"
+                >
+                    Project
+                </label>
+
+                <select
+                    id="paymentProjectFilter"
+                    class="cp-form-control"
+                >
+                    <option value="">
+                        All Projects
+                    </option>
+                </select>
+
+            </div>
+
+
+            <!-- Method -->
+            <div class="cp-form-group">
+
+                <label
+                    class="cp-form-label"
+                    for="paymentMethodFilter"
+                >
+                    Payment Method
+                </label>
+
+                <select
+                    id="paymentMethodFilter"
+                    class="cp-form-control"
+                >
+                    <option value="">
+                        All Methods
+                    </option>
+
+                    <option value="cash">
+                        Cash
+                    </option>
+
+                    <option value="upi">
+                        UPI
+                    </option>
+
+                    <option value="bank_transfer">
+                        Bank Transfer
+                    </option>
+
+                    <option value="card">
+                        Card
+                    </option>
+
+                    <option value="cheque">
+                        Cheque
+                    </option>
+
+                    <option value="other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- From Date -->
+            <div class="cp-form-group">
+
+                <label
+                    class="cp-form-label"
+                    for="paymentFromDate"
+                >
+                    From Date
+                </label>
+
+                <input
+                    type="date"
+                    id="paymentFromDate"
+                    class="cp-form-control"
+                >
+
+            </div>
+
+
+            <!-- To Date -->
+            <div class="cp-form-group">
+
+                <label
+                    class="cp-form-label"
+                    for="paymentToDate"
+                >
+                    To Date
+                </label>
+
+                <input
+                    type="date"
+                    id="paymentToDate"
+                    class="cp-form-control"
+                >
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================
+         PAYMENTS TABLE
+    ========================================================= -->
+    <section class="client-payments-table-card">
+
+        <div class="cp-table-header">
+
+            <div class="cp-table-heading">
+
+                <div class="cp-table-title-icon">
+                    <i class="bi bi-list-ul"></i>
+                </div>
+
+                <div>
+                    <h2 class="cp-table-title">
+                        Payment Records
+                    </h2>
+
+                    <p class="cp-table-subtitle">
+                        Complete payment transaction history.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="cp-table-header-right">
+
+                <span
+                    class="cp-record-count"
+                    id="paymentRecordCount"
+                >
+                    0 records
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="cp-table-wrapper">
+
+            <table class="cp-payment-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th scope="col">
+                            Payment ID
+                        </th>
+
+                        <th scope="col">
+                            Client
+                        </th>
+
+                        <th scope="col">
+                            Project
+                        </th>
+
+                        <th scope="col">
+                            Amount
+                        </th>
+
+                        <th scope="col">
+                            Payment Date
+                        </th>
+
+                        <th scope="col">
+                            Method
+                        </th>
+
+                        <th scope="col">
+                            Purpose
+                        </th>
+
+                        <th scope="col">
+                            Paid After
+                        </th>
+
+                        <th scope="col">
+                            Remaining
+                        </th>
+
+                        <th scope="col">
+                            Added By
+                        </th>
+
+                        <th
+                            scope="col"
+                            class="cp-actions-column"
+                        >
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="paymentsTableBody">
+
+                    <!-- Loading -->
+                    <tr id="paymentsLoadingRow">
+
+                        <td
+                            colspan="11"
+                            class="cp-loading-state"
+                        >
+
+                            <div class="cp-loading-content">
+
+                                <span
+                                    class="cp-loading-spinner"
+                                    aria-hidden="true"
+                                ></span>
+
+                                <span>
+                                    Loading payment records...
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- Empty -->
+                    <tr
+                        id="paymentsEmptyState"
+                        hidden
+                    >
+
+                        <td
+                            colspan="11"
+                            class="cp-empty-state"
+                        >
+
+                            <div class="cp-empty-icon">
+                                <i class="bi bi-receipt-cutoff"></i>
+                            </div>
+
+                            <h3>
+                                No payments found
+                            </h3>
+
+                            <p>
+                                No payment records match the current filters.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="cp-btn cp-btn-primary cp-empty-add-btn"
+                                id="emptyAddPaymentBtn"
+                            >
+                                <i class="bi bi-plus-lg"></i>
+                                Add Payment
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- Error -->
+                    <tr
+                        id="paymentsErrorState"
+                        hidden
+                    >
+
+                        <td
+                            colspan="11"
+                            class="cp-error-state"
+                        >
+
+                            <div class="cp-error-icon">
+                                <i class="bi bi-exclamation-triangle"></i>
+                            </div>
+
+                            <h3>
+                                Unable to load payments
+                            </h3>
+
+                            <p id="paymentsErrorMessage">
+                                Something went wrong while loading payment records.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="cp-btn cp-btn-primary"
+                                id="retryPaymentsBtn"
+                            >
+                                <i class="bi bi-arrow-repeat"></i>
+                                Try Again
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- Pagination -->
+        <div class="cp-pagination-container">
+
+            <div
+                class="cp-pagination-info"
+                id="paymentPaginationInfo"
+            >
+                Showing 0–0 of 0
+            </div>
+
+            <nav
+                class="cp-pagination"
+                id="paymentPagination"
+                aria-label="Payment pagination"
+            ></nav>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================
+         ADD PAYMENT MODAL
+    ========================================================= -->
+    <div
+        class="cp-modal-overlay"
+        id="addPaymentModal"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="addPaymentModalTitle"
+     >
+
+        <div class="cp-modal-dialog cp-modal-lg">
+
+            <div class="cp-modal-header">
+
+                <div class="cp-modal-heading">
+
+                    <div class="cp-modal-title-icon">
+                        <i class="bi bi-wallet2"></i>
+                    </div>
+
+                    <div>
+                        <h2
+                            class="cp-modal-title"
+                            id="addPaymentModalTitle"
+                        >
+                            Add Client Payment
+                        </h2>
+
+                        <p class="cp-modal-subtitle">
+                            Record a new payment against a project.
+                        </p>
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="cp-modal-close"
+                    data-modal-close="addPaymentModal"
+                    aria-label="Close"
+                >
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+            </div>
+
+
+            <form
+                id="addPaymentForm"
+                novalidate
+            >
+
+                <div class="cp-modal-body">
+
+                    <!-- Form Error -->
+                    <div
+                        class="cp-form-alert cp-form-alert-danger"
+                        id="addPaymentFormError"
+                        hidden
+                    >
+                        <i class="bi bi-exclamation-circle"></i>
+
+                        <span id="addPaymentFormErrorMessage">
+                            Please correct the highlighted fields.
+                        </span>
+                    </div>
+
+
+                    <!-- ==================================================
+                         SECTION 1 - CLIENT & PROJECT
+                    =================================================== -->
+                    <section class="cp-form-section">
+
+                        <div class="cp-form-section-heading">
+
+                            <span class="cp-section-number">
+                                01
+                            </span>
+
+                            <div>
+                                <h3>
+                                    Client & Project
+                                </h3>
+
+                                <p>
+                                    Select the client and project receiving the payment.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="cp-form-grid cp-form-grid-2">
+
+                            <!-- Client -->
+                            <div class="cp-form-group">
+
+                                <label
+                                    class="cp-form-label"
+                                    for="addPaymentClient"
+                                >
+                                    Client
+                                    <span class="cp-required">*</span>
+                                </label>
+
+                                <select
+                                    id="addPaymentClient"
+                                    name="client_id"
+                                    class="cp-form-control"
+                                    required
+                                >
+                                    <option value="">
+                                        Select Client
+                                    </option>
+                                </select>
+
+                                <small
+                                    class="cp-field-error"
+                                    data-error-for="addPaymentClient"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Project -->
+                            <div class="cp-form-group">
+
+                                <label
+                                    class="cp-form-label"
+                                    for="addPaymentProject"
+                                >
+                                    Project
+                                    <span class="cp-required">*</span>
+                                </label>
+
+                                <select
+                                    id="addPaymentProject"
+                                    name="project_id"
+                                    class="cp-form-control"
+                                    required
+                                    disabled
+                                >
+                                    <option value="">
+                                        Select Client First
+                                    </option>
+                                </select>
+
+                                <small
+                                    class="cp-field-help"
+                                    id="paymentProjectHelp"
+                                >
+                                    Select a client to load their projects.
+                                </small>
+
+                                <small
+                                    class="cp-field-error"
+                                    data-error-for="addPaymentProject"
+                                ></small>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Project Balance Preview -->
+                        <div
+                            class="cp-project-balance-preview"
+                            id="paymentProjectBalancePreview"
+                            hidden
+                        >
+
+                            <div class="cp-balance-preview-header">
+
+                                <div>
+                                    <span class="cp-preview-label">
+                                        Selected Project
+                                    </span>
+
+                                    <strong
+                                        id="previewProjectName"
+                                        class="cp-preview-project-name"
+                                    >
+                                        —
+                                    </strong>
+                                </div>
+
+                                <span
+                                    id="previewProjectStatus"
+                                    class="cp-status-badge"
+                                >
+                                    —
+                                </span>
+
+                            </div>
+
+
+                            <div class="cp-balance-preview-grid">
+
+                                <div class="cp-preview-item">
+
+                                    <span>
+                                        Project Amount
+                                    </span>
+
+                                    <strong id="previewProjectAmount">
+                                        ₹0.00
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="cp-preview-item">
+
+                                    <span>
+                                        Paid So Far
+                                    </span>
+
+                                    <strong id="previewPaidAmount">
+                                        ₹0.00
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="cp-preview-item cp-preview-item-highlight">
+
+                                    <span>
+                                        Remaining
+                                    </span>
+
+                                    <strong id="previewRemainingAmount">
+                                        ₹0.00
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ==================================================
+                         SECTION 2 - PAYMENT DETAILS
+                    =================================================== -->
+                    <section class="cp-form-section">
+
+                        <div class="cp-form-section-heading">
+
+                            <span class="cp-section-number">
+                                02
+                            </span>
+
+                            <div>
+                                <h3>
+                                    Payment Details
+                                </h3>
+
+                                <p>
+                                    Enter the financial transaction information.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="cp-form-grid cp-form-grid-2">
+
+                            <!-- Amount -->
+                            <div class="cp-form-group">
+
+                                <label
+                                    class="cp-form-label"
+                                    for="addPaymentAmount"
+                                >
+                                    Payment Amount
+                                    <span class="cp-required">*</span>
+                                </label>
+
+                                <div class="cp-input-with-prefix">
+
+                                    <span class="cp-input-prefix">
+                                        ₹
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        id="addPaymentAmount"
+                                        name="amount"
+                                        class="cp-form-control"
+                                        min="0.01"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        required
+                                    >
+
+                                </div>
+
+                                <small
+                                    class="cp-field-help"
+                                    id="paymentAmountHelp"
+                                >
+                                    Enter the amount received from the client.
+                                </small>
+
+                                <small
+                                    class="cp-field-error"
+                                    data-error-for="addPaymentAmount"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Payment Date -->
+                            <div class="cp-form-group">
+
+                                <label
+                                    class="cp-form-label"
+                                    for="addPaymentDate"
+                                >
+                                    Payment Date
+                                    <span class="cp-required">*</span>
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="addPaymentDate"
+                                    name="payment_date"
+                                    class="cp-form-control"
+                                    required
+                                >
+
+                                <small
+                                    class="cp-field-error"
+                                    data-error-for="addPaymentDate"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Method -->
+                            <div class="cp-form-group">
+
+                                <label
+                                    class="cp-form-label"
+                                    for="addPaymentMethod"
+                                >
+                                    Payment Method
+                                    <span class="cp-required">*</span>
+                                </label>
+
+                                <select
+                                    id="addPaymentMethod"
+                                    name="payment_method"
+                                    class="cp-form-control"
+                                    required
+                                >
+                                    <option value="">
+                                        Select Method
+                                    </option>
+
+                                    <option value="cash">
+                                        Cash
+                                    </option>
+
+                                    <option value="upi">
+                                        UPI
+                                    </option>
+
+                                    <option value="bank_transfer">
+                                        Bank Transfer
+                                    </option>
+
+                                    <option value="card">
+                                        Card
+                                    </option>
+
+                                    <option value="cheque">
+                                        Cheque
+                                    </option>
+
+                                    <option value="other">
+                                        Other
+                                    </option>
+
+                                </select>
+
+                                <small
+                                    class="cp-field-error"
+                                    data-error-for="addPaymentMethod"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Transaction ID -->
+                            <div class="cp-form-group">
+
+                                <label
+                                    class="cp-form-label"
+                                    for="addPaymentTransactionId"
+                                >
+                                    Transaction ID
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="addPaymentTransactionId"
+                                    name="transaction_id"
+                                    class="cp-form-control"
+                                    maxlength="150"
+                                    placeholder="UPI / bank reference / cheque no."
+                                >
+
+                                <small class="cp-field-help">
+                                    Optional. Useful for digital or cheque payments.
+                                </small>
+
+                                <small
+                                    class="cp-field-error"
+                                    data-error-for="addPaymentTransactionId"
+                                ></small>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ==================================================
+                         SECTION 3 - PURPOSE & REMARKS
+                    =================================================== -->
+                    <section class="cp-form-section">
+
+                        <div class="cp-form-section-heading">
+
+                            <span class="cp-section-number">
+                                03
+                            </span>
+
+                            <div>
+                                <h3>
+                                    Additional Information
+                                </h3>
+
+                                <p>
+                                    Add payment purpose and internal remarks.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="cp-form-grid">
+
+                            <!-- Purpose -->
+                            <div class="cp-form-group">
+
+                                <label
+                                    class="cp-form-label"
+                                    for="addPaymentPurpose"
+                                >
+                                    Payment Purpose
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="addPaymentPurpose"
+                                    name="purpose"
+                                    class="cp-form-control"
+                                    maxlength="255"
+                                    placeholder="Example: Website development advance"
+                                >
+
+                                <small class="cp-field-help">
+                                    Enter the purpose as free text.
+                                </small>
+
+                                <small
+                                    class="cp-field-error"
+                                    data-error-for="addPaymentPurpose"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Remarks -->
+                            <div class="cp-form-group">
+
+                                <div class="cp-label-row">
+
+                                    <label
+                                        class="cp-form-label"
+                                        for="addPaymentRemarks"
+                                    >
+                                        Remarks
+                                    </label>
+
+                                    <span
+                                        class="cp-character-count"
+                                        id="addPaymentRemarksCount"
+                                    >
+                                        0 / 1000
+                                    </span>
+
+                                </div>
+
+                                <textarea
+                                    id="addPaymentRemarks"
+                                    name="remarks"
+                                    class="cp-form-control cp-textarea"
+                                    maxlength="1000"
+                                    rows="4"
+                                    placeholder="Add any additional notes..."
+                                ></textarea>
+
+                                <small
+                                    class="cp-field-error"
+                                    data-error-for="addPaymentRemarks"
+                                ></small>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ==================================================
+                         PAYMENT CALCULATION
+                    =================================================== -->
+                    <section
+                        class="cp-payment-calculation"
+                        id="addPaymentCalculation"
+                        hidden
+                    >
+
+                        <div class="cp-calculation-header">
+
+                            <div>
+                                <span class="cp-calculation-kicker">
+                                    PAYMENT CALCULATION
+                                </span>
+
+                                <h3>
+                                    Balance After This Payment
+                                </h3>
+                            </div>
+
+                            <i
+                                class="bi bi-calculator"
+                                aria-hidden="true"
+                            ></i>
+
+                        </div>
+
+
+                        <div class="cp-calculation-grid">
+
+                            <div class="cp-calculation-item">
+
+                                <span>
+                                    Project Amount
+                                </span>
+
+                                <strong id="calcProjectAmount">
+                                    ₹0.00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="cp-calculation-item">
+
+                                <span>
+                                    Paid Before
+                                </span>
+
+                                <strong id="calcPaidBefore">
+                                    ₹0.00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="cp-calculation-item cp-calculation-payment">
+
+                                <span>
+                                    Current Payment
+                                </span>
+
+                                <strong id="calcCurrentPayment">
+                                    ₹0.00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="cp-calculation-item cp-calculation-remaining">
+
+                                <span>
+                                    Remaining After
+                                </span>
+
+                                <strong id="calcRemainingAfter">
+                                    ₹0.00
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <!-- Modal Footer -->
+                <div class="cp-modal-footer">
+
+                    <button
+                        type="button"
+                        class="cp-btn cp-btn-light"
+                        data-modal-close="addPaymentModal"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="cp-btn cp-btn-primary"
+                        id="savePaymentBtn"
+                    >
+                        <i class="bi bi-check2-circle"></i>
+                        <span>Save Payment</span>
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         EDIT PAYMENT MODAL
+    ========================================================= -->
+    <div
+        class="cp-modal-overlay"
+        id="editPaymentModal"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="editPaymentModalTitle"
+    >
+
+        <div class="cp-modal-dialog cp-modal-lg">
+
+            <div class="cp-modal-header">
+
+                <div class="cp-modal-heading">
+
+                    <div class="cp-modal-title-icon cp-modal-title-icon-edit">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+
+                    <div>
+                        <h2
+                            class="cp-modal-title"
+                            id="editPaymentModalTitle"
+                        >
+                            Edit Payment
+                        </h2>
+
+                        <p class="cp-modal-subtitle">
+                            Update non-financial payment information.
+                        </p>
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="cp-modal-close"
+                    data-modal-close="editPaymentModal"
+                    aria-label="Close"
+                >
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+            </div>
+
+
+            <form
+                id="editPaymentForm"
+                novalidate
+            >
+
+                <div class="cp-modal-body">
+
+                    <!-- Error -->
+                    <div
+                        class="cp-form-alert cp-form-alert-danger"
+                        id="editPaymentFormError"
+                        hidden
+                    >
+                        <i class="bi bi-exclamation-circle"></i>
+
+                        <span id="editPaymentFormErrorMessage">
+                            Unable to update payment.
+                        </span>
+                    </div>
+
+
+                    <!-- Immutable information -->
+                    <section class="cp-immutable-payment-card">
+
+                        <div class="cp-immutable-header">
+
+                            <div>
+                                <span class="cp-immutable-kicker">
+                                    FINANCIAL RECORD
+                                </span>
+
+                                <h3>
+                                    Protected Payment Information
+                                </h3>
+                            </div>
+
+                            <span class="cp-immutable-lock">
+                                <i class="bi bi-lock-fill"></i>
+                                Immutable
+                            </span>
+
+                        </div>
+
+
+                        <div class="cp-immutable-grid">
+
+                            <div class="cp-immutable-item">
+
+                                <span>
+                                    Payment ID
+                                </span>
+
+                                <strong id="editPaymentCode">
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                            <div class="cp-immutable-item">
+
+                                <span>
+                                    Client
+                                </span>
+
+                                <strong id="editPaymentClient">
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                            <div class="cp-immutable-item">
+
+                                <span>
+                                    Project
+                                </span>
+
+                                <strong id="editPaymentProject">
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                            <div class="cp-immutable-item">
+
+                                <span>
+                                    Amount
+                                </span>
+
+                                <strong id="editPaymentAmountDisplay">
+                                    ₹0.00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="cp-immutable-item">
+
+                                <span>
+                                    Payment Date
+                                </span>
+
+                                <strong id="editPaymentDateDisplay">
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                            <div class="cp-immutable-item">
+
+                                <span>
+                                    Method
+                                </span>
+
+                                <strong id="editPaymentMethodDisplay">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- Editable fields -->
+                    <section class="cp-form-section">
+
+                        <div class="cp-form-section-heading">
+
+                            <span class="cp-section-number">
+                                01
+                            </span>
+
+                            <div>
+                                <h3>
+                                    Editable Information
+                                </h3>
+
+                                <p>
+                                    Only purpose, transaction ID and remarks can be changed.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <input
+                            type="hidden"
+                            id="editPaymentId"
+                            name="id"
+                        >
+
+
+                        <div class="cp-form-grid">
+
+                            <!-- Purpose -->
+                            <div class="cp-form-group">
+
+                                <label
+                                    class="cp-form-label"
+                                    for="editPaymentPurpose"
+                                >
+                                    Payment Purpose
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="editPaymentPurpose"
+                                    name="purpose"
+                                    class="cp-form-control"
+                                    maxlength="255"
+                                    placeholder="Payment purpose"
+                                >
+
+                                <small
+                                    class="cp-field-error"
+                                    data-error-for="editPaymentPurpose"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Transaction ID -->
+                            <div class="cp-form-group">
+
+                                <label
+                                    class="cp-form-label"
+                                    for="editPaymentTransactionId"
+                                >
+                                    Transaction ID
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="editPaymentTransactionId"
+                                    name="transaction_id"
+                                    class="cp-form-control"
+                                    maxlength="150"
+                                    placeholder="Transaction reference"
+                                >
+
+                                <small
+                                    class="cp-field-error"
+                                    data-error-for="editPaymentTransactionId"
+                                ></small>
+
+                            </div>
+
+
+                            <!-- Remarks -->
+                            <div class="cp-form-group">
+
+                                <div class="cp-label-row">
+
+                                    <label
+                                        class="cp-form-label"
+                                        for="editPaymentRemarks"
+                                    >
+                                        Remarks
+                                    </label>
+
+                                    <span
+                                        class="cp-character-count"
+                                        id="editPaymentRemarksCount"
+                                    >
+                                        0 / 1000
+                                    </span>
+
+                                </div>
+
+                                <textarea
+                                    id="editPaymentRemarks"
+                                    name="remarks"
+                                    class="cp-form-control cp-textarea"
+                                    maxlength="1000"
+                                    rows="5"
+                                    placeholder="Payment remarks..."
+                                ></textarea>
+
+                                <small
+                                    class="cp-field-error"
+                                    data-error-for="editPaymentRemarks"
+                                ></small>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <div class="cp-modal-footer">
+
+                    <button
+                        type="button"
+                        class="cp-btn cp-btn-light"
+                        data-modal-close="editPaymentModal"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="cp-btn cp-btn-primary"
+                        id="updatePaymentBtn"
+                    >
+                        <i class="bi bi-check2-circle"></i>
+                        <span>Update Payment</span>
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         VIEW PAYMENT MODAL
+    ========================================================= -->
+    <div
+        class="cp-modal-overlay"
+        id="viewPaymentModal"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="viewPaymentModalTitle"
+    >
+
+        <div class="cp-modal-dialog cp-modal-lg">
+
+            <div class="cp-modal-header">
+
+                <div class="cp-modal-heading">
+
+                    <div class="cp-modal-title-icon cp-modal-title-icon-view">
+                        <i class="bi bi-eye"></i>
+                    </div>
+
+                    <div>
+                        <h2
+                            class="cp-modal-title"
+                            id="viewPaymentModalTitle"
+                        >
+                            Payment Details
+                        </h2>
+
+                        <p class="cp-modal-subtitle">
+                            Complete payment transaction information.
+                        </p>
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="cp-modal-close"
+                    data-modal-close="viewPaymentModal"
+                    aria-label="Close"
+                >
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+            </div>
+
+
+            <div
+                class="cp-modal-body cp-view-payment-body"
+                id="paymentViewContent"
+            >
+
+                <div class="cp-view-loading">
+
+                    <span class="cp-loading-spinner"></span>
+
+                    <span>
+                        Loading payment details...
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="cp-modal-footer">
+
+                <button
+                    type="button"
+                    class="cp-btn cp-btn-light"
+                    id="viewPaymentHistoryBtn"
+                >
+                    <i class="bi bi-clock-history"></i>
+                    <span>Client History</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="cp-btn cp-btn-secondary"
+                    id="viewPaymentReceiptBtn"
+                >
+                    <i class="bi bi-receipt"></i>
+                    <span>View Receipt</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="cp-btn cp-btn-primary"
+                    id="viewPaymentEditBtn"
+                >
+                    <i class="bi bi-pencil"></i>
+                    <span>Edit</span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         PAYMENT RECEIPT MODAL
+    ========================================================= -->
+    <div
+        class="cp-modal-overlay cp-receipt-overlay"
+        id="paymentReceiptModal"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="paymentReceiptModalTitle"
+    >
+
+        <div class="cp-receipt-modal-dialog">
+
+            <div class="cp-receipt-modal-header">
+
+                <div>
+
+                    <h2 id="paymentReceiptModalTitle">
+                        Payment Receipt
+                    </h2>
+
+                    <p>
+                        Official Tenspick payment receipt
+                    </p>
+
+                </div>
+
+                <div class="cp-receipt-header-actions">
+
+                    <button
+                        type="button"
+                        class="cp-btn cp-btn-secondary cp-btn-sm"
+                        id="printPaymentReceiptBtn"
+                    >
+                        <i class="bi bi-printer"></i>
+                        <span>Print</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="cp-btn cp-btn-primary cp-btn-sm"
+                        id="downloadPaymentReceiptBtn"
+                    >
+                        <i class="bi bi-download"></i>
+                        <span>Download</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="cp-modal-close"
+                        data-modal-close="paymentReceiptModal"
+                        aria-label="Close"
+                    >
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="cp-receipt-body">
+
+                <div
+                    class="cp-receipt-container"
+                    id="paymentReceiptContent"
+                >
+
+                    <!-- JS generates receipt here -->
+
+                    <div class="cp-receipt-loading">
+
+                        <span class="cp-loading-spinner"></span>
+
+                        <span>
+                            Preparing receipt...
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         CLIENT PAYMENT HISTORY MODAL
+    ========================================================= -->
+    <div
+        class="cp-modal-overlay"
+        id="clientPaymentHistoryModal"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="clientPaymentHistoryTitle"
+    >
+
+        <div class="cp-modal-dialog cp-modal-xl">
+
+            <div class="cp-modal-header">
+
+                <div class="cp-modal-heading">
+
+                    <div class="cp-modal-title-icon cp-modal-title-icon-history">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+
+                    <div>
+
+                        <h2
+                            class="cp-modal-title"
+                            id="clientPaymentHistoryTitle"
+                        >
+                            Client Payment History
+                        </h2>
+
+                        <p
+                            class="cp-modal-subtitle"
+                            id="clientPaymentHistorySubtitle"
+                        >
+                            Complete payment history
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="cp-modal-close"
+                    data-modal-close="clientPaymentHistoryModal"
+                    aria-label="Close"
+                >
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+            </div>
+
+
+            <div class="cp-modal-body">
+
+                <!-- Client Summary -->
+                <section
+                    class="cp-history-client-summary"
+                    id="paymentHistoryClientSummary"
+                >
+
+                    <div class="cp-history-client-main">
+
+                        <div class="cp-history-client-avatar">
+                            <i class="bi bi-person"></i>
+                        </div>
+
+                        <div>
+
+                            <span class="cp-history-client-label">
+                                CLIENT
+                            </span>
+
+                            <strong
+                                class="cp-history-client-name"
+                                id="historyClientName"
+                            >
+                                —
+                            </strong>
+
+                            <span
+                                class="cp-history-client-company"
+                                id="historyClientCompany"
+                            >
+                                —
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="cp-history-summary-grid">
+
+                        <div class="cp-history-summary-item">
+
+                            <span>
+                                Total Project Value
+                            </span>
+
+                            <strong id="historyTotalProjectValue">
+                                ₹0.00
+                            </strong>
+
+                        </div>
+
+
+                        <div class="cp-history-summary-item">
+
+                            <span>
+                                Total Paid
+                            </span>
+
+                            <strong id="historyTotalPaid">
+                                ₹0.00
+                            </strong>
+
+                        </div>
+
+
+                        <div class="cp-history-summary-item">
+
+                            <span>
+                                Total Remaining
+                            </span>
+
+                            <strong id="historyTotalRemaining">
+                                ₹0.00
+                            </strong>
+
+                        </div>
+
+
+                        <div class="cp-history-summary-item">
+
+                            <span>
+                                Payments
+                            </span>
+
+                            <strong id="historyPaymentCount">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- History Error -->
+                <div
+                    class="cp-form-alert cp-form-alert-danger"
+                    id="paymentHistoryError"
+                    hidden
+                >
+                    <i class="bi bi-exclamation-circle"></i>
+
+                    <span id="paymentHistoryErrorMessage">
+                        Unable to load payment history.
+                    </span>
+                </div>
+
+
+                <!-- History Table -->
+                <div class="cp-history-table-wrapper">
+
+                    <table class="cp-history-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Payment ID
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Project
+                                </th>
+
+                                <th>
+                                    Purpose
+                                </th>
+
+                                <th>
+                                    Method
+                                </th>
+
+                                <th>
+                                    Amount
+                                </th>
+
+                                <th>
+                                    Paid After
+                                </th>
+
+                                <th>
+                                    Remaining
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="clientPaymentHistoryBody">
+
+                            <tr>
+
+                                <td
+                                    colspan="8"
+                                    class="cp-loading-state"
+                                >
+
+                                    <div class="cp-loading-content">
+
+                                        <span class="cp-loading-spinner"></span>
+
+                                        <span>
+                                            Loading payment history...
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <div class="cp-modal-footer">
+
+                <button
+                    type="button"
+                    class="cp-btn cp-btn-light"
+                    data-modal-close="clientPaymentHistoryModal"
+                >
+                    Close
+                </button>
+
+                <button
+                    type="button"
+                    class="cp-btn cp-btn-secondary"
+                    id="printClientPaymentHistoryBtn"
+                >
+                    <i class="bi bi-printer"></i>
+                    <span>Print History</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="cp-btn cp-btn-primary"
+                    id="downloadClientPaymentHistoryBtn"
+                >
+                    <i class="bi bi-download"></i>
+                    <span>Download History</span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         WARNING / CONFIRMATION MODAL
+    ========================================================= -->
+    <div
+        class="cp-modal-overlay"
+        id="paymentWarningModal"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="paymentWarningModalTitle"
+    >
+
+        <div class="cp-modal-dialog cp-modal-sm">
+
+            <div class="cp-confirm-content">
+
+                <div class="cp-confirm-icon">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </div>
+
+                <h2 id="paymentWarningModalTitle">
+                    Payment Warning
+                </h2>
+
+                <p id="paymentWarningMessage">
+                    Please confirm this action.
+                </p>
+
+                <div class="cp-confirm-actions">
+
+                    <button
+                        type="button"
+                        class="cp-btn cp-btn-light"
+                        data-modal-close="paymentWarningModal"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="button"
+                        class="cp-btn cp-btn-primary"
+                        id="paymentWarningConfirmBtn"
+                    >
+                        Continue
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         TOAST CONTAINER
+    ========================================================= -->
+    <div
+        class="cp-toast-container"
+        id="paymentToastContainer"
+        aria-live="polite"
+        aria-atomic="true"
+    ></div>
+
+</section>

@@ -1,0 +1,235 @@
+/* ============================================================
+   TENSPICK CRM
+   ADMIN LAYOUT
+   ============================================================ */
+
+
+/* ============================================================
+   APPLICATION
+   ============================================================ */
+
+.app-layout {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+
+    background: var(--background);
+
+    overflow-x: hidden;
+}
+
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: var(--sidebar-width);
+
+    flex-shrink: 0;
+
+    z-index: 1000;
+
+    background: var(--surface);
+
+    border-right: 1px solid var(--border);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    transform: translateX(0);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* ============================================================
+   MAIN AREA
+   ============================================================ */
+
+.app-main {
+    width: calc(100% - var(--sidebar-width));
+
+    min-width: 0;
+    min-height: 100vh;
+
+    margin-left: var(--sidebar-width);
+
+    display: flex;
+    flex-direction: column;
+
+    transition:
+        width 0.25s ease,
+        margin-left 0.25s ease;
+
+    overflow-x: hidden;
+}
+
+
+/* ============================================================
+   CONTENT WRAPPER
+   ============================================================ */
+
+.app-content-wrapper {
+    width: 100%;
+    min-width: 0;
+
+    flex: 1;
+
+    padding: 24px;
+
+    overflow-x: hidden;
+}
+
+
+/* ============================================================
+   PAGE CONTENT
+   ============================================================ */
+
+#app-content {
+    width: 100%;
+    min-width: 0;
+
+    max-width: 1600px;
+
+    margin: 0 auto;
+}
+
+
+/* ============================================================
+   SIDEBAR OVERLAY
+   ============================================================ */
+
+.sidebar-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 999;
+
+    background: rgba(15, 23, 42, 0.35);
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+}
+
+
+.sidebar-overlay.active {
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+/* ============================================================
+   DESKTOP
+   ============================================================ */
+
+@media (min-width: 901px) {
+
+    .sidebar {
+        transform: translateX(0);
+    }
+
+    .app-main {
+        width: calc(100% - var(--sidebar-width));
+
+        margin-left: var(--sidebar-width);
+    }
+
+    .sidebar-overlay {
+        display: none;
+    }
+
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 1200px) and (min-width: 901px) {
+
+    .app-content-wrapper {
+        padding: 20px;
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE / TABLET SIDEBAR
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        transform: translateX(-100%);
+
+        box-shadow: none;
+    }
+
+
+    .sidebar.open {
+        transform: translateX(0);
+
+        box-shadow:
+            8px 0 30px rgba(0, 0, 0, 0.12);
+    }
+
+
+    .app-main {
+        width: 100%;
+
+        margin-left: 0;
+    }
+
+
+    .app-content-wrapper {
+        padding: 18px;
+    }
+
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    .app-content-wrapper {
+        padding: 14px;
+    }
+
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 400px) {
+
+    .app-content-wrapper {
+        padding: 12px;
+    }
+
+}

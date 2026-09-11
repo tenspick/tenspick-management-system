@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="TENSPICK CRM Client Portal">
+
+    <meta name="robots" content="noindex,nofollow">
+
+    <title>
+        Client Portal | TENSPICK CRM
+    </title>
+
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#4B49AC">
+    <script src="../assets/js/pwa.js"></script>
+
+    <!-- ======================================================
+         BOOTSTRAP ICONS
+         ====================================================== -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <!-- ======================================================
+         CLIENT PORTAL CSS
+         ====================================================== -->
+
+    <link rel="stylesheet" href="assets/css/client-root.css">
+
+    <link rel="stylesheet" href="assets/css/client-layout.css">
+
+    <link rel="stylesheet" href="assets/css/client-projects.css">
+
+    <link rel="stylesheet" href="assets/css/client-payments.css">
+
+    <link rel="stylesheet" href="assets/css/client-milestones.css">
+
+    <link rel="stylesheet" href="assets/css/client-coming-soon.css">
+
+    <link rel="stylesheet" href="assets/css/client-profile.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- ========================================================
+         CLIENT APP
+         ======================================================== -->
+
+    <div id="clientApp" class="client-app">
+
+
+        <!-- ==================================================
+             SIDEBAR
+             ================================================== -->
+
+        <aside id="clientSidebar" class="client-sidebar" aria-label="Client navigation">
+
+            <div class="client-sidebar-inner">
+
+
+                <!-- Brand -->
+
+                <div class="client-brand">
+
+                    <div class="client-brand-mark">
+                        <img src="assets/images/tenspick-logo.png" alt="Tenspick" class="client-brand-logo">
+                    </div>
+
+                    <div class="client-brand-content">
+
+                        <strong>
+                            TENSPICK
+                        </strong>
+
+                        <span>
+                            Client Portal
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Navigation -->
+
+                <nav id="clientNavigation" class="client-navigation" aria-label="Main navigation">
+
+
+                    <!-- Dashboard -->
+
+                    <a href="#dashboard" class="client-nav-item is-active" data-route="dashboard">
+
+                        <span class="client-nav-icon">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                        </span>
+
+                        <span class="client-nav-label">
+                            Dashboard
+                        </span>
+
+                    </a>
+
+
+                    <!-- Projects -->
+
+                    <a href="#projects" class="client-nav-item" data-route="projects">
+
+                        <span class="client-nav-icon">
+                            <i class="bi bi-folder2-open"></i>
+                        </span>
+
+                        <span class="client-nav-label">
+                            My Projects
+                        </span>
+
+                    </a>
+
+
+                    <!-- Payments -->
+
+                    <a href="#payments" class="client-nav-item" data-route="payments">
+
+                        <span class="client-nav-icon">
+                            <i class="bi bi-credit-card"></i>
+                        </span>
+
+                        <span class="client-nav-label">
+                            Payments
+                        </span>
+
+                    </a>
+
+
+                    <!-- Chat -->
+
+                    <a href="#chat" class="client-nav-item" data-route="chat">
+
+                        <span class="client-nav-icon">
+                            <i class="bi bi-chat-dots"></i>
+                        </span>
+
+                        <span class="client-nav-label">
+                            Chat with Admin
+                        </span>
+
+                        <span id="clientChatBadge" class="client-nav-badge" hidden>
+                            0
+                        </span>
+
+                    </a>
+
+
+                    <!-- Notifications -->
+
+                    <a href="#notifications" class="client-nav-item" data-route="notifications">
+
+                        <span class="client-nav-icon">
+                            <i class="bi bi-bell"></i>
+                        </span>
+
+                        <span class="client-nav-label">
+                            Notifications
+                        </span>
+
+                        <span id="clientNotificationBadge" class="client-nav-badge" hidden>
+                            0
+                        </span>
+
+                    </a>
+
+
+                    <!-- Profile -->
+
+                    <a href="#profile" class="client-nav-item" data-route="profile">
+
+                        <span class="client-nav-icon">
+                            <i class="bi bi-person"></i>
+                        </span>
+
+                        <span class="client-nav-label">
+                            Profile
+                        </span>
+
+                    </a>
+
+                </nav>
+
+
+                <!-- Sidebar Footer -->
+
+                <div class="client-sidebar-footer">
+
+                    <button type="button" id="clientSidebarLogout" class="client-sidebar-logout">
+
+                        <span class="client-nav-icon">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </span>
+
+                        <span>
+                            Logout
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ==================================================
+             SIDEBAR OVERLAY
+             ================================================== -->
+
+        <div id="clientSidebarOverlay" class="client-sidebar-overlay" hidden></div>
+
+
+        <!-- ==================================================
+             MAIN AREA
+             ================================================== -->
+
+        <div class="client-main">
+
+
+            <!-- ==================================================
+                 TOPBAR
+                 ================================================== -->
+
+            <header id="clientTopbar" class="client-topbar">
+
+                <div class="client-topbar-left">
+
+
+                    <!-- Mobile Menu -->
+
+                    <button type="button" id="clientMobileMenuButton" class="client-mobile-menu-button"
+                        aria-label="Open navigation" aria-expanded="false" aria-controls="clientSidebar">
+
+                        <i class="bi bi-list"></i>
+
+                    </button>
+
+
+                    <!-- Page Heading -->
+
+                    <div class="client-page-heading">
+                       
+                        <h1 id="clientPageTitle">Dashboard</h1>
+                         
+                    </div>
+
+                </div>
+
+
+                <div class="client-topbar-right">
+
+
+                    <!-- Notification -->
+
+                    <a href="#notifications" id="clientNotificationButton" class="client-topbar-button"
+                        aria-label="Notifications">
+
+                        <i class="bi bi-bell"></i>
+
+                        <span id="clientTopNotificationBadge" class="client-topbar-badge" hidden>
+                            0
+                        </span>
+
+                    </a>
+
+
+                    <!-- Profile -->
+
+                    <a href="#profile" class="client-profile-trigger">
+
+                        <div id="clientTopAvatar" class="client-avatar">
+                            C
+                        </div>
+
+                        <div class="client-top-profile-info">
+
+                            <strong id="clientTopClientName">
+                                Client
+                            </strong>
+
+                            <span>
+                                Client Account
+                            </span>
+
+                        </div>
+
+                        <i class="bi bi-chevron-down"></i>
+
+                    </a>
+
+                </div>
+
+            </header>
+
+
+            <!-- ==================================================
+                 CONTENT
+                 ================================================== -->
+
+            <main id="clientContent" class="client-content">
+
+
+                <!-- Global Loading -->
+
+                <div id="clientGlobalLoading" class="client-global-loading">
+
+                    <div class="client-loading-spinner"></div>
+
+                    <span>
+                        Loading client portal...
+                    </span>
+
+                </div>
+
+
+                <!-- Global Error -->
+
+                <div id="clientGlobalError" class="client-global-error" hidden>
+
+                    <div class="client-error-icon">
+                        <i class="bi bi-exclamation-triangle"></i>
+                    </div>
+
+                    <h2>
+                        Unable to load portal
+                    </h2>
+
+                    <p id="clientGlobalErrorMessage">
+                        Something went wrong.
+                    </p>
+
+                    <button type="button" id="clientGlobalRetry" class="client-button client-button-primary">
+                        Try Again
+                    </button>
+
+                </div>
+
+
+                <!-- Dynamic Page -->
+
+                <div id="clientPageContainer" class="client-page-container" hidden></div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         JAVASCRIPT
+         ======================================================== -->
+
+    <!-- Core -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../env.js"></script>
+    <script src="../assets/js/supabase-client.js"></script>
+
+    <script src="assets/js/client-api.js"></script>
+
+    <script src="assets/js/client-auth.js"></script>
+
+
+    <!-- Components -->
+
+    <script src="assets/js/components/sidebar.js"></script>
+
+    <script src="assets/js/components/topbar.js"></script>
+
+
+    <!-- Page Modules -->
+
+    <script src="assets/js/pages/dashboard.js"></script>
+
+    <script src="assets/js/pages/projects.js"></script>
+
+    <script src="assets/js/pages/project-details.js"></script>
+
+    <script src="assets/js/pages/client-progress.js"></script>
+
+    <script src="assets/js/pages/milestones.js"></script>
+
+    <script src="assets/js/pages/payments.js"></script>
+
+    <script src="assets/js/pages/chat.js"></script>
+
+    <script src="assets/js/pages/notifications.js"></script>
+
+    <script src="assets/js/pages/coming-soon.js"></script>
+
+    <script src="assets/js/pages/profile.js"></script>
+
+
+    <!-- Router -->
+
+    <script src="assets/js/client-router.js"></script>
+
+
+    <!-- Application Bootstrap -->
+
+    <script src="assets/js/client-app.js"></script>
+
+</body>
+
+</html>

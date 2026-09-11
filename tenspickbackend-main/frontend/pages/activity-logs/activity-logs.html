@@ -1,0 +1,87 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'activity-logs';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+<section class="activity-logs-page" id="activityLogsPage">
+    <header class="logs-header">
+        <div>
+            <h1>Activity Logs & Audit Trail</h1>
+            <p>Monitor security events, admin actions, lead updates, and payment logs.</p>
+        </div>
+        <button type="button" class="logs-refresh-btn" id="refreshLogsBtn">
+            <i class="bi bi-arrow-clockwise"></i> Refresh Audit Trail
+        </button>
+    </header>
+
+    <div class="logs-card">
+        <div class="logs-filter-bar">
+            <div class="logs-search-wrap">
+                <i class="bi bi-search"></i>
+                <input type="text" id="logSearch" placeholder="Search user, action, IP address...">
+            </div>
+            <select id="logActionFilter" class="logs-select">
+                <option value="">All Actions</option>
+                <option value="LOGIN">User Login</option>
+                <option value="CREATE_LEAD">Lead Created</option>
+                <option value="PAYMENT_RECEIVED">Payment Received</option>
+                <option value="PROJECT_UPDATE">Project Updated</option>
+            </select>
+        </div>
+
+        <div class="logs-table-wrap">
+            <table class="logs-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>Entity / Details</th>
+                        <th>IP Address</th>
+                        <th>Timestamp</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="logsTableBody">
+                    <tr>
+                        <td>#LOG-108</td>
+                        <td><strong>Tenspick Admin</strong></td>
+                        <td><span class="action-badge badge-login">User Login</span></td>
+                        <td>Authenticated via Admin Portal</td>
+                        <td><code>127.0.0.1</code></td>
+                        <td>Just now</td>
+                        <td><span class="status-tag tag-success">Success</span></td>
+                    </tr>
+                    <tr>
+                        <td>#LOG-107</td>
+                        <td><strong>Tenspick Admin</strong></td>
+                        <td><span class="action-badge badge-payment">Payment Received</span></td>
+                        <td>Client Payment #204 ₹25,000 for Project #101</td>
+                        <td><code>127.0.0.1</code></td>
+                        <td>1 hour ago</td>
+                        <td><span class="status-tag tag-success">Success</span></td>
+                    </tr>
+                    <tr>
+                        <td>#LOG-106</td>
+                        <td><strong>Tenspick Admin</strong></td>
+                        <td><span class="action-badge badge-lead">Lead Created</span></td>
+                        <td>New Lead: Kiran Varma (#LD-302)</td>
+                        <td><code>127.0.0.1</code></td>
+                        <td>2 hours ago</td>
+                        <td><span class="status-tag tag-success">Success</span></td>
+                    </tr>
+                    <tr>
+                        <td>#LOG-105</td>
+                        <td><strong>System Audit</strong></td>
+                        <td><span class="action-badge badge-system">Schema Migration</span></td>
+                        <td>Supabase PostgreSQL Schema Synced</td>
+                        <td><code>127.0.0.1</code></td>
+                        <td>Sep 11, 2026</td>
+                        <td><span class="status-tag tag-success">Success</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

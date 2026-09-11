@@ -1,0 +1,21 @@
+{
+  "name": "Tenspick CRM Software",
+  "short_name": "Tenspick",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4B49AC",
+  "description": "Tenspick Software Company Management System & Client Portal",
+  "icons": [
+    {
+      "src": "assets/images/tenspick-logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/tenspick-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

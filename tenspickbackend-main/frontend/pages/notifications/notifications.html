@@ -1,0 +1,35 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'notifications';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+
+<section class="notifications-page" id="notificationsPage">
+    <header class="notifications-header">
+        <div>
+            <h1>Notification Center</h1>
+            <p>Stay updated with activity, leads, payments, and system notifications.</p>
+        </div>
+        <div class="notifications-actions">
+            <button type="button" class="notif-btn notif-btn-secondary" id="markAllReadBtn">
+                <i class="bi bi-check-all"></i> Mark All as Read
+            </button>
+            <button type="button" class="notif-btn notif-btn-danger" id="clearAllBtn">
+                <i class="bi bi-trash"></i> Clear Read (Delete)
+            </button>
+        </div>
+    </header>
+
+    <div class="notifications-filter-bar">
+        <button type="button" class="filter-chip active" data-filter="all">All Notifications (0)</button>
+        <button type="button" class="filter-chip" data-filter="unread">Unread (0)</button>
+        <button type="button" class="filter-chip" data-filter="leads">Leads</button>
+        <button type="button" class="filter-chip" data-filter="projects">Projects</button>
+        <button type="button" class="filter-chip" data-filter="payments">Payments</button>
+    </div>
+
+    <div class="notifications-list" id="notificationsList">
+        <!-- Rendered dynamically by JS from localStorage -->
+    </div>
+</section>

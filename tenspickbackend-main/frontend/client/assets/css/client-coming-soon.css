@@ -1,0 +1,148 @@
+/* ============================================================
+   TENSPICK CRM
+   CLIENT PORTAL
+   COMING SOON
+   ============================================================ */
+
+.client-coming-soon-page {
+    width: 100%;
+    min-height: calc(100vh - 150px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px 20px;
+}
+
+
+.client-coming-soon-card {
+    width: 100%;
+    max-width: 520px;
+
+    padding: 45px 35px;
+
+    border: 1px solid #e5eaf0;
+    border-radius: 20px;
+
+    background: #ffffff;
+
+    text-align: center;
+
+    box-shadow:
+        0 12px 40px rgba(
+            21,
+            31,
+            40,
+            .06
+        );
+}
+
+
+.client-coming-soon-icon {
+    width: 78px;
+    height: 78px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 22px;
+
+    background: #e8f8f7;
+    color: #01a8a3;
+
+    font-size: 32px;
+}
+
+
+.client-coming-soon-badge {
+    display: inline-flex;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    background: #fff5df;
+    color: #a86b00;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: .6px;
+}
+
+
+.client-coming-soon-card h2 {
+    margin: 16px 0 8px;
+
+    color: #151f28;
+
+    font-size: 25px;
+    font-weight: 800;
+}
+
+
+.client-coming-soon-card p {
+    max-width: 400px;
+
+    margin: 0 auto;
+
+    color: #718096;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+.client-coming-soon-line {
+    width: 55px;
+    height: 3px;
+
+    margin: 22px auto;
+
+    border-radius: 5px;
+
+    background: #01a8a3;
+}
+
+
+.client-coming-soon-card small {
+    color: #9aa4ad;
+
+    font-size: 11px;
+}
+
+
+@media (max-width: 600px) {
+
+    .client-coming-soon-page {
+        min-height: calc(100vh - 130px);
+
+        padding: 20px 12px;
+    }
+
+    .client-coming-soon-card {
+        padding: 35px 22px;
+
+        border-radius: 16px;
+    }
+
+    .client-coming-soon-icon {
+        width: 65px;
+        height: 65px;
+
+        border-radius: 18px;
+
+        font-size: 27px;
+    }
+
+    .client-coming-soon-card h2 {
+        font-size: 22px;
+    }
+
+}
