@@ -2,8 +2,53 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/frontend/(.*)",
+      "destination": "/tenspickbackend-main/frontend/$1"
+    },
+    {
+      "source": "/client/login",
+      "destination": "/tenspickbackend-main/frontend/client/login.html"
+    },
+    {
+      "source": "/client/login.html",
+      "destination": "/tenspickbackend-main/frontend/client/login.html"
+    },
+    {
+      "source": "/client",
+      "destination": "/tenspickbackend-main/frontend/client/index.html"
+    },
+    {
+      "source": "/client/",
+      "destination": "/tenspickbackend-main/frontend/client/index.html"
+    },
+    {
+      "source": "/staff/login",
+      "destination": "/tenspickbackend-main/frontend/staff/login.html"
+    },
+    {
+      "source": "/staff/login.html",
+      "destination": "/tenspickbackend-main/frontend/staff/login.html"
+    },
+    {
+      "source": "/staff",
+      "destination": "/tenspickbackend-main/frontend/staff/index.html"
+    },
+    {
+      "source": "/staff/",
+      "destination": "/tenspickbackend-main/frontend/staff/index.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/tenspickbackend-main/frontend/login.html"
+    },
+    {
+      "source": "/login.html",
+      "destination": "/tenspickbackend-main/frontend/login.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/tenspickbackend-main/frontend/$1"
     }
   ]
 }
+

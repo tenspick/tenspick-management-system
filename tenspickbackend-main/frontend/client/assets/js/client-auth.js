@@ -66,17 +66,21 @@
     }
 
     function getLoginUrl() {
-        return (
-            getAppRoot() +
-            "/frontend/client/login.html"
-        );
+        const root = getAppRoot();
+        const path = window.location.pathname;
+        if (path.indexOf("/frontend/") !== -1 || (root && root.indexOf("/frontend") !== -1)) {
+            return root + "/frontend/client/login.html";
+        }
+        return (root || "") + "/client/login.html";
     }
 
     function getDashboardUrl() {
-        return (
-            getAppRoot() +
-            "/frontend/client/index.html"
-        );
+        const root = getAppRoot();
+        const path = window.location.pathname;
+        if (path.indexOf("/frontend/") !== -1 || (root && root.indexOf("/frontend") !== -1)) {
+            return root + "/frontend/client/index.html";
+        }
+        return (root || "") + "/client/index.html";
     }
 
     /* =========================================================

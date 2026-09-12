@@ -1749,11 +1749,17 @@
        ============================================================ */
 
   function openAddModal(event) {
+    if (!dom.modal || !dom.form) {
+      cacheDom();
+    }
+
     state.previousModalFocus = event?.currentTarget || document.activeElement;
 
     state.editingId = null;
 
     resetForm();
+
+    populateClientDropdowns();
 
     renderStaffManagerSelect();
 
@@ -3637,6 +3643,13 @@
        ============================================================ */
 
   function handleDocumentClick(event) {
+    const addBtn = event.target.closest("#projectsAddBtn, [data-project-action='add']");
+    if (addBtn) {
+      event.preventDefault();
+      openAddModal(event);
+      return;
+    }
+
     if (!event.target.closest(".projects-action-wrapper")) {
       closeActionMenus();
     }
