@@ -1458,16 +1458,22 @@
                3. TRY LOCALSTORAGE CACHE (`tenspick_clients`)
                ======================================== */
             if (!authenticated) {
+                const inputLower = email.toLowerCase().trim();
+
+                // Block Admin / Staff emails on Client Login page
+                if (inputLower === "tenspickofficial@gmail.com" || inputLower === "admin@tenspick.org" || inputLower.startsWith("admin")) {
+                    throw new Error("Admin account detected. Please use the Admin & Staff Login Portal at /login.html");
+                }
+
                 try {
                     const cached = localStorage.getItem("tenspick_clients");
                     if (cached) {
                         const list = JSON.parse(cached);
                         if (Array.isArray(list)) {
-                            const inputLower = email.toLowerCase();
                             const found = list.find(function(c) {
-                                const cEmail = (c.email || "").toLowerCase();
-                                const cLoginEmail = (c.login_email || "").toLowerCase();
-                                const cCode = (c.client_code || "").toLowerCase();
+                                const cEmail = (c.email || "").toLowerCase().trim();
+                                const cLoginEmail = (c.login_email || "").toLowerCase().trim();
+                                const cCode = (c.client_code || "").toLowerCase().trim();
                                 return cEmail === inputLower || cLoginEmail === inputLower || cCode === inputLower;
                             });
                             if (found && password.length >= 6) {
@@ -1484,13 +1490,8 @@
                         }
                     }
                 } catch (localErr) {}
-            }
 
-            /* ========================================
-               4. FALLBACK AUTHENTICATION FOR DEMO / STATIC CLIENT ACCESS
-               ======================================== */
-            if (!authenticated) {
-                if (email && password.length >= 6) {
+                if (!authenticated && email && password.length >= 6) {
                     authenticated = true;
                     clientUser = {
                         id: Date.now(),
@@ -1499,7 +1500,9 @@
                         email: email,
                         client_code: "CL-" + String(Date.now()).slice(-4)
                     };
-                } else {
+                }
+
+                if (!authenticated) {
                     throw new Error("Invalid client email or password.");
                 }
             }

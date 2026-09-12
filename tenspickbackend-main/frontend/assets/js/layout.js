@@ -9,6 +9,36 @@
 
 
     /* ========================================================
+       CLEAN DUMMY DEMO STORAGE
+       ======================================================== */
+
+    (function cleanDummyStorage() {
+        const dummyNames = [
+            "sri lakshmi traders", "puttur fashion store",
+            "ramesh sharma", "ramesh kumar", "priya patel", "priya sharma", "venkatesh rao",
+            "abc restaurant website", "patel medicals website", "sharma traders e-commerce", "verma crm system", "reddy fashion website",
+            "ravi kumar", "mahesh patel", "sunita sharma", "arun verma", "neha reddy",
+            "abc restaurant", "patel medicals", "sharma traders", "verma enterprises", "reddy fashion"
+        ];
+
+        ["tenspick_clients", "tenspick_staff", "tenspick_projects", "tenspick_leads"].forEach(key => {
+            try {
+                const raw = localStorage.getItem(key);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        const cleaned = parsed.filter(item => {
+                            const name = String(item.client_name || item.name || item.project_name || item.lead_name || "").toLowerCase();
+                            return !dummyNames.includes(name);
+                        });
+                        localStorage.setItem(key, JSON.stringify(cleaned));
+                    }
+                }
+            } catch (e) {}
+        });
+    })();
+
+    /* ========================================================
        CONFIG
        ======================================================== */
 

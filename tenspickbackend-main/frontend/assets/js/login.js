@@ -320,7 +320,29 @@ document.addEventListener("DOMContentLoaded", function () {
            3. FALLBACK AUTHENTICATION FOR STATIC / LOCAL
            ======================================== */
         if (!authenticated) {
-          // Check local staff cache if available
+          const inputEmail = (formData.email || "").toLowerCase().trim();
+
+          // A. Block Client accounts from logging in via Admin/Staff page
+          let isClientAccount = false;
+          try {
+            const cachedClients = localStorage.getItem("tenspick_clients");
+            if (cachedClients) {
+              const clientsArr = JSON.parse(cachedClients);
+              if (Array.isArray(clientsArr)) {
+                isClientAccount = clientsArr.some(c => {
+                  const cEmail = (c.email || "").toLowerCase().trim();
+                  const cLoginEmail = (c.login_email || "").toLowerCase().trim();
+                  return cEmail === inputEmail || cLoginEmail === inputEmail;
+                });
+              }
+            }
+          } catch (e) {}
+
+          if (isClientAccount) {
+            throw new Error("Client account detected. Please use the Client Login Portal at /client/login.html");
+          }
+
+          // B. Check local staff cache
           const cachedStaff = localStorage.getItem("tenspick_staff");
           if (cachedStaff) {
             try {
@@ -329,8 +351,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const foundStaff = staffArr.find(function (s) {
                   const sEmail = (s.email || "").toLowerCase();
                   const sUser = (s.username || "").toLowerCase();
-                  const inputVal = formData.email.toLowerCase();
-                  return (sEmail === inputVal || sUser === inputVal);
+                  return (sEmail === inputEmail || sUser === inputEmail);
                 });
                 if (foundStaff && formData.password.length >= 6) {
                   authenticated = true;
@@ -346,26 +367,25 @@ document.addEventListener("DOMContentLoaded", function () {
               }
             } catch (e) {}
           }
-        }
 
-        if (!authenticated) {
-          const lowerEmail = formData.email.toLowerCase();
-          const isStaffEmail = lowerEmail.includes("staff") || lowerEmail.includes("ramesh") || lowerEmail.includes("priya") || lowerEmail.includes("venkat");
-          if (
-            (formData.email === "tenspickofficial@gmail.com" || formData.email === "admin@tenspick.org" || formData.email === "admin@tenspick.local" || isStaffEmail || formData.email.trim() !== "") &&
-            formData.password.length >= 6
-          ) {
-            authenticated = true;
-            adminUser = {
-              id: isStaffEmail ? 2 : 1,
-              name: isStaffEmail ? "Staff Member" : "Tenspick Admin",
-              email: formData.email,
-              role: isStaffEmail ? "staff" : "admin",
-              isStaff: isStaffEmail,
-              status: 1
-            };
-          } else {
-            throw new Error("Invalid email or password.");
+          // C. Check Admin / Default Staff emails
+          if (!authenticated) {
+            const isAdminEmail = (inputEmail === "tenspickofficial@gmail.com" || inputEmail === "admin@tenspick.org" || inputEmail === "admin@tenspick.local" || inputEmail.startsWith("admin"));
+            const isStaffEmail = inputEmail.includes("staff") || inputEmail.includes("ramesh") || inputEmail.includes("priya") || inputEmail.includes("venkat");
+
+            if ((isAdminEmail || isStaffEmail) && formData.password.length >= 6) {
+              authenticated = true;
+              adminUser = {
+                id: isStaffEmail ? 2 : 1,
+                name: isStaffEmail ? "Staff Member" : "Tenspick Admin",
+                email: formData.email,
+                role: isStaffEmail ? "staff" : "admin",
+                isStaff: isStaffEmail,
+                status: 1
+              };
+            } else {
+              throw new Error("Invalid email or password. Client accounts must use the Client Portal.");
+            }
           }
         }
 

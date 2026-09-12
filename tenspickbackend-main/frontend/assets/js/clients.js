@@ -896,19 +896,14 @@
                 if (cached) {
                     try {
                         const parsed = JSON.parse(cached);
-                        if (Array.isArray(parsed)) list = parsed;
+                        if (Array.isArray(parsed)) {
+                            list = parsed.filter(c => {
+                                const name = String(c.client_name || c.name || "").toLowerCase();
+                                return name !== "sri lakshmi traders" && name !== "puttur fashion store";
+                            });
+                        }
                     } catch (e) {}
                 }
-            }
-
-            // 4. Fallback default seed list if empty and not yet initialized
-            if (!list.length && !localStorage.getItem("tenspick_clients_initialized")) {
-                list = [
-                    { id: 1, client_code: "CL-001", client_name: "Sri Lakshmi Traders", company_name: "Sri Lakshmi Traders", mobile: "9876543210", email: "ravi@lakshmitraders.com", status: "active", created_at: "2026-08-01" },
-                    { id: 2, client_code: "CL-002", client_name: "Puttur Fashion Store", company_name: "Puttur Fashions", mobile: "9876543211", email: "priya@putturfashion.com", status: "active", created_at: "2026-08-05" }
-                ];
-                localStorage.setItem("tenspick_clients", JSON.stringify(list));
-                localStorage.setItem("tenspick_clients_initialized", "true");
             }
 
             state.clients = list;
@@ -3091,6 +3086,17 @@
                 }
             } else {
                 const newId = Date.now();
+                const pwdStr = payload.password || "ClientPassword@123";
+                let hashHex = "";
+                try {
+                    const encoder = new TextEncoder();
+                    const data = encoder.encode(pwdStr);
+                    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+                    hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+                } catch(e) {
+                    hashHex = "hash_" + btoa(pwdStr);
+                }
+
                 const newClientObj = {
                     id: newId,
                     client_code: payload.client_code || ("CL-" + String(newId).slice(-4)),
@@ -3098,6 +3104,8 @@
                     company_name: payload.company_name || "Company",
                     mobile: payload.mobile || "0000000000",
                     email: payload.email || "client@example.com",
+                    login_email: payload.email || "client@example.com",
+                    password_hash: hashHex,
                     status: payload.status || "active",
                     created_at: new Date().toISOString()
                 };

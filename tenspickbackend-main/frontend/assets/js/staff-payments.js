@@ -1912,13 +1912,7 @@
                 logError("Staff localStorage fallback failed:", e);
             }
         } finally {
-            if (!state.staff || state.staff.length === 0) {
-                state.staff = [
-                    { id: "1", staffCode: "STF-001", name: "Ramesh Sharma", department: "Development", designation: "Senior Developer", status: "active" },
-                    { id: "2", staffCode: "STF-002", name: "Priya Patel", department: "Design", designation: "UI/UX Designer", status: "active" }
-                ];
-                try { localStorage.setItem("tenspick_staff", JSON.stringify(state.staff)); } catch(e){}
-            }
+            if (!state.staff) state.staff = [];
 
             populateStaffSelects();
 

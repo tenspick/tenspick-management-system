@@ -741,16 +741,8 @@
                 }
             }
 
-            // 4. Default seed data if empty and not yet initialized
-            if (!list.length && !localStorage.getItem("tenspick_staff_initialized")) {
-                list = [
-                    { id: 1, staff_code: "STF-001", name: "Ramesh Kumar", email: "ramesh@tenspick.org", phone: "9876543210", department: "Engineering", designation: "Senior Developer", status: "active", joining_date: "2024-01-15", salary: 75000, username: "ramesh" },
-                    { id: 2, staff_code: "STF-002", name: "Priya Sharma", email: "priya@tenspick.org", phone: "9876543211", department: "Design", designation: "UI/UX Specialist", status: "active", joining_date: "2024-03-10", salary: 65000, username: "priya" },
-                    { id: 3, staff_code: "STF-003", name: "Venkatesh Rao", email: "venkat@tenspick.org", phone: "9876543212", department: "QA", designation: "QA Lead", status: "active", joining_date: "2024-05-20", salary: 60000, username: "venkat" }
-                ];
-                localStorage.setItem("tenspick_staff", JSON.stringify(list));
-                localStorage.setItem("tenspick_staff_initialized", "true");
-            }
+            // 4. Leave list empty if no staff found
+            state.staff = list || [];
 
             if (
                 controller !==

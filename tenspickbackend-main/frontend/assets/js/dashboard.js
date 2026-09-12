@@ -219,6 +219,38 @@
                     `).join('');
                 }
             }
+
+            /* ====================================================
+               RECENT PROJECTS TABLE
+               ==================================================== */
+            const projectsTableBody = document.getElementById("dashRecentProjectsTableBody");
+            if (projectsTableBody) {
+                const displayProjects = projectList.slice(0, 5);
+                if (!displayProjects.length) {
+                    projectsTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:#9CA3AF;">No projects available.</td></tr>`;
+                } else {
+                    projectsTableBody.innerHTML = displayProjects.map(p => {
+                        const progress = Math.max(0, Math.min(100, Number(p.progress_percentage || p.progress || 0)));
+                        const statusStr = (p.status || 'in_progress').replace(/_/g, ' ');
+                        return `
+                            <tr>
+                                <td><strong>${p.project_name || p.name || 'Unnamed Project'}</strong></td>
+                                <td>${p.client_name || p.company_name || '—'}</td>
+                                <td>
+                                    <div class="dashboard-progress-cell">
+                                        <span>${progress}%</span>
+                                        <div class="dashboard-progress">
+                                            <div class="dashboard-progress-bar" style="width: ${progress}%;"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="dashboard-status purple">${statusStr.toUpperCase()}</span></td>
+                                <td><a href="#/projects" class="dashboard-more-btn">View</a></td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            }
         },
 
         loadAnnouncements: function () {

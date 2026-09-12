@@ -1354,16 +1354,7 @@
         }
       }
 
-      if (!projects || projects.length === 0) {
-        projects = [
-          { id: "1", project_name: "Tenspick E-Commerce Website", project_code: "PROJ-001" },
-          { id: "2", project_name: "CRM Portal Development", project_code: "PROJ-002" },
-          { id: "3", project_name: "Mobile App UI/UX Redesign", project_code: "PROJ-003" }
-        ];
-        try { localStorage.setItem("tenspick_projects", JSON.stringify(projects)); } catch(e){}
-      }
-
-      state.projects = projects;
+      state.projects = projects || [];
 
       renderProjectSelects();
     } catch (error) {
@@ -1423,15 +1414,7 @@
         }
       }
 
-      if (!staff || staff.length === 0) {
-        staff = [
-          { id: "1", staff_code: "STF-001", name: "Ramesh Sharma", department: "Development", designation: "Senior Developer", status: "active" },
-          { id: "2", staff_code: "STF-002", name: "Priya Patel", department: "Design", designation: "UI/UX Designer", status: "active" }
-        ];
-        try { localStorage.setItem("tenspick_staff", JSON.stringify(staff)); } catch(e){}
-      }
-
-      state.staff = staff;
+      state.staff = staff || [];
 
       renderStaffSelects();
     } catch (error) {

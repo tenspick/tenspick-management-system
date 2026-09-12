@@ -2010,12 +2010,8 @@
       } catch (e) {}
     }
 
-    if (!state.clients || state.clients.length === 0) {
-      state.clients = [
-        { id: "1", client_code: "CL-001", client_name: "Sri Lakshmi Traders", company_name: "Sri Lakshmi Traders" },
-        { id: "2", client_code: "CL-002", client_name: "Puttur Fashion Store", company_name: "Puttur Fashions" }
-      ];
-      try { localStorage.setItem("tenspick_clients", JSON.stringify(state.clients)); } catch(e){}
+    if (!state.clients) {
+      state.clients = [];
     }
 
     const current = select.value;
@@ -2232,24 +2228,14 @@
       try {
         const raw = localStorage.getItem("tenspick_projects");
         let all = raw ? JSON.parse(raw) : [];
-        if (!Array.isArray(all) || all.length === 0) {
-          all = [
-            { id: "1", project_name: "Tenspick E-Commerce Website", project_code: "PROJ-001" },
-            { id: "2", project_name: "CRM Portal Development", project_code: "PROJ-002" },
-            { id: "3", project_name: "Mobile App UI/UX Redesign", project_code: "PROJ-003" }
-          ];
-          try { localStorage.setItem("tenspick_projects", JSON.stringify(all)); } catch(e){}
-        }
+        if (!Array.isArray(all)) all = [];
         const filtered = all.filter(function (p) {
           const pClientId = String(p.client_id ?? p.clientId ?? "");
           return pClientId === String(cId);
         });
         return filtered.length > 0 ? filtered : all;
       } catch (e) {
-        return [
-          { id: "1", project_name: "Tenspick E-Commerce Website", project_code: "PROJ-001" },
-          { id: "2", project_name: "CRM Portal Development", project_code: "PROJ-002" }
-        ];
+        return [];
       }
     }
 
