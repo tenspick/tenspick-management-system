@@ -1317,29 +1317,37 @@
     state.loadingProjects = true;
 
     try {
-      const params = new URLSearchParams();
-
-      params.set("per_page", "1000");
-
-      const response = await request(
-        TASKS_PROJECTS_ENDPOINT + "?" + params.toString(),
-        {
-          method: "GET",
-        },
-      );
-
-      const data = response && response.data !== undefined ? response.data : {};
-
       let projects = [];
+      try {
+        const raw = localStorage.getItem("tenspick_projects");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) projects = parsed;
+        }
+      } catch (e) {}
 
-      if (Array.isArray(data.items)) {
-        projects = data.items;
-      } else if (Array.isArray(data.projects)) {
-        projects = data.projects;
-      } else if (response && Array.isArray(response.projects)) {
-        projects = response.projects;
-      } else if (Array.isArray(data)) {
-        projects = data;
+      if (!projects.length) {
+        const params = new URLSearchParams();
+        params.set("per_page", "1000");
+
+        const response = await request(
+          TASKS_PROJECTS_ENDPOINT + "?" + params.toString(),
+          {
+            method: "GET",
+          },
+        );
+
+        const data = response && response.data !== undefined ? response.data : {};
+
+        if (Array.isArray(data.items)) {
+          projects = data.items;
+        } else if (Array.isArray(data.projects)) {
+          projects = data.projects;
+        } else if (response && Array.isArray(response.projects)) {
+          projects = response.projects;
+        } else if (Array.isArray(data)) {
+          projects = data;
+        }
       }
 
       state.projects = projects;
@@ -1364,31 +1372,40 @@
     state.loadingStaff = true;
 
     try {
-      const params = new URLSearchParams();
-
-      params.set("per_page", "1000");
-
-      params.set("status", "active");
-
-      const response = await request(
-        TASKS_STAFF_ENDPOINT + "?" + params.toString(),
-        {
-          method: "GET",
-        },
-      );
-
-      const data = response && response.data !== undefined ? response.data : {};
-
       let staff = [];
+      try {
+        const raw = localStorage.getItem("tenspick_staff");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) staff = parsed;
+        }
+      } catch (e) {}
 
-      if (Array.isArray(data.items)) {
-        staff = data.items;
-      } else if (Array.isArray(data.staff)) {
-        staff = data.staff;
-      } else if (response && Array.isArray(response.staff)) {
-        staff = response.staff;
-      } else if (Array.isArray(data)) {
-        staff = data;
+      if (!staff.length) {
+        const params = new URLSearchParams();
+
+        params.set("per_page", "1000");
+
+        params.set("status", "active");
+
+        const response = await request(
+          TASKS_STAFF_ENDPOINT + "?" + params.toString(),
+          {
+            method: "GET",
+          },
+        );
+
+        const data = response && response.data !== undefined ? response.data : {};
+
+        if (Array.isArray(data.items)) {
+          staff = data.items;
+        } else if (Array.isArray(data.staff)) {
+          staff = data.staff;
+        } else if (response && Array.isArray(response.staff)) {
+          staff = response.staff;
+        } else if (Array.isArray(data)) {
+          staff = data;
+        }
       }
 
       state.staff = staff;

@@ -1896,11 +1896,31 @@
             }
 
             logError(
-                "Staff loading failed:",
+                "Staff loading failed, using localStorage fallback:",
                 error
             );
 
-            throw error;
+            try {
+                const raw = localStorage.getItem("tenspick_staff");
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        state.staff = parsed.map(function (s) {
+                            return {
+                                id: Number(s.id),
+                                staffCode: String(s.staffCode || s.staff_code || ""),
+                                name: String(s.name || s.staff_name || s.full_name || "Unnamed Staff"),
+                                department: String(s.department || ""),
+                                designation: String(s.designation || ""),
+                                status: String(s.status || "active")
+                            };
+                        });
+                        populateStaffSelects();
+                    }
+                }
+            } catch (e) {
+                logError("Staff localStorage fallback failed:", e);
+            }
         } finally {
             state.loadingStaff =
                 false;

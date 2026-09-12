@@ -2,8 +2,8 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/:path*",
-      "destination": "/tenspickbackend-main/frontend/:path*"
+      "source": "/(.*)",
+      "destination": "/tenspickbackend-main/frontend/$1"
     }
   ]
 }

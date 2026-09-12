@@ -42,50 +42,11 @@
             if (raw) attendanceRecords = JSON.parse(raw) || [];
         } catch (e) { attendanceRecords = []; }
 
-        // Demo attendance if empty
-        if (!attendanceRecords.length) {
-            const today = new Date();
-            const staffList = [
-                { id: "staff_1", name: "Ramesh Sharma" },
-                { id: "staff_2", name: "Priya Patel" },
-                { id: "staff_3", name: "Venkat Rao" }
-            ];
-            for (let i = 5; i >= 1; i--) {
-                const d = new Date(today);
-                d.setDate(d.getDate() - i);
-                if (d.getDay() === 0 || d.getDay() === 6) continue;
-                const dateStr = d.toISOString().split("T")[0];
-
-                staffList.forEach(s => {
-                    attendanceRecords.push({
-                        id: Date.now() + Math.random(),
-                        staffId: s.id,
-                        staffName: s.name,
-                        date: dateStr,
-                        checkin: "09:15",
-                        checkout: "17:30",
-                        status: "Present"
-                    });
-                });
-            }
-            saveAttendance();
-        }
-
         // Leave Requests
         try {
             const raw = localStorage.getItem(GLOBAL_LEAVE_KEY);
             if (raw) leaveRequests = JSON.parse(raw) || [];
         } catch (e) { leaveRequests = []; }
-
-        // Demo leave requests if empty
-        if (!leaveRequests.length) {
-            leaveRequests = [
-                { id: 101, staffId: "staff_1", staffName: "Ramesh Sharma", type: "casual", from: "2026-09-20", to: "2026-09-21", reason: "Family Function", status: "Pending", createdAt: "2026-09-10" },
-                { id: 102, staffId: "staff_2", staffName: "Priya Patel", type: "sick", from: "2026-09-12", to: "2026-09-12", reason: "Fever & Cold", status: "Pending", createdAt: "2026-09-11" },
-                { id: 103, staffId: String(user.id || "staff"), staffName: user.name || "Staff Member", type: "casual", from: "2026-08-15", to: "2026-08-15", reason: "Personal Work", status: "Approved", createdAt: "2026-08-10" }
-            ];
-            saveLeaves();
-        }
 
         // Holidays
         try {
