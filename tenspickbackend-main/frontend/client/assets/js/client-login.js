@@ -1521,6 +1521,8 @@
 
                 sessionStorage.setItem("tenspick_client_auth", JSON.stringify(sessionPayload));
                 sessionStorage.setItem("tenspick_client", JSON.stringify(clientUser));
+                localStorage.setItem("tenspick_client_auth", JSON.stringify(sessionPayload));
+                localStorage.setItem("tenspick_client", JSON.stringify(clientUser));
 
                 showMessage("Login successful. Redirecting to your portal...", "success");
                 await wait(250);

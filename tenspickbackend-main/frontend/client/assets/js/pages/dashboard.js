@@ -318,151 +318,116 @@
        LOAD PROJECTS
        ======================================================== */
 
-    async function loadProjects() {
+    /* ========================================================
+       FALLBACK DATA FETCH
+       ======================================================== */
 
-        if (
-            !window.TenspickClientAPI ||
-            typeof window.TenspickClientAPI.get !==
-                "function"
-        ) {
-
-            throw new Error(
-                "Client API service is not available."
-            );
-
+    async function fetchFallbackProjects() {
+        let list = [];
+        if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+            try {
+                const sb = window.TenspickSupabase.getClient();
+                const { data } = await sb.from("projects").select("*");
+                if (data && Array.isArray(data) && data.length > 0) {
+                    list = data;
+                }
+            } catch (e) {
+                console.warn("[Tenspick Client Dashboard] Supabase projects error:", e);
+            }
         }
-
-
-        const response =
-            await window
-                .TenspickClientAPI
-                .get(
-                    ENDPOINTS.PROJECTS
-                );
-
-
-        const result =
-            response
-                ? response.data
-                : null;
-
-
-        if (
-            !result ||
-            result.success !== true
-        ) {
-
-            throw new Error(
-                getApiMessage(
-                    result,
-                    "Unable to load projects."
-                )
-            );
-
+        if (!list.length) {
+            try {
+                const cached = localStorage.getItem("tenspick_projects") || localStorage.getItem("tenspick_client_projects");
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        list = parsed;
+                    }
+                }
+            } catch (e) {}
         }
-
-
-        const data =
-            result.data || {};
-
-
-        if (
-            Array.isArray(
-                data.projects
-            )
-        ) {
-
-            projects =
-                data.projects;
-
-        } else {
-
-            projects = [];
-
-        }
-
-
-        return projects;
-
+        return list;
     }
 
+    async function fetchFallbackPayments() {
+        let list = [];
+        if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+            try {
+                const sb = window.TenspickSupabase.getClient();
+                const { data } = await sb.from("client_payments").select("*");
+                if (data && Array.isArray(data) && data.length > 0) {
+                    list = data;
+                }
+            } catch (e) {
+                console.warn("[Tenspick Client Dashboard] Supabase payments error:", e);
+            }
+        }
+        if (!list.length) {
+            try {
+                const cached = localStorage.getItem("tenspick_client_payments") || localStorage.getItem("tenspick_payments");
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        list = parsed;
+                    }
+                }
+            } catch (e) {}
+        }
+        return list;
+    }
+
+    /* ========================================================
+       LOAD PROJECTS
+       ======================================================== */
+
+    async function loadProjects() {
+        try {
+            if (
+                window.TenspickClientAPI &&
+                typeof window.TenspickClientAPI.get === "function"
+            ) {
+                const response = await window.TenspickClientAPI.get(ENDPOINTS.PROJECTS);
+                const result = response ? response.data : null;
+
+                if (result && result.success === true && Array.isArray(result.data?.projects)) {
+                    projects = result.data.projects;
+                    return projects;
+                }
+            }
+        } catch (error) {
+            console.warn("[Tenspick Client Dashboard] Projects API note:", error);
+        }
+
+        projects = await fetchFallbackProjects();
+        return projects;
+    }
 
     /* ========================================================
        LOAD PAYMENTS
        ======================================================== */
 
     async function loadPayments() {
+        try {
+            if (
+                window.TenspickClientAPI &&
+                typeof window.TenspickClientAPI.get === "function"
+            ) {
+                const response = await window.TenspickClientAPI.get(ENDPOINTS.PAYMENTS);
+                const result = response ? response.data : null;
 
-        if (
-            !window.TenspickClientAPI ||
-            typeof window.TenspickClientAPI.get !==
-                "function"
-        ) {
-
-            throw new Error(
-                "Client API service is not available."
-            );
-
+                if (result && result.success === true) {
+                    const data = result.data || {};
+                    payments = Array.isArray(data.payments) ? data.payments : [];
+                    paymentSummary = data.summary || data.financial_summary || null;
+                    return payments;
+                }
+            }
+        } catch (error) {
+            console.warn("[Tenspick Client Dashboard] Payments API note:", error);
         }
 
-
-        const response =
-            await window
-                .TenspickClientAPI
-                .get(
-                    ENDPOINTS.PAYMENTS
-                );
-
-
-        const result =
-            response
-                ? response.data
-                : null;
-
-
-        if (
-            !result ||
-            result.success !== true
-        ) {
-
-            throw new Error(
-                getApiMessage(
-                    result,
-                    "Unable to load payment information."
-                )
-            );
-
-        }
-
-
-        const data =
-            result.data || {};
-
-
-        if (
-            Array.isArray(
-                data.payments
-            )
-        ) {
-
-            payments =
-                data.payments;
-
-        } else {
-
-            payments = [];
-
-        }
-
-
-        paymentSummary =
-            data.summary ||
-            data.financial_summary ||
-            null;
-
-
+        payments = await fetchFallbackPayments();
         return payments;
-
     }
 
 

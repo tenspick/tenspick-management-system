@@ -106,9 +106,10 @@
 
     function loadState() {
         try {
-            const raw = sessionStorage.getItem(
-                STORAGE_KEY
-            );
+            const raw = sessionStorage.getItem(STORAGE_KEY) ||
+                        sessionStorage.getItem("tenspick_client_auth") ||
+                        sessionStorage.getItem("tenspick_client") ||
+                        localStorage.getItem("tenspick_client");
 
             if (!raw) {
                 return;
@@ -117,11 +118,11 @@
             const parsed = JSON.parse(raw);
 
             if (parsed && typeof parsed === "object") {
-                state.authenticated =
-                    parsed.authenticated === true;
-
-                state.client =
-                    parsed.client || null;
+                const clientObj = parsed.client || (parsed.id || parsed.email ? parsed : null);
+                if (parsed.authenticated === true || clientObj) {
+                    state.authenticated = true;
+                    state.client = clientObj;
+                }
             }
         } catch (error) {
             console.warn(
@@ -139,6 +140,9 @@
 
         try {
             sessionStorage.removeItem(STORAGE_KEY);
+            sessionStorage.removeItem("tenspick_client");
+            sessionStorage.removeItem("tenspick_client_auth");
+            localStorage.removeItem("tenspick_client");
         } catch (error) {
             console.warn(
                 "[ClientAuth] Unable to clear local state.",
@@ -274,12 +278,6 @@
             redirect = false
         } = options;
 
-        /*
-         * Do not check the server session immediately after
-         * logout.
-         *
-         * login.php already handles the ?logged_out=1 flag.
-         */
         if (
             !redirect &&
             wasRecentlyLoggedOut()
@@ -291,6 +289,8 @@
             };
         }
 
+        loadState();
+
         state.loading = true;
 
         try {
@@ -301,18 +301,6 @@
 
             const result =
                 response?.data ?? response;
-
-            /*
-             * Expected API format:
-             *
-             * {
-             *   success: true,
-             *   data: {
-             *      authenticated: true,
-             *      client: {...}
-             *   }
-             * }
-             */
 
             const data =
                 result?.data || {};
@@ -331,35 +319,43 @@
                 };
             }
 
-            setUnauthenticated();
+            if (result && (result.success === false || data.authenticated === false)) {
+                setUnauthenticated();
 
-            if (redirect) {
-                redirectToLogin();
+                if (redirect) {
+                    redirectToLogin();
+                }
+
+                return {
+                    authenticated: false,
+                    client: null
+                };
             }
-
-            return {
-                authenticated: false,
-                client: null
-            };
         } catch (error) {
-            setUnauthenticated();
-
-            /*
-             * A failed session check means the client should
-             * not be treated as authenticated.
-             */
-            if (redirect) {
-                redirectToLogin();
-            }
-
-            return {
-                authenticated: false,
-                client: null,
-                error
-            };
+            console.warn("[ClientAuth] Backend API session endpoint unreachable. Using local session fallback:", error);
         } finally {
             state.loading = false;
         }
+
+        loadState();
+        if (state.authenticated && state.client) {
+            saveState();
+            return {
+                authenticated: true,
+                client: state.client
+            };
+        }
+
+        setUnauthenticated();
+
+        if (redirect) {
+            redirectToLogin();
+        }
+
+        return {
+            authenticated: false,
+            client: null
+        };
     }
 
     /* =========================================================
