@@ -176,36 +176,136 @@
             </div>
 
             <div class="topbar-right">
-                <!-- Clock -->
-                <div class="topbar-clock" id="topbarClock">--:--:--</div>
+                <!-- DATE & TIME -->
+                <div
+                    class="topbar-datetime"
+                    id="topbarDateTime"
+                    aria-label="Current date and time"
+                >
+                    <div class="topbar-datetime-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 16H5V9h14v11ZM7 11h5v5H7v-5Z"/>
+                        </svg>
+                    </div>
 
-                <!-- Notifications -->
-                <button type="button" class="topbar-icon-btn" id="topbarNotifications" title="Notifications">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2Zm6-6V11c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2Z"/></svg>
-                </button>
+                    <div class="topbar-datetime-content">
+                        <strong id="topbarDate">
+                            --
+                        </strong>
 
-                <!-- Profile -->
-                <div class="topbar-profile" id="topbarProfile">
-                    <button type="button" class="topbar-profile-toggle" id="profileToggle" aria-haspopup="true" aria-expanded="false" aria-controls="profileDropdown">
-                        <div class="topbar-avatar" id="topbarAdminInitial">S</div>
-                        <span class="topbar-profile-name" id="topbarAdminName">Staff</span>
-                        <svg class="topbar-profile-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+                        <span id="topbarTime">
+                            --
+                        </span>
+                    </div>
+                </div>
+
+                <!-- NOTIFICATIONS -->
+                <a
+                    href="#/notifications"
+                    class="topbar-notification"
+                    data-route="notifications"
+                    id="topbarNotifications"
+                    aria-label="Notifications"
+                    title="Notifications"
+                >
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M12 22c1.1 0 1.99-.9 1.99-2h-3.98c0 1.1.89 2 1.99 2Zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5S10.5 3.17 10.5 4v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2Z"/>
+                    </svg>
+
+                    <span
+                        class="topbar-notification-count"
+                        id="notificationBadge"
+                        aria-label="Notifications"
+                    >
+                        0
+                    </span>
+                </a>
+
+                <!-- STAFF PROFILE -->
+                <div
+                    class="topbar-profile"
+                    id="topbarProfile"
+                >
+                    <button
+                        type="button"
+                        class="topbar-profile-button"
+                        id="profileToggle"
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        aria-controls="profileDropdown"
+                    >
+                        <span
+                            class="topbar-profile-logo fallback"
+                            aria-hidden="true"
+                        >
+                            <img
+                                src="../assets/images/tenspick-logo.png"
+                                alt=""
+                                onerror="
+                                    this.style.display='none';
+                                    this.parentElement.classList.add('fallback');
+                                "
+                            >
+
+                            <span class="topbar-profile-logo-fallback" id="topbarAdminInitial">
+                                S
+                            </span>
+                        </span>
+
+                        <span class="topbar-profile-details">
+                            <strong id="topbarAdminName">
+                                Staff
+                            </strong>
+
+                            <small id="topbarAdminRole">
+                                Staff User
+                            </small>
+                        </span>
+
+                        <svg
+                            class="topbar-profile-arrow"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            focusable="false"
+                        >
+                            <path d="M7 10l5 5 5-5H7Z"/>
+                        </svg>
                     </button>
 
-                    <div class="topbar-profile-dropdown" id="profileDropdown" hidden role="menu">
-                        <div class="profile-dropdown-header">
-                            <div class="profile-dropdown-avatar" id="dropdownAdminInitial">S</div>
-                            <div>
+                    <div
+                        class="topbar-profile-dropdown"
+                        id="profileDropdown"
+                        hidden
+                        role="menu"
+                    >
+                        <div class="profile-dropdown-user">
+                            <div class="profile-dropdown-logo">
+                                <img
+                                    src="../assets/images/tenspick-logo.png"
+                                    alt=""
+                                    onerror="
+                                        this.style.display='none';
+                                        this.nextElementSibling.style.display='block';
+                                    "
+                                >
+                                <span id="dropdownAdminInitial">S</span>
+                            </div>
+
+                            <div class="profile-dropdown-info">
                                 <strong id="dropdownAdminName">Staff User</strong>
-                                <span id="dropdownAdminEmail">staff@tenspick.org</span>
+                                <small id="dropdownAdminEmail">staff@tenspick.org</small>
                             </div>
                         </div>
+
                         <div class="profile-dropdown-divider"></div>
+
                         <a href="#/profile" class="profile-dropdown-item" data-route="profile">
                             <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12Zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8Z"/></svg>
                             My Profile
                         </a>
+
                         <div class="profile-dropdown-divider"></div>
+
                         <button type="button" class="profile-dropdown-item profile-dropdown-logout" id="topbarLogout">
                             <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
                             Logout
