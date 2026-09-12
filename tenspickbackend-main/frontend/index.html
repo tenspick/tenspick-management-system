@@ -13,6 +13,15 @@
     </title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#4B49AC">
+    <script>
+        (function() {
+            var isAuth = sessionStorage.getItem("tenspick_authenticated");
+            var isUser = sessionStorage.getItem("tenspick_user");
+            if (!isAuth && !isUser) {
+                window.location.replace("login.html");
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="assets/js/pwa.js"></script>
 
