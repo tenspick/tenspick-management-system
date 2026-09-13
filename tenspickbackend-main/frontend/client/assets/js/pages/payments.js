@@ -820,39 +820,18 @@
       } catch (e) {}
     }
 
-    if (!list.length) {
-      list = [
-        {
-          id: 101,
-          payment_code: "PAY-2026-001",
-          amount: 25000,
-          purpose: "Initial Advance Deposit",
-          payment_date: "2026-01-15",
-          payment_method: "UPI / Bank Transfer",
-          transaction_id: "TXN9876543210",
-          project_name: "Vanatvam Web Platform",
-          project_code: "PRJ-2026-001",
-          project_amount_snapshot: 100000,
-          paid_before: 0,
-          paid_after: 25000,
-          remaining_after: 75000
-        },
-        {
-          id: 102,
-          payment_code: "PAY-2026-002",
-          amount: 35000,
-          purpose: "Milestone 1 Completion",
-          payment_date: "2026-02-20",
-          payment_method: "Bank Transfer",
-          transaction_id: "TXN9876543211",
-          project_name: "Vanatvam Web Platform",
-          project_code: "PRJ-2026-001",
-          project_amount_snapshot: 100000,
-          paid_before: 25000,
-          paid_after: 60000,
-          remaining_after: 40000
-        }
-      ];
+    // Filter by client if client identity is present
+    if (list.length > 0 && state.client) {
+      const cId = state.client.id || state.client.client_id;
+      const cEmail = state.client.email || state.client.login_email;
+      if (cId || cEmail) {
+        const filtered = list.filter(p => {
+          if (cId && String(p.client_id) === String(cId)) return true;
+          if (cEmail && (p.client_email === cEmail || p.email === cEmail)) return true;
+          return !p.client_id; // Include generic payments if unassigned
+        });
+        if (filtered.length > 0) list = filtered;
+      }
     }
 
     return list;

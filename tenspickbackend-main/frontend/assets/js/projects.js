@@ -1086,6 +1086,24 @@
   }
 
   /* ============================================================
+       POPULATE PROJECT TYPES
+       ============================================================ */
+
+  function populateProjectTypes() {
+    if (!dom.typeFilter) return;
+    const current = dom.typeFilter.value;
+    const types = new Set();
+    (state.projects || []).forEach(p => {
+      if (p.project_type) types.add(p.project_type);
+    });
+    let html = '<option value="">All Types</option>';
+    types.forEach(t => {
+      html += `<option value="${escapeHtml(t)}"${t === current ? ' selected' : ''}>${escapeHtml(t)}</option>`;
+    });
+    dom.typeFilter.innerHTML = html;
+  }
+
+  /* ============================================================
        LOAD PROJECTS
        ============================================================ */
 
@@ -1195,6 +1213,7 @@
         return;
       }
       console.error("[Projects] loadProjects error:", error);
+      renderProjects();
     }
   }
 

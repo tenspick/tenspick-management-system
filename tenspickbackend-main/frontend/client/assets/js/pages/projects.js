@@ -168,22 +168,6 @@
                 }
             } catch (e) {}
         }
-        if (!list.length) {
-            list = [
-                {
-                    id: 1,
-                    project_name: "Vanatvam Web Platform",
-                    project_code: "PRJ-2026-001",
-                    project_type: "Web Application",
-                    description: "Full-stack development of real-estate and ecological platform.",
-                    status: "In Progress",
-                    progress_percentage: 75,
-                    start_date: "2026-01-10",
-                    expected_completion: "2026-05-15",
-                    live_website_link: "https://vanatvam.com"
-                }
-            ];
-        }
         return list;
     }
 
