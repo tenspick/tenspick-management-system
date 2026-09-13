@@ -1998,61 +1998,83 @@
                     : "";
         }
 
-        if (add) {
-            const currentValue =
-                add.value || "";
+        ["spAddStaff", "spEditStaff"].forEach(function(selectId) {
+            const select = getElement(selectId);
+            if (select) {
+                const currentValue = select.value || "";
+                let html = state.staff.length === 0
+                    ? `<option value="">No staff members found. Add a staff member first.</option>`
+                    : `<option value="">Select Staff</option>`;
 
-            let html = `
-                <option value="">
-                    Select Staff
-                </option>
-            `;
-
-            state.staff.forEach(
-                function (staff) {
+                state.staff.forEach(function (staff) {
                     html += `
-                        <option value="${escapeHtml(
-                            staff.id
-                        )}">
-                            ${escapeHtml(
-                                staff.name
-                            )}
-                            ${
-                                staff.staffCode
-                                    ? " (" +
-                                      escapeHtml(
-                                          staff.staffCode
-                                      ) +
-                                      ")"
-                                    : ""
-                            }
+                        <option value="${escapeHtml(staff.id)}">
+                            ${escapeHtml(staff.name)}
+                            ${staff.staffCode ? " (" + escapeHtml(staff.staffCode) + ")" : ""}
                         </option>
                     `;
+                });
+
+                select.innerHTML = html;
+
+                const exists = state.staff.some(function (staff) {
+                    return String(staff.id) === String(currentValue);
+                });
+
+                if (exists) {
+                    select.value = String(currentValue);
                 }
-            );
 
-            add.innerHTML = html;
-
-            const exists =
-                state.staff.some(
-                    function (staff) {
-                        return (
-                            String(
-                                staff.id
-                            ) ===
-                            String(
-                                currentValue
-                            )
-                        );
+                // Add helper link below select if no staff members found
+                let helper = select.parentNode.querySelector(".sp-no-staff-helper");
+                if (state.staff.length === 0) {
+                    if (!helper) {
+                        helper = document.createElement("div");
+                        helper.className = "sp-no-staff-helper";
+                        helper.style.cssText = "margin-top: 0.4rem; font-size: 0.82rem; color: #f59e0b;";
+                        helper.innerHTML = `<a href="#/staff" style="color: #6366f1; text-decoration: underline; font-weight: 600;">+ Add Staff</a>`;
+                        select.parentNode.appendChild(helper);
                     }
-                );
-
-            if (exists) {
-                add.value =
-                    String(
-                        currentValue
-                    );
+                } else if (helper) {
+                    helper.remove();
+                }
             }
+        });
+    }
+
+    /* =========================================================
+       POPULATE PROJECT SELECTS
+    ========================================================= */
+
+    function populateProjectSelects() {
+        const addProject = getElement("spAddProject");
+        if (!addProject) return;
+
+        const currentValue = addProject.value || "";
+        let html = `<option value="">General / Office Operations</option>`;
+
+        let projects = [];
+        try {
+            const raw = localStorage.getItem("tenspick_projects");
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed)) projects = parsed;
+                else if (parsed && Array.isArray(parsed.data)) projects = parsed.data;
+            }
+        } catch (e) {
+            logError("Project dropdown load error:", e);
+        }
+
+        projects.forEach(function (p) {
+            const pid = p.id || p.project_id;
+            const title = p.title || p.name || p.project_name || ("Project #" + pid);
+            const clientName = p.client_name || p.clientName || "";
+            html += `<option value="${escapeHtml(pid)}">${escapeHtml(title)}${clientName ? " (" + escapeHtml(clientName) + ")" : ""}</option>`;
+        });
+
+        addProject.innerHTML = html;
+        if (currentValue && projects.some(p => String(p.id || p.project_id) === String(currentValue))) {
+            addProject.value = String(currentValue);
         }
     }
 
@@ -2259,13 +2281,40 @@
             }
 
             logError(
-                "Payment loading failed, using LocalStorage fallback:",
+                "Payment loading fallback check (Supabase / LocalStorage):",
                 error
             );
 
             try {
-                const raw = localStorage.getItem("tenspick_staff_payments");
-                let list = raw ? JSON.parse(raw) : [];
+                let list = [];
+
+                // 1. Try Supabase first
+                if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+                    try {
+                        const sb = window.TenspickSupabase.getClient();
+                        if (sb) {
+                            const { data: sbData, error: sbErr } = await sb.from("staff_payments").select("*");
+                            if (!sbErr && Array.isArray(sbData) && sbData.length > 0) {
+                                list = sbData;
+                            }
+                        }
+                    } catch (sbErr) {
+                        console.warn("[Staff Payments] Supabase load note:", sbErr);
+                    }
+                }
+
+                // 2. Merge LocalStorage items
+                try {
+                    const raw = localStorage.getItem("tenspick_staff_payments");
+                    if (raw) {
+                        const localItems = JSON.parse(raw) || [];
+                        localItems.forEach(item => {
+                            if (!list.some(p => String(p.id) === String(item.id))) {
+                                list.push(item);
+                            }
+                        });
+                    }
+                } catch (e) {}
 
                 if (state.filters.search) {
                     const s = state.filters.search.toLowerCase();
@@ -2280,10 +2329,10 @@
 
                 state.payments = list;
                 state.total = list.length;
-                state.totalPages = 1;
+                state.totalPages = Math.ceil(list.length / state.limit) || 1;
 
                 const totalPaid = list.reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
-                const salaryPaid = list.filter(p => p.payment_type === "salary").reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
+                const salaryPaid = list.filter(p => (p.payment_type || "").toLowerCase() === "salary").reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
 
                 state.summary = {
                     totalPayments: list.length,
@@ -2298,7 +2347,7 @@
             } catch (e) {
                 setPaymentState(
                     "error",
-                    error.message ||
+                    e?.message ||
                         "Unable to load staff payments."
                 );
             }
@@ -2312,7 +2361,7 @@
     }
 
     /* =========================================================
-       SUMMARY
+       SUMMARY & STAFF BREAKDOWN
     ========================================================= */
 
     function renderSummary() {
@@ -2334,16 +2383,140 @@
         setText(
             "spThisMonth",
             formatCurrency(
-                state.summary.thisMonth
+                state.summary.thisMonth || state.summary.currentMonthAmount || 0
             )
         );
 
         setText(
             "spSalaryPaid",
             formatCurrency(
-                state.summary.salaryPaid
+                state.summary.salaryPaid || state.summary.totalSalaryPaid || 0
             )
         );
+
+        renderStaffBreakdown();
+    }
+
+    function renderStaffBreakdown() {
+        const grid = getElement("spStaffBreakdownGrid");
+        if (!grid) return;
+
+        let allPayments = [];
+        try {
+            const raw = localStorage.getItem("tenspick_staff_payments");
+            if (raw) allPayments = JSON.parse(raw) || [];
+        } catch (e) {}
+
+        if (!allPayments.length && state.payments && state.payments.length) {
+            allPayments = state.payments;
+        }
+
+        const staffMap = {};
+
+        (state.staff || []).forEach(function (s) {
+            const sid = String(s.id);
+            staffMap[sid] = {
+                id: sid,
+                name: s.name || s.full_name || "Staff Member",
+                code: s.staffCode || s.staff_code || "",
+                department: s.department || "Operations",
+                totalPaid: 0,
+                salaryPaid: 0,
+                paymentCount: 0,
+                lastDate: null
+            };
+        });
+
+        allPayments.forEach(function (p) {
+            const sid = String(p.staff_id || p.staffId || "unknown");
+            const sname = p.staff_name || p.staffName || "Staff #" + sid;
+            if (!staffMap[sid]) {
+                staffMap[sid] = {
+                    id: sid,
+                    name: sname,
+                    code: p.staff_code || p.staffCode || "",
+                    department: p.staff_department || p.department || "Staff",
+                    totalPaid: 0,
+                    salaryPaid: 0,
+                    paymentCount: 0,
+                    lastDate: null
+                };
+            }
+            const amt = Number(p.amount) || 0;
+            staffMap[sid].totalPaid += amt;
+            staffMap[sid].paymentCount += 1;
+
+            const pType = (p.payment_type || p.paymentType || "").toLowerCase();
+            if (pType === "salary") {
+                staffMap[sid].salaryPaid += amt;
+            }
+
+            const pDate = p.payment_date || p.paymentDate || "";
+            if (pDate) {
+                if (!staffMap[sid].lastDate || pDate > staffMap[sid].lastDate) {
+                    staffMap[sid].lastDate = pDate;
+                }
+            }
+        });
+
+        const staffList = Object.values(staffMap);
+        grid.replaceChildren();
+
+        if (!staffList.length) {
+            grid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; color: var(--sp-text-muted, #94a3b8); padding: 2rem;">
+                    <i class="bi bi-people" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
+                    No staff payment data available yet. Add staff payments above to populate this dashboard.
+                </div>
+            `;
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        staffList.forEach(function (item) {
+            const card = document.createElement("div");
+            card.className = "sp-staff-card";
+            card.style.cssText = "background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem; transition: transform 0.2s ease, border-color 0.2s ease;";
+
+            const initials = getInitials(item.name);
+
+            card.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div style="width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #a855f7); color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);">
+                            ${escapeHtml(initials)}
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; font-size: 1rem; font-weight: 600; color: #f8fafc;">${escapeHtml(item.name)}</h4>
+                            <span style="font-size: 0.78rem; color: #94a3b8;">${escapeHtml(item.department)}${item.code ? " • " + escapeHtml(item.code) : ""}</span>
+                        </div>
+                    </div>
+                    <span style="font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 20px; background: rgba(99, 102, 241, 0.15); color: #a5b4fc; font-weight: 500;">
+                        ${item.paymentCount} ${item.paymentCount === 1 ? 'payment' : 'payments'}
+                    </span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; background: rgba(15, 23, 42, 0.4); padding: 0.85rem; border-radius: 8px;">
+                    <div>
+                        <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 0.2rem;">Total Paid</div>
+                        <div style="font-size: 1.1rem; font-weight: 700; color: #34d399;">${formatCurrency(item.totalPaid)}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 0.2rem;">Salary Paid</div>
+                        <div style="font-size: 1.1rem; font-weight: 700; color: #38bdf8;">${formatCurrency(item.salaryPaid)}</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: #94a3b8; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 0.6rem; margin-top: 0.2rem;">
+                    <span>Last Payment Date</span>
+                    <strong style="color: #cbd5e1;">${item.lastDate ? formatDate(item.lastDate) : "—"}</strong>
+                </div>
+            `;
+
+            fragment.appendChild(card);
+        });
+
+        grid.appendChild(fragment);
     }
 
     /* =========================================================
@@ -3248,6 +3421,7 @@
         closeActionMenu();
 
         populateStaffSelects();
+        populateProjectSelects();
 
         prepareAddModal();
 
@@ -3300,17 +3474,12 @@
                 "spAddRemarks"
             );
 
-        const staffId =
+        const staffVal =
             staff
-                ? Number(
-                      staff.value
-                  )
-                : 0;
+                ? (staff.value || "").trim()
+                : "";
 
-        if (
-            !staffId ||
-            staffId <= 0
-        ) {
+        if (!staffVal) {
             setFieldError(
                 "spAddStaff",
                 "Staff is required."
@@ -3502,18 +3671,31 @@
                 "spAddPaymentMethod"
             );
 
+        const project =
+            getElement(
+                "spAddProject"
+            );
+
         const remarks =
             getElement(
                 "spAddRemarks"
             );
 
+        let projectId = "";
+        let projectName = "General / Office Operations";
+        if (project && project.value) {
+            projectId = project.value;
+            const selOpt = project.options[project.selectedIndex];
+            if (selOpt && selOpt.text) {
+                projectName = selOpt.text;
+            }
+        }
+
         return {
             staff_id:
                 staff
-                    ? Number(
-                          staff.value
-                      )
-                    : 0,
+                    ? staff.value
+                    : "",
 
             payment_type:
                 type
@@ -3541,6 +3723,9 @@
                 method
                     ? method.value
                     : "",
+
+            project_id: projectId,
+            project_name: projectName,
 
             remarks:
                 remarks
@@ -3585,7 +3770,6 @@
             const data =
                 getAddPaymentData();
 
-            // 1. Save to LocalStorage for instant persistence & Staff Portal sync
             let localList = [];
             try {
                 const raw = localStorage.getItem("tenspick_staff_payments");
@@ -3601,10 +3785,23 @@
                 created_at: new Date().toISOString()
             };
 
+            // 1. Save to Supabase if configured
+            if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+                try {
+                    const sb = window.TenspickSupabase.getClient();
+                    if (sb) {
+                        await sb.from("staff_payments").insert([newPayment]);
+                    }
+                } catch (sbErr) {
+                    console.warn("[Staff Payments] Supabase save note:", sbErr);
+                }
+            }
+
+            // 2. Save to LocalStorage for instant persistence & Staff Portal sync
             localList.unshift(newPayment);
             localStorage.setItem("tenspick_staff_payments", JSON.stringify(localList));
 
-            // 2. Attempt API request silently
+            // 3. Attempt API request silently
             try {
                 await apiRequest(
                     ENDPOINTS.payments,
@@ -4013,64 +4210,88 @@
             selected.staffName
         );
 
-        const remarks =
-            getElement(
-                "spEditRemarks"
-            );
+        populateStaffSelects();
+        populateProjectSelects();
 
-        if (remarks) {
-            remarks.value =
-                selected.remarks ||
-                "";
-        }
+        const editStaff = getElement("spEditStaff");
+        if (editStaff) editStaff.value = String(selected.staffId || "");
+
+        const editProject = getElement("spEditProject");
+        if (editProject) editProject.value = String(selected.projectId || "");
+
+        const editType = getElement("spEditPaymentType");
+        if (editType) editType.value = String(selected.paymentType || "salary");
+
+        const editAmount = getElement("spEditAmount");
+        if (editAmount) editAmount.value = selected.amount || 0;
+
+        const editDate = getElement("spEditPaymentDate");
+        if (editDate) editDate.value = selected.paymentDate || getToday();
+
+        const editPeriod = getElement("spEditPaymentPeriod");
+        if (editPeriod) editPeriod.value = selected.paymentPeriod || "";
+
+        const editMethod = getElement("spEditPaymentMethod");
+        if (editMethod) editMethod.value = String(selected.paymentMethod || "cash");
+
+        const editTx = getElement("spEditTransactionId");
+        if (editTx) editTx.value = selected.transactionId || "";
+
+        const remarks = getElement("spEditRemarks");
+        if (remarks) remarks.value = selected.remarks || "";
 
         clearEditFormErrors();
+        clearFormAlert("spEditPaymentAlert");
 
-        clearFormAlert(
-            "spEditPaymentAlert"
-        );
+        updateRemarksCount("spEditRemarks", "spEditRemarksCount");
+        setButtonLoading("spUpdatePaymentBtn", false);
 
-        updateRemarksCount(
-            "spEditRemarks",
-            "spEditRemarksCount"
-        );
-
-        setButtonLoading(
-            "spUpdatePaymentBtn",
-            false
-        );
-
-        closeModal(
-            "spViewPaymentModal"
-        );
-
-        openModal(
-            "spEditPaymentModal"
-        );
+        closeModal("spViewPaymentModal");
+        openModal("spEditPaymentModal");
     }
 
     function validateEditForm() {
         clearEditFormErrors();
+        let valid = true;
 
-        const remarks =
-            getElement(
-                "spEditRemarks"
-            );
+        const staff = getElement("spEditStaff");
+        const type = getElement("spEditPaymentType");
+        const amount = getElement("spEditAmount");
+        const date = getElement("spEditPaymentDate");
+        const period = getElement("spEditPaymentPeriod");
+        const method = getElement("spEditPaymentMethod");
 
-        if (
-            remarks &&
-            remarks.value.length >
-                5000
-        ) {
-            setFieldError(
-                "spEditRemarks",
-                "Remarks cannot exceed 5000 characters."
-            );
-
-            return false;
+        if (staff && (!staff.value || staff.value.trim() === "")) {
+            setFieldError("spEditStaff", "Staff is required.");
+            valid = false;
         }
 
-        return true;
+        if (type && (!type.value || type.value.trim() === "")) {
+            setFieldError("spEditPaymentType", "Payment type is required.");
+            valid = false;
+        }
+
+        if (amount && (Number(amount.value) <= 0 || isNaN(Number(amount.value)))) {
+            setFieldError("spEditAmount", "Enter a valid amount.");
+            valid = false;
+        }
+
+        if (date && !date.value) {
+            setFieldError("spEditPaymentDate", "Payment date is required.");
+            valid = false;
+        }
+
+        if (period && (!period.value || period.value.trim() === "")) {
+            setFieldError("spEditPaymentPeriod", "Month / Period is required.");
+            valid = false;
+        }
+
+        if (method && (!method.value || method.value.trim() === "")) {
+            setFieldError("spEditPaymentMethod", "Payment method is required.");
+            valid = false;
+        }
+
+        return valid;
     }
 
     async function submitEditPayment(
@@ -4086,8 +4307,7 @@
 
         if (
             !state.selectedPayment ||
-            state.selectedPayment.id <=
-                0
+            !state.selectedPayment.id
         ) {
             showToast(
                 "error",
@@ -4115,96 +4335,93 @@
         );
 
         try {
-            const remarks =
-                getElement(
-                    "spEditRemarks"
-                );
+            const staffId = getElement("spEditStaff")?.value || state.selectedPayment.staffId;
+            const projectId = getElement("spEditProject")?.value || "";
+            const paymentType = getElement("spEditPaymentType")?.value || "salary";
+            const amount = Number(getElement("spEditAmount")?.value || 0);
+            const paymentDate = getElement("spEditPaymentDate")?.value || getToday();
+            const paymentPeriod = getElement("spEditPaymentPeriod")?.value || "";
+            const paymentMethod = getElement("spEditPaymentMethod")?.value || "cash";
+            const transactionId = getElement("spEditTransactionId")?.value || "";
+            const remarks = getElement("spEditRemarks")?.value || "";
 
-            const data = {
-                remarks:
-                    remarks
-                        ? remarks.value.trim()
-                        : "",
+            const selectedStaff = (state.staff || []).find(s => String(s.id) === String(staffId));
+            const staffName = selectedStaff ? (selectedStaff.name || selectedStaff.full_name) : state.selectedPayment.staffName;
+
+            const updatedFields = {
+                staff_id: staffId,
+                staff_name: staffName,
+                project_id: projectId,
+                payment_type: paymentType,
+                amount: amount,
+                payment_date: paymentDate,
+                payment_period: paymentPeriod,
+                payment_method: paymentMethod,
+                transaction_id: transactionId,
+                remarks: remarks,
             };
 
-            const response =
+            // 1. Update in Supabase if configured
+            if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+                try {
+                    const sb = window.TenspickSupabase.getClient();
+                    if (sb) {
+                        await sb.from("staff_payments").update(updatedFields).eq("id", state.selectedPayment.id);
+                    }
+                } catch (sbErr) {
+                    console.warn("[Staff Payments] Supabase update note:", sbErr);
+                }
+            }
+
+            // 2. Update in LocalStorage
+            try {
+                const raw = localStorage.getItem("tenspick_staff_payments");
+                if (raw) {
+                    let list = JSON.parse(raw) || [];
+                    const targetId = String(state.selectedPayment.id);
+                    list = list.map(item => {
+                        if (String(item.id) === targetId || String(item.payment_code) === String(state.selectedPayment.paymentCode)) {
+                            return { ...item, ...updatedFields };
+                        }
+                        return item;
+                    });
+                    localStorage.setItem("tenspick_staff_payments", JSON.stringify(list));
+                }
+            } catch (e) {
+                console.warn("[Staff Payments] LocalStorage edit note:", e);
+            }
+
+            // 3. Attempt API request silently
+            try {
                 await apiRequest(
-                    ENDPOINTS.payments +
-                        "/" +
-                        encodeURIComponent(
-                            state
-                                .selectedPayment
-                                .id
-                        ),
+                    ENDPOINTS.payments + "/" + encodeURIComponent(state.selectedPayment.id),
                     {
                         method: "PUT",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json",
-                        },
-
-                        body:
-                            JSON.stringify(
-                                data
-                            ),
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(updatedFields),
                     },
                     true
                 );
-
-            if (
-                response &&
-                response.success ===
-                    false
-            ) {
-                throw new Error(
-                    extractMessage(
-                        response,
-                        "Unable to update payment remarks."
-                    )
-                );
+            } catch (apiErr) {
+                console.warn("[Staff Payments] API update note:", apiErr);
             }
 
-            closeModal(
-                "spEditPaymentModal"
-            );
+            closeModal("spEditPaymentModal");
 
             showToast(
                 "success",
-                extractMessage(
-                    response,
-                    "Payment remarks updated successfully."
-                )
+                "Payment updated successfully."
             );
 
             await loadPayments();
         } catch (error) {
-            logError(
-                "Update payment failed:",
-                error
-            );
-
-            const message =
-                error.message ||
-                "Unable to update payment remarks.";
-
-            showFormAlert(
-                "spEditPaymentAlert",
-                message
-            );
-
-            showToast(
-                "error",
-                message
-            );
+            logError("Update payment failed:", error);
+            const message = error.message || "Unable to update payment.";
+            showFormAlert("spEditPaymentAlert", message);
+            showToast("error", message);
         } finally {
-            state.updating =
-                false;
-
-            setButtonLoading(
-                "spUpdatePaymentBtn",
-                false
-            );
+            state.updating = false;
+            setButtonLoading("spUpdatePaymentBtn", false);
         }
     }
 
@@ -4233,7 +4450,7 @@
 
         if (
             !selected ||
-            selected.id <= 0
+            !selected.id
         ) {
             showToast(
                 "error",
@@ -4267,39 +4484,68 @@
     }
 
     async function confirmDeletePayment() {
-        /*
-         * Financial staff payment deletion
-         * is protected by backend.
-         *
-         * Do not make a DELETE request.
-         */
-
         if (state.deleting) {
+            return;
+        }
+
+        if (!state.selectedPayment || !state.selectedPayment.id) {
+            closeModal("spDeletePaymentModal");
             return;
         }
 
         state.deleting = true;
 
         try {
-            const payment =
-                state.selectedPayment;
+            const targetId = String(state.selectedPayment.id);
+            const targetCode = String(state.selectedPayment.paymentCode || "");
 
-            showToast(
-                "warning",
-                payment &&
-                    payment.paymentCode
-                    ? "Payment " +
-                          payment.paymentCode +
-                          " is protected and cannot be deleted."
-                    : "Staff payment records cannot be deleted."
-            );
+            // 1. Delete from Supabase if configured
+            if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+                try {
+                    const sb = window.TenspickSupabase.getClient();
+                    if (sb) {
+                        await sb.from("staff_payments").delete().eq("id", state.selectedPayment.id);
+                    }
+                } catch (sbErr) {
+                    console.warn("[Staff Payments] Supabase delete note:", sbErr);
+                }
+            }
 
-            closeModal(
-                "spDeletePaymentModal"
-            );
+            // 2. Remove from LocalStorage
+            try {
+                const raw = localStorage.getItem("tenspick_staff_payments");
+                if (raw) {
+                    let list = JSON.parse(raw) || [];
+                    list = list.filter(item => String(item.id) !== targetId && String(item.payment_code) !== targetCode);
+                    localStorage.setItem("tenspick_staff_payments", JSON.stringify(list));
+                }
+            } catch (e) {
+                console.warn("[Staff Payments] LocalStorage delete note:", e);
+            }
+
+            // 3. Attempt API request silently
+            try {
+                await apiRequest(
+                    ENDPOINTS.payments + "/" + encodeURIComponent(state.selectedPayment.id),
+                    {
+                        method: "DELETE",
+                    },
+                    true
+                );
+            } catch (apiErr) {
+                console.warn("[Staff Payments] API delete note:", apiErr);
+            }
+
+            closeModal("spDeletePaymentModal");
+
+            showToast("success", "Staff payment deleted successfully.");
+
+            await loadPayments();
+        } catch (error) {
+            logError("Delete payment failed:", error);
+            showToast("error", error.message || "Unable to delete staff payment.");
         } finally {
-            state.deleting =
-                false;
+            state.deleting = false;
         }
     }
 
@@ -5200,7 +5446,7 @@
                 ></i>
 
                 <span>
-                    Edit Remarks
+                    Edit Payment
                 </span>
             </button>
 
@@ -5236,12 +5482,12 @@
                 role="menuitem"
             >
                 <i
-                    class="bi bi-shield-lock"
+                    class="bi bi-trash"
                     aria-hidden="true"
                 ></i>
 
                 <span>
-                    Delete Protected
+                    Delete Payment
                 </span>
             </button>
         `;
@@ -5835,6 +6081,13 @@
     function handleDocumentClick(
         event
     ) {
+        const addBtn = event.target.closest("#spAddPaymentBtn, #spEmptyAddPaymentBtn, [data-sp-action='add']");
+        if (addBtn) {
+            event.preventDefault();
+            openAddPayment();
+            return;
+        }
+
         if (
             state.actionMenu
         ) {

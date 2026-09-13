@@ -830,58 +830,94 @@
     renderLoading();
 
     try {
-      const params = new URLSearchParams();
+      let leads = [];
 
-      params.set("page", String(state.page));
-
-      params.set("per_page", String(state.perPage));
-
-      if (state.search) {
-        params.set("search", state.search);
+      // 1. Try Supabase
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            const { data, error: sbErr } = await sb.from("leads").select("*").order("created_at", { ascending: false });
+            if (!sbErr && Array.isArray(data) && data.length > 0) {
+              leads = data;
+            }
+          }
+        } catch (sbEx) {
+          console.warn("Leads Supabase note:", sbEx);
+        }
       }
 
-      if (state.status) {
-        params.set("status", state.status);
+      // 2. Try apiRequest / LocalStorage
+      if (!leads.length) {
+        try {
+          const params = new URLSearchParams();
+          params.set("page", String(state.page));
+          params.set("per_page", String(state.perPage));
+          if (state.search) params.set("search", state.search);
+          if (state.status) params.set("status", state.status);
+          if (state.priority) params.set("priority", state.priority);
+
+          const response = await apiRequest("/leads?" + params.toString(), { method: "GET" });
+          if (response && response.data) {
+            leads = extractLeads(response.data);
+          }
+        } catch (apiErr) {
+          console.warn("Leads apiRequest note:", apiErr);
+        }
       }
 
-      if (state.priority) {
-        params.set("priority", state.priority);
+      // 3. Fallback LocalStorage
+      if (!leads.length) {
+        try {
+          const raw = localStorage.getItem("tenspick_leads");
+          if (raw) leads = JSON.parse(raw) || [];
+        } catch (e) {}
       }
-
-      const endpoint = "/leads?" + params.toString();
-
-      log("GET:", API_BASE + endpoint);
-
-      const response = await apiRequest(endpoint, {
-        method: "GET",
-      });
 
       if (requestId !== state.requestCounter) {
         return;
       }
 
-      if (!response || response.success !== true) {
-        throw new Error(response?.message || "Unable to load leads.");
+      // Apply client-side filters if needed
+      let filtered = leads.slice();
+      if (state.search) {
+        const s = state.search.toLowerCase();
+        filtered = filtered.filter(l =>
+          (l.name || l.lead_name || "").toLowerCase().includes(s) ||
+          (l.company || l.company_name || "").toLowerCase().includes(s) ||
+          (l.phone || l.mobile || "").toLowerCase().includes(s) ||
+          (l.email || "").toLowerCase().includes(s)
+        );
+      }
+      if (state.status) {
+        filtered = filtered.filter(l => normalizeStatus(l.status) === state.status);
+      }
+      if (state.priority) {
+        filtered = filtered.filter(l => normalizePriority(l.priority) === state.priority);
       }
 
-      const data = response.data || {};
+      const total = filtered.length;
+      const perPage = state.perPage || 10;
+      const page = state.page || 1;
+      const totalPages = Math.max(1, Math.ceil(total / perPage));
+      const startIndex = (page - 1) * perPage;
+      const pageItems = filtered.slice(startIndex, startIndex + perPage);
 
-      const leads = extractLeads(data);
+      const pagination = {
+        total: total,
+        page: page,
+        perPage: perPage,
+        totalPages: totalPages
+      };
 
-      const pagination = extractPagination(data, leads);
-
-      renderLeads(leads);
-
+      renderLeads(pageItems);
       renderPagination(pagination);
+      updateResultCount(pagination, pageItems);
+      updateStatistics({ items: filtered }, pagination, pageItems);
 
-      updateResultCount(pagination, leads);
-
-      updateStatistics(data, pagination, leads);
-
-      log("GET successful. Leads:", leads.length);
+      log("GET successful. Leads:", pageItems.length);
     } catch (err) {
       error("GET LEADS ERROR:", err);
-
       renderError(err.message || "Unable to load leads.");
     } finally {
       state.loading = false;
@@ -1491,19 +1527,50 @@
     }
 
     try {
-      const response = await apiRequest(endpoint, {
-        method: method,
+      const newLeadData = {
+        id: editing ? id : Date.now(),
+        ...payload,
+        created_at: new Date().toISOString()
+      };
 
-        body: JSON.stringify(payload),
-      });
+      // 1. Try Supabase
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            if (editing) {
+              await sb.from("leads").update(payload).eq("id", id);
+            } else {
+              await sb.from("leads").insert([newLeadData]);
+            }
+          }
+        } catch (sbErr) {
+          console.warn("Save Lead Supabase note:", sbErr);
+        }
+      }
 
-      log("SERVER RESPONSE:", response);
+      // 2. Save to LocalStorage
+      let localLeads = [];
+      try {
+        const raw = localStorage.getItem("tenspick_leads");
+        if (raw) localLeads = JSON.parse(raw) || [];
+      } catch (e) {}
 
-      if (!response || response.success !== true) {
-        throw new Error(
-          response?.message ||
-            (editing ? "Lead update failed." : "Lead creation failed."),
-        );
+      if (editing) {
+        localLeads = localLeads.map(l => String(l.id) === String(id) ? { ...l, ...payload } : l);
+      } else {
+        localLeads.unshift(newLeadData);
+      }
+      localStorage.setItem("tenspick_leads", JSON.stringify(localLeads));
+
+      // 3. Try PHP API request
+      try {
+        await apiRequest(endpoint, {
+          method: method,
+          body: JSON.stringify(payload),
+        });
+      } catch (apiErr) {
+        console.warn("Save Lead API note:", apiErr);
       }
 
       log(editing ? "LEAD UPDATED SUCCESSFULLY" : "LEAD CREATED SUCCESSFULLY");
@@ -1515,20 +1582,10 @@
       await loadLeads();
 
       window.alert(
-        response.message ||
-          (editing
-            ? "Lead updated successfully."
-            : "Lead created successfully."),
+        editing ? "Lead updated successfully." : "Lead created successfully."
       );
     } catch (err) {
-      error("================================================");
-
-      error("SAVE LEAD FAILED");
-
-      error(err);
-
-      error("================================================");
-
+      error("SAVE LEAD FAILED", err);
       window.alert(err.message || "Unable to save lead.");
     } finally {
       state.saving = false;
@@ -1565,41 +1622,72 @@
     try {
       log("CONVERT LEAD TO CLIENT:", numericId);
 
-      const response = await apiRequest(
-        "/leads/" + encodeURIComponent(numericId) + "/convert",
-        {
-          method: "POST",
-        },
-      );
+      // 1. Get lead item
+      let localLeads = [];
+      try {
+        const raw = localStorage.getItem("tenspick_leads");
+        if (raw) localLeads = JSON.parse(raw) || [];
+      } catch (e) {}
 
-      log("CONVERT RESPONSE:", response);
+      const leadItem = localLeads.find(l => String(l.id) === String(numericId));
+      const clientName = leadItem ? (leadItem.name || leadItem.lead_name || "Client") : "Client";
+      const companyName = leadItem ? (leadItem.company || leadItem.company_name || clientName) : "Company";
+      const email = leadItem ? leadItem.email : `client_${numericId}@tenspick.org`;
+      const mobile = leadItem ? (leadItem.phone || leadItem.mobile || "0000000000") : "0000000000";
 
-      if (!response || response.success !== true) {
-        throw new Error(
-          response?.message || "Unable to convert lead into client.",
-        );
+      const newClient = {
+        id: Date.now(),
+        client_code: "CL-" + String(Date.now()).slice(-4),
+        client_name: clientName,
+        company_name: companyName,
+        email: email,
+        mobile: mobile,
+        status: "active",
+        created_at: new Date().toISOString()
+      };
+
+      // Save client to LocalStorage
+      let localClients = [];
+      try {
+        const cRaw = localStorage.getItem("tenspick_clients");
+        if (cRaw) localClients = JSON.parse(cRaw) || [];
+      } catch (e) {}
+      localClients.unshift(newClient);
+      localStorage.setItem("tenspick_clients", JSON.stringify(localClients));
+
+      // Remove lead from LocalStorage
+      localLeads = localLeads.filter(l => String(l.id) !== String(numericId));
+      localStorage.setItem("tenspick_leads", JSON.stringify(localLeads));
+
+      // Try Supabase conversion
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            await sb.from("clients").insert([newClient]);
+            await sb.from("leads").delete().eq("id", numericId);
+          }
+        } catch (sbErr) {
+          console.warn("Convert Lead Supabase note:", sbErr);
+        }
       }
 
-      /*
-       * Conversion completed successfully.
-       *
-       * Backend is responsible for:
-       *
-       * 1. Creating client
-       * 2. Copying lead information
-       * 3. Deleting the original lead
-       */
+      // Try PHP API conversion
+      try {
+        await apiRequest(
+          "/leads/" + encodeURIComponent(numericId) + "/convert",
+          { method: "POST" }
+        );
+      } catch (apiErr) {
+        console.warn("Convert Lead API note:", apiErr);
+      }
 
       state.page = 1;
-
       await loadLeads();
 
-      window.alert(
-        response.message || "Lead converted to client successfully.",
-      );
+      window.alert("Lead converted to client successfully.");
     } catch (err) {
       error("CONVERT LEAD ERROR:", err);
-
       window.alert(err.message || "Unable to convert lead into client.");
     }
   }
@@ -1631,25 +1719,38 @@
     try {
       log("DELETE:", numericId);
 
-      const response = await apiRequest(
-        "/leads/" + encodeURIComponent(numericId),
-        {
-          method: "DELETE",
-        },
-      );
+      // 1. Remove from Supabase
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            await sb.from("leads").delete().eq("id", numericId);
+          }
+        } catch (sbErr) {
+          console.warn("Delete lead Supabase note:", sbErr);
+        }
+      }
 
-      log("DELETE RESPONSE:", response);
+      // 2. Remove from LocalStorage
+      let localLeads = [];
+      try {
+        const raw = localStorage.getItem("tenspick_leads");
+        if (raw) localLeads = JSON.parse(raw) || [];
+      } catch (e) {}
+      localLeads = localLeads.filter(l => String(l.id) !== String(numericId));
+      localStorage.setItem("tenspick_leads", JSON.stringify(localLeads));
 
-      if (!response || response.success !== true) {
-        throw new Error(response?.message || "Unable to delete lead.");
+      // 3. Try PHP API
+      try {
+        await apiRequest("/leads/" + encodeURIComponent(numericId), { method: "DELETE" });
+      } catch (apiErr) {
+        console.warn("Delete lead API note:", apiErr);
       }
 
       await loadLeads();
-
-      window.alert(response.message || "Lead deleted successfully.");
+      window.alert("Lead deleted successfully.");
     } catch (err) {
       error("DELETE ERROR:", err);
-
       window.alert(err.message || "Unable to delete lead.");
     }
   }

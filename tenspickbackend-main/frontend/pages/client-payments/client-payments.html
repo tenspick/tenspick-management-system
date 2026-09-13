@@ -627,17 +627,19 @@
         aria-labelledby="addPaymentModalTitle"
      >
 
-        <div class="cp-modal-dialog cp-modal-lg">
+        <div class="cp-modal-dialog cp-modal-lg cp-redesigned-modal">
 
-            <div class="cp-modal-header">
+            <!-- Redesigned Modal Header Banner -->
+            <div class="cp-modal-header cp-modal-header-banner">
 
                 <div class="cp-modal-heading">
 
-                    <div class="cp-modal-title-icon">
-                        <i class="bi bi-wallet2"></i>
+                    <div class="cp-modal-title-icon cp-title-icon-gradient">
+                        <i class="bi bi-credit-card-2-front-fill"></i>
                     </div>
 
                     <div>
+                        <span class="cp-modal-eyebrow">FINANCE & PAYMENTS</span>
                         <h2
                             class="cp-modal-title"
                             id="addPaymentModalTitle"
@@ -646,10 +648,15 @@
                         </h2>
 
                         <p class="cp-modal-subtitle">
-                            Record a new payment against a project.
+                            Record a new payment transaction against a project.
                         </p>
                     </div>
 
+                </div>
+
+                <div class="cp-header-banner-decoration">
+                    <span class="cp-decoration-tag">Build Better Together</span>
+                    <i class="bi bi-shield-check cp-decoration-icon"></i>
                 </div>
 
                 <button
@@ -677,7 +684,7 @@
                         id="addPaymentFormError"
                         hidden
                     >
-                        <i class="bi bi-exclamation-circle"></i>
+                        <i class="bi bi-exclamation-circle-fill"></i>
 
                         <span id="addPaymentFormErrorMessage">
                             Please correct the highlighted fields.
@@ -688,12 +695,13 @@
                     <!-- ==================================================
                          SECTION 1 - CLIENT & PROJECT
                     =================================================== -->
-                    <section class="cp-form-section">
+                    <section class="cp-form-section cp-form-section-card">
 
                         <div class="cp-form-section-heading">
 
                             <span class="cp-section-number">
-                                01
+                                <i class="bi bi-person-fill"></i>
+                                <span>01</span>
                             </span>
 
                             <div>
@@ -718,20 +726,23 @@
                                     class="cp-form-label"
                                     for="addPaymentClient"
                                 >
-                                    Client
+                                    <i class="bi bi-person-circle cp-label-icon"></i>
+                                    <span>Client</span>
                                     <span class="cp-required">*</span>
                                 </label>
 
-                                <select
-                                    id="addPaymentClient"
-                                    name="client_id"
-                                    class="cp-form-control"
-                                    required
-                                >
-                                    <option value="">
-                                        Select Client
-                                    </option>
-                                </select>
+                                <div class="cp-input-icon-wrapper">
+                                    <select
+                                        id="addPaymentClient"
+                                        name="client_id"
+                                        class="cp-form-control"
+                                        required
+                                    >
+                                        <option value="">
+                                            Select Client
+                                        </option>
+                                    </select>
+                                </div>
 
                                 <small
                                     class="cp-field-error"
@@ -748,21 +759,24 @@
                                     class="cp-form-label"
                                     for="addPaymentProject"
                                 >
-                                    Project
+                                    <i class="bi bi-folder2-open cp-label-icon"></i>
+                                    <span>Project</span>
                                     <span class="cp-required">*</span>
                                 </label>
 
-                                <select
-                                    id="addPaymentProject"
-                                    name="project_id"
-                                    class="cp-form-control"
-                                    required
-                                    disabled
-                                >
-                                    <option value="">
-                                        Select Client First
-                                    </option>
-                                </select>
+                                <div class="cp-input-icon-wrapper">
+                                    <select
+                                        id="addPaymentProject"
+                                        name="project_id"
+                                        class="cp-form-control"
+                                        required
+                                        disabled
+                                    >
+                                        <option value="">
+                                            Select Client First
+                                        </option>
+                                    </select>
+                                </div>
 
                                 <small
                                     class="cp-field-help"
@@ -863,12 +877,13 @@
                     <!-- ==================================================
                          SECTION 2 - PAYMENT DETAILS
                     =================================================== -->
-                    <section class="cp-form-section">
+                    <section class="cp-form-section cp-form-section-card">
 
                         <div class="cp-form-section-heading">
 
                             <span class="cp-section-number">
-                                02
+                                <i class="bi bi-credit-card-fill"></i>
+                                <span>02</span>
                             </span>
 
                             <div>
@@ -893,7 +908,8 @@
                                     class="cp-form-label"
                                     for="addPaymentAmount"
                                 >
-                                    Payment Amount
+                                    <i class="bi bi-cash-stack cp-label-icon"></i>
+                                    <span>Payment Amount</span>
                                     <span class="cp-required">*</span>
                                 </label>
 
@@ -938,7 +954,8 @@
                                     class="cp-form-label"
                                     for="addPaymentDate"
                                 >
-                                    Payment Date
+                                    <i class="bi bi-calendar-event cp-label-icon"></i>
+                                    <span>Payment Date</span>
                                     <span class="cp-required">*</span>
                                 </label>
 
@@ -965,7 +982,8 @@
                                     class="cp-form-label"
                                     for="addPaymentMethod"
                                 >
-                                    Payment Method
+                                    <i class="bi bi-wallet2 cp-label-icon"></i>
+                                    <span>Payment Method</span>
                                     <span class="cp-required">*</span>
                                 </label>
 
@@ -984,15 +1002,15 @@
                                     </option>
 
                                     <option value="upi">
-                                        UPI
+                                        UPI / GPay / PhonePe
                                     </option>
 
                                     <option value="bank_transfer">
-                                        Bank Transfer
+                                        Bank Transfer (IMPS/NEFT)
                                     </option>
 
                                     <option value="card">
-                                        Card
+                                        Credit / Debit Card
                                     </option>
 
                                     <option value="cheque">
@@ -1020,7 +1038,8 @@
                                     class="cp-form-label"
                                     for="addPaymentTransactionId"
                                 >
-                                    Transaction ID
+                                    <i class="bi bi-link-45deg cp-label-icon"></i>
+                                    <span>Transaction ID</span>
                                 </label>
 
                                 <input
@@ -1051,12 +1070,13 @@
                     <!-- ==================================================
                          SECTION 3 - PURPOSE & REMARKS
                     =================================================== -->
-                    <section class="cp-form-section">
+                    <section class="cp-form-section cp-form-section-card">
 
                         <div class="cp-form-section-heading">
 
                             <span class="cp-section-number">
-                                03
+                                <i class="bi bi-file-earmark-text-fill"></i>
+                                <span>03</span>
                             </span>
 
                             <div>
@@ -1081,7 +1101,8 @@
                                     class="cp-form-label"
                                     for="addPaymentPurpose"
                                 >
-                                    Payment Purpose
+                                    <i class="bi bi-tag cp-label-icon"></i>
+                                    <span>Payment Purpose</span>
                                 </label>
 
                                 <input
@@ -1114,7 +1135,8 @@
                                         class="cp-form-label"
                                         for="addPaymentRemarks"
                                     >
-                                        Remarks
+                                        <i class="bi bi-chat-square-text cp-label-icon"></i>
+                                        <span>Remarks</span>
                                     </label>
 
                                     <span
@@ -1131,7 +1153,7 @@
                                     name="remarks"
                                     class="cp-form-control cp-textarea"
                                     maxlength="1000"
-                                    rows="4"
+                                    rows="3"
                                     placeholder="Add any additional notes..."
                                 ></textarea>
 
@@ -1237,23 +1259,25 @@
 
 
                 <!-- Modal Footer -->
-                <div class="cp-modal-footer">
+                <div class="cp-modal-footer cp-modal-footer-redesigned">
 
                     <button
                         type="button"
-                        class="cp-btn cp-btn-light"
+                        class="cp-btn cp-btn-light cp-btn-cancel-pill"
                         data-modal-close="addPaymentModal"
                     >
-                        Cancel
+                        <i class="bi bi-x-lg"></i>
+                        <span>Cancel</span>
                     </button>
 
                     <button
                         type="submit"
-                        class="cp-btn cp-btn-primary"
+                        class="cp-btn cp-btn-primary cp-btn-save-pill"
                         id="savePaymentBtn"
                     >
-                        <i class="bi bi-check2-circle"></i>
+                        <i class="bi bi-floppy-fill"></i>
                         <span>Save Payment</span>
+                        <i class="bi bi-chevron-right ms-1"></i>
                     </button>
 
                 </div>

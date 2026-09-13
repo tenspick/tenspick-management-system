@@ -298,6 +298,11 @@
 
     dom.seoAddedEmail = document.getElementById("projectSeoAddedEmail");
 
+    dom.hostingPlatform = document.getElementById("projectHostingPlatform");
+    dom.hostingEmail = document.getElementById("projectHostingEmail");
+    dom.domainRegistrar = document.getElementById("projectDomainRegistrar");
+    dom.domainExpiryDate = document.getElementById("projectDomainExpiryDate");
+
     /* --------------------------------------------------------
            FORM BUTTONS
            -------------------------------------------------------- */
@@ -592,41 +597,60 @@
 
     state.clientsLoading = true;
 
-    if (state.clientsAbortController) {
-      state.clientsAbortController.abort();
-    }
-
-    state.clientsAbortController = new AbortController();
-
     try {
-      const response = await fetch(CLIENTS_ENDPOINT + "?page=1&per_page=1000", {
-        method: "GET",
+      let clientList = [];
 
-        credentials: "include",
-
-        headers: {
-          Accept: "application/json",
-        },
-
-        signal: state.clientsAbortController.signal,
-      });
-
-      const result = await parseJsonResponse(response);
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Unable to load clients.");
+      // 1. Try Supabase
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            const { data, error } = await sb.from("clients").select("*");
+            if (!error && Array.isArray(data) && data.length > 0) {
+              clientList = data;
+            }
+          }
+        } catch (sbErr) {
+          console.warn("[Projects] Supabase client load note:", sbErr);
+        }
       }
 
-      state.clients = extractClients(result);
+      // 2. Try PHP API if Supabase didn't yield data
+      if (!clientList.length) {
+        try {
+          const response = await fetch(CLIENTS_ENDPOINT + "?page=1&per_page=1000", {
+            method: "GET",
+            credentials: "include",
+            headers: { Accept: "application/json" }
+          });
+          const result = await parseJsonResponse(response);
+          if (response.ok && result.success) {
+            clientList = extractClients(result);
+          }
+        } catch (apiErr) {
+          console.warn("[Projects] PHP API client load note:", apiErr);
+        }
+      }
 
+      // 3. Always merge LocalStorage items to avoid missing locally added clients
+      try {
+        const raw = localStorage.getItem("tenspick_clients");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            parsed.forEach(localItem => {
+              if (!clientList.some(c => String(c.id) === String(localItem.id))) {
+                clientList.push(localItem);
+              }
+            });
+          }
+        }
+      } catch (e) {}
+
+      state.clients = clientList;
       state.clientsLoaded = true;
-
       populateClientDropdowns();
     } catch (error) {
-      if (error.name === "AbortError") {
-        return;
-      }
-
       console.error("[Projects] Client loading error:", error);
     } finally {
       state.clientsLoading = false;
@@ -644,55 +668,61 @@
 
     state.staffLoading = true;
 
-    if (state.staffAbortController) {
-      state.staffAbortController.abort();
-    }
-
-    state.staffAbortController = new AbortController();
-
     try {
-      const response = await fetch(
-        STAFF_ENDPOINT + "?page=1&per_page=1000&status=active",
-        {
-          method: "GET",
+      let staffList = [];
 
-          credentials: "include",
-
-          headers: {
-            Accept: "application/json",
-          },
-
-          signal: state.staffAbortController.signal,
-        },
-      );
-
-      const result = await parseJsonResponse(response);
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Unable to load staff.");
+      // 1. Try Supabase
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            const { data, error } = await sb.from("staff").select("*");
+            if (!error && Array.isArray(data) && data.length > 0) {
+              staffList = data;
+            }
+          }
+        } catch (sbErr) {
+          console.warn("[Projects] Supabase staff load note:", sbErr);
+        }
       }
 
-      state.staff = extractStaff(result);
+      // 2. Try PHP API if Supabase didn't yield data
+      if (!staffList.length) {
+        try {
+          const response = await fetch(STAFF_ENDPOINT + "?page=1&per_page=1000&status=active", {
+            method: "GET",
+            credentials: "include",
+            headers: { Accept: "application/json" }
+          });
+          const result = await parseJsonResponse(response);
+          if (response.ok && result.success) {
+            staffList = extractStaff(result);
+          }
+        } catch (apiErr) {
+          console.warn("[Projects] PHP API staff load note:", apiErr);
+        }
+      }
 
+      // 3. Always merge LocalStorage items
+      try {
+        const raw = localStorage.getItem("tenspick_staff");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            parsed.forEach(localItem => {
+              if (!staffList.some(s => String(s.id) === String(localItem.id))) {
+                staffList.push(localItem);
+              }
+            });
+          }
+        }
+      } catch (e) {}
+
+      state.staff = staffList;
       state.staffLoaded = true;
-
       renderStaffManagerSelect();
     } catch (error) {
-      if (error.name === "AbortError") {
-        return;
-      }
-
       console.error("[Projects] Staff loading error:", error);
-
-      /*
-       * If staff endpoint rejects
-       * status=active, retry without
-       * status filter.
-       */
-
-      if (/status/i.test(error.message || "")) {
-        await loadStaffWithoutStatus();
-      }
     } finally {
       state.staffLoading = false;
     }
@@ -778,9 +808,9 @@
     dom.client.appendChild(selectOption);
 
     state.clients.forEach(function (client) {
-      const id = Number(client.id);
+      const id = client.id;
 
-      if (!Number.isFinite(id) || id <= 0) {
+      if (id === null || id === undefined || String(id).trim() === "") {
         return;
       }
 
@@ -933,9 +963,9 @@
     select.appendChild(first);
 
     state.staff.forEach(function (staff) {
-      const id = Number(staff.id);
+      const id = staff.id;
 
-      if (!Number.isFinite(id) || id <= 0) {
+      if (id === null || id === undefined || String(id).trim() === "") {
         return;
       }
 
@@ -962,12 +992,12 @@
        ============================================================ */
 
   function getStaffNameById(id) {
-    if (id === null || id === undefined || id === "") {
+    if (id === null || id === undefined || String(id).trim() === "") {
       return "Unassigned";
     }
 
     const staff = state.staff.find(function (item) {
-      return Number(item.id) === Number(id);
+      return String(item.id) === String(id);
     });
 
     if (staff) {
@@ -983,7 +1013,7 @@
 
   function getClientNameById(id) {
     const client = state.clients.find(function (item) {
-      return Number(item.id) === Number(id);
+      return String(item.id) === String(id);
     });
 
     if (client) {
@@ -1075,106 +1105,96 @@
     showLoading();
 
     try {
-      const params = new URLSearchParams();
+      let loadedList = [];
 
-      params.set("page", String(state.page));
+      // 1. Try Supabase
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            const { data, error } = await sb.from("projects").select("*");
+            if (!error && Array.isArray(data) && data.length > 0) {
+              loadedList = data;
+            }
+          }
+        } catch (sbErr) {
+          console.warn("[Projects] Supabase load note:", sbErr);
+        }
+      }
 
-      params.set("per_page", String(state.perPage));
+      // 2. Try PHP API if Supabase yielded nothing
+      if (!loadedList.length) {
+        try {
+          const params = new URLSearchParams();
+          params.set("page", String(state.page));
+          params.set("per_page", String(state.perPage));
+          if (state.search) params.set("search", state.search);
+          if (state.status) params.set("status", state.status);
+          if (state.clientId) params.set("client_id", state.clientId);
+          if (state.projectType) params.set("project_type", state.projectType);
 
+          const response = await fetch(PROJECTS_ENDPOINT + "?" + params.toString(), {
+            method: "GET",
+            credentials: "include",
+            headers: { Accept: "application/json" },
+            signal: controller.signal,
+          });
+
+          const result = await parseJsonResponse(response);
+          if (response.ok && result.success) {
+            const extracted = extractProjectList(result);
+            loadedList = extracted.projects || [];
+          }
+        } catch (apiErr) {
+          console.warn("[Projects] PHP API load note:", apiErr);
+        }
+      }
+
+      // 3. Merge LocalStorage projects
+      try {
+        const raw = localStorage.getItem("tenspick_projects");
+        if (raw) {
+          const localProjects = JSON.parse(raw) || [];
+          localProjects.forEach(lp => {
+            if (!loadedList.some(p => String(p.id) === String(lp.id))) {
+              loadedList.push(lp);
+            }
+          });
+        }
+      } catch (e) {}
+
+      // Apply Filters
+      let filteredProjects = loadedList;
       if (state.search) {
-        params.set("search", state.search);
+        const s = state.search.toLowerCase();
+        filteredProjects = filteredProjects.filter(p =>
+          (p.project_name || "").toLowerCase().includes(s) ||
+          (p.client_name || "").toLowerCase().includes(s)
+        );
       }
-
       if (state.status) {
-        params.set("status", state.status);
+        filteredProjects = filteredProjects.filter(p => p.status === state.status);
       }
-
       if (state.clientId) {
-        params.set("client_id", state.clientId);
+        filteredProjects = filteredProjects.filter(p => String(p.client_id) === String(state.clientId));
       }
-
       if (state.projectType) {
-        params.set("project_type", state.projectType);
+        filteredProjects = filteredProjects.filter(p => p.project_type === state.projectType);
       }
 
-      const response = await fetch(
-        PROJECTS_ENDPOINT + "?" + params.toString(),
-        {
-          method: "GET",
-
-          credentials: "include",
-
-          headers: {
-            Accept: "application/json",
-          },
-
-          signal: controller.signal,
-        },
-      );
-
-      const result = await parseJsonResponse(response);
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Unable to load projects.");
-      }
-
-      if (controller.signal.aborted || state.destroyed) {
-        return;
-      }
-
-      const extracted = extractProjectList(result);
-
-      state.projects = extracted.projects;
-
-      state.total = extracted.total;
-
-      state.page = extracted.page;
-
-      state.perPage = extracted.perPage;
-
-      state.totalPages = extracted.totalPages;
+      state.projects = filteredProjects;
+      state.total = filteredProjects.length;
+      state.totalPages = Math.ceil(filteredProjects.length / state.perPage) || 1;
 
       populateProjectTypes();
-
       renderProjects();
-
       updateStatistics();
-
       renderPagination();
-      showError(error.message || "Unable to load projects.");
     } catch (error) {
       if (error.name === "AbortError") {
         return;
       }
-
-      console.warn("[Projects] API Loading failed, falling back to LocalStorage:", error);
-
-      try {
-        const raw = localStorage.getItem("tenspick_projects");
-        let localProjects = raw ? JSON.parse(raw) : [];
-
-        if (state.search) {
-          const s = state.search.toLowerCase();
-          localProjects = localProjects.filter(p => (p.project_name || "").toLowerCase().includes(s) || (p.client_name || "").toLowerCase().includes(s));
-        }
-
-        if (state.status) {
-          localProjects = localProjects.filter(p => p.status === state.status);
-        }
-
-        state.projects = localProjects;
-        state.total = localProjects.length;
-        state.page = 1;
-        state.totalPages = 1;
-
-        populateProjectTypes();
-        renderProjects();
-        updateStatistics();
-        renderPagination();
-        return;
-      } catch (e) {
-        showError(error.message || "Unable to load projects.");
-      }
+      console.error("[Projects] loadProjects error:", error);
     }
   }
 
@@ -1748,20 +1768,37 @@
        ADD PROJECT
        ============================================================ */
 
-  function openAddModal(event) {
-    if (!dom.modal || !dom.form) {
-      cacheDom();
+  async function openAddModal(event) {
+    if (event && typeof event.preventDefault === "function") {
+      event.preventDefault();
+    }
+
+    cacheDom();
+
+    if (!dom.modal) {
+      dom.modal = document.getElementById("projectModal");
+    }
+
+    if (!dom.form) {
+      dom.form = document.getElementById("projectForm");
     }
 
     state.previousModalFocus = event?.currentTarget || document.activeElement;
-
     state.editingId = null;
 
     resetForm();
 
-    populateClientDropdowns();
+    if (!state.clientsLoaded) {
+      await loadClients();
+    } else {
+      populateClientDropdowns();
+    }
 
-    renderStaffManagerSelect();
+    if (!state.staffLoaded) {
+      await loadStaff();
+    } else {
+      renderStaffManagerSelect();
+    }
 
     if (dom.modalTitle) {
       dom.modalTitle.textContent = "Add Project";
@@ -1814,9 +1851,10 @@
        ============================================================ */
 
   async function openEditModal(projectId) {
-    const id = Number(projectId);
+    cacheDom();
+    const id = projectId;
 
-    if (!Number.isFinite(id) || id <= 0) {
+    if (id === null || id === undefined || String(id).trim() === "") {
       return;
     }
 
@@ -1945,6 +1983,22 @@
       dom.seoAddedEmail.value = project.seo_added_email || "";
     }
 
+    if (dom.hostingPlatform) {
+      dom.hostingPlatform.value = project.hosting_platform || "";
+    }
+
+    if (dom.hostingEmail) {
+      dom.hostingEmail.value = project.hosting_email || "";
+    }
+
+    if (dom.domainRegistrar) {
+      dom.domainRegistrar.value = project.domain_registrar || "";
+    }
+
+    if (dom.domainExpiryDate) {
+      dom.domainExpiryDate.value = project.domain_expiry_date || "";
+    }
+
     clearFormErrors();
   }
 
@@ -1982,6 +2036,11 @@
       dom.manager.value = "";
     }
 
+    if (dom.hostingPlatform) dom.hostingPlatform.value = "";
+    if (dom.hostingEmail) dom.hostingEmail.value = "";
+    if (dom.domainRegistrar) dom.domainRegistrar.value = "";
+    if (dom.domainExpiryDate) dom.domainExpiryDate.value = "";
+
     clearFormErrors();
   }
 
@@ -1997,8 +2056,8 @@
     const amountRecValue = String(document.getElementById("projectAmountReceived")?.value || "").trim();
     const amountRecDate = document.getElementById("projectAmountReceivedDate")?.value || "";
 
-    const selectedClientId = Number(dom.client?.value);
-    const matchedClient = (state.clients || []).find(c => Number(c.id) === selectedClientId);
+    const selectedClientId = dom.client?.value || "";
+    const matchedClient = (state.clients || []).find(c => String(c.id) === String(selectedClientId));
 
     return {
       client_id: selectedClientId,
@@ -2021,6 +2080,10 @@
       live_website_link: dom.website?.value.trim() || "",
       domain_purchased_email: dom.domainPurchasedEmail?.value.trim() || "",
       seo_added_email: dom.seoAddedEmail?.value.trim() || "",
+      hosting_platform: dom.hostingPlatform?.value.trim() || "",
+      hosting_email: dom.hostingEmail?.value.trim() || "",
+      domain_registrar: dom.domainRegistrar?.value.trim() || "",
+      domain_expiry_date: dom.domainExpiryDate?.value || "",
     };
   }
 
@@ -2043,7 +2106,7 @@
   function validateFormData(data) {
     const errors = {};
 
-    if (!data.client_id || data.client_id <= 0) {
+    if (!data.client_id || String(data.client_id).trim() === "") {
       errors.client_id = "Please select a client.";
     }
 
@@ -2236,6 +2299,23 @@
       setSaveLoading(true, editing ? "Updating..." : "Saving...");
 
       // 1. Save to LocalStorage for offline persistence & Client Portal sync
+      // 1. Save to Supabase if configured
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            if (editing) {
+              await sb.from("projects").update(data).eq("id", state.editingId);
+            } else {
+              await sb.from("projects").insert([data]);
+            }
+          }
+        } catch (sbErr) {
+          console.warn("[Projects] Supabase save note:", sbErr);
+        }
+      }
+
+      // 2. Save to LocalStorage for offline persistence & Client Portal sync
       let localList = [];
       try {
         const raw = localStorage.getItem("tenspick_projects");
@@ -2243,7 +2323,7 @@
       } catch (e) {}
 
       if (editing) {
-        const idx = localList.findIndex(p => Number(p.id) === Number(state.editingId));
+        const idx = localList.findIndex(p => String(p.id) === String(state.editingId));
         if (idx >= 0) {
           localList[idx] = { ...localList[idx], ...data };
         } else {
@@ -2271,7 +2351,7 @@
       localStorage.setItem("tenspick_projects", JSON.stringify(localList));
       localStorage.setItem("tenspick_client_projects", JSON.stringify(localList));
 
-      // 2. Attempt API request silently
+      // 3. Attempt PHP API request silently
       try {
         const token = await ensureCsrfToken();
         const url = editing ? PROJECTS_ENDPOINT + "/" + encodeURIComponent(state.editingId) : PROJECTS_ENDPOINT;
@@ -2302,19 +2382,20 @@
        ============================================================ */
 
   function openDeleteModal(projectId) {
+    cacheDom();
     if (window.TenspickAuth && window.TenspickAuth.isStaff()) {
       showAlert("Permission Denied: Staff members are not permitted to delete projects.");
       return;
     }
 
-    const id = Number(projectId);
+    const id = projectId;
 
-    if (!Number.isFinite(id) || id <= 0) {
+    if (id === null || id === undefined || String(id).trim() === "") {
       return;
     }
 
     const project = state.projects.find(function (item) {
-      return Number(item.id) === id;
+      return String(item.id) === String(id);
     });
 
     if (!project) {
@@ -2343,9 +2424,9 @@
       return;
     }
 
-    const id = Number(state.deletingId);
+    const id = state.deletingId;
 
-    if (!Number.isFinite(id) || id <= 0) {
+    if (id === null || id === undefined || String(id).trim() === "") {
       return;
     }
 
@@ -2356,49 +2437,60 @@
     const originalHTML = button ? button.innerHTML : "";
 
     try {
-      const token = await ensureCsrfToken();
-
       if (button) {
         button.disabled = true;
-
         button.innerHTML = `
                     <span
                         class="projects-spinner"
                         aria-hidden="true"
                     ></span>
-
                     <span>
                         Deleting...
                     </span>
                 `;
       }
 
-      const response = await fetch(
-        PROJECTS_ENDPOINT + "/" + encodeURIComponent(id),
-        {
+      // 1. Delete from Supabase if configured
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            await sb.from("projects").delete().eq("id", id);
+          }
+        } catch (sbErr) {
+          console.warn("[Projects] Supabase delete note:", sbErr);
+        }
+      }
+
+      // 2. Delete from LocalStorage
+      try {
+        const raw = localStorage.getItem("tenspick_projects");
+        if (raw) {
+          let list = JSON.parse(raw) || [];
+          list = list.filter(p => String(p.id) !== String(id));
+          localStorage.setItem("tenspick_projects", JSON.stringify(list));
+          localStorage.setItem("tenspick_client_projects", JSON.stringify(list));
+        }
+      } catch (e) {}
+
+      // 3. Attempt PHP API delete
+      try {
+        const token = await ensureCsrfToken();
+        await fetch(PROJECTS_ENDPOINT + "/" + encodeURIComponent(id), {
           method: "DELETE",
-
           credentials: "include",
-
           headers: {
             Accept: "application/json",
-
             "X-CSRF-Token": token,
           },
-        },
-      );
-
-      const result = await parseJsonResponse(response);
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Unable to delete project.");
+        });
+      } catch (apiErr) {
+        console.warn("[Projects] API delete note:", apiErr);
       }
 
       closeModal(dom.deleteModal, "delete");
-
       state.deletingId = null;
-
-      showAlert(result.message || "Project deleted successfully.", "success");
+      showAlert("Project deleted successfully.", "success");
 
       if (state.projects.length === 1 && state.page > 1) {
         state.page--;
@@ -2407,7 +2499,6 @@
       await loadProjects();
     } catch (error) {
       console.error("[Projects] Delete error:", error);
-
       showAlert(error.message || "Unable to delete project.");
     } finally {
       state.deleteLoading = false;
@@ -2583,9 +2674,9 @@
        ============================================================ */
 
   async function viewProject(projectId) {
-    const id = Number(projectId);
+    const id = projectId;
 
-    if (!Number.isFinite(id) || id <= 0) {
+    if (id === null || id === undefined || String(id).trim() === "") {
       return;
     }
 
@@ -2791,6 +2882,66 @@
 
                         <strong>
                             ${escapeHtml(project.project_type || "—")}
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="projects-view-detail"
+                    >
+
+                        <span>
+                            Hosting Platform
+                        </span>
+
+                        <strong>
+                            ${escapeHtml(project.hosting_platform || "—")}
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="projects-view-detail"
+                    >
+
+                        <span>
+                            Hosting Email
+                        </span>
+
+                        <strong>
+                            ${escapeHtml(project.hosting_email || "—")}
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="projects-view-detail"
+                    >
+
+                        <span>
+                            Domain Registrar
+                        </span>
+
+                        <strong>
+                            ${escapeHtml(project.domain_registrar || "—")}
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="projects-view-detail"
+                    >
+
+                        <span>
+                            Domain Expiry Date
+                        </span>
+
+                        <strong>
+                            ${escapeHtml(project.domain_expiry_date || "—")}
                         </strong>
 
                     </div>
@@ -3459,9 +3610,9 @@
       return;
     }
 
-    const id = Number(projectId);
+    const id = projectId;
 
-    if (!Number.isFinite(id) || id <= 0) {
+    if (id === null || id === undefined || String(id).trim() === "") {
       return;
     }
 

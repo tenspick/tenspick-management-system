@@ -1318,14 +1318,34 @@
 
     try {
       let projects = [];
-      try {
-        const raw = localStorage.getItem("tenspick_projects");
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed) && parsed.length > 0) projects = parsed;
-        }
-      } catch (e) {}
 
+      // 1. Try Supabase
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            const { data, error } = await sb.from("projects").select("*");
+            if (!error && Array.isArray(data) && data.length > 0) {
+              projects = data;
+            }
+          }
+        } catch (sbErr) {
+          console.warn("Tasks projects Supabase note:", sbErr);
+        }
+      }
+
+      // 2. Try LocalStorage
+      if (!projects.length) {
+        try {
+          const raw = localStorage.getItem("tenspick_projects");
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length > 0) projects = parsed;
+          }
+        } catch (e) {}
+      }
+
+      // 3. Try PHP API
       if (!projects.length) {
         try {
           const params = new URLSearchParams();
@@ -1377,14 +1397,34 @@
 
     try {
       let staff = [];
-      try {
-        const raw = localStorage.getItem("tenspick_staff");
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed) && parsed.length > 0) staff = parsed;
-        }
-      } catch (e) {}
 
+      // 1. Try Supabase
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            const { data, error } = await sb.from("staff").select("*");
+            if (!error && Array.isArray(data) && data.length > 0) {
+              staff = data;
+            }
+          }
+        } catch (sbErr) {
+          console.warn("Tasks staff Supabase note:", sbErr);
+        }
+      }
+
+      // 2. Try LocalStorage
+      if (!staff.length) {
+        try {
+          const raw = localStorage.getItem("tenspick_staff");
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length > 0) staff = parsed;
+          }
+        } catch (e) {}
+      }
+
+      // 3. Try PHP API
       if (!staff.length) {
         try {
           const params = new URLSearchParams();
@@ -2198,21 +2238,57 @@
     setSubmitLoading(true);
 
     try {
-      const response = await requestWithCsrf(
-        editing
-          ? TASKS_ENDPOINT + "/" + encodeURIComponent(id)
-          : TASKS_ENDPOINT,
+      // 1. Save to Supabase if configured
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            if (editing) {
+              await sb.from("tasks").update(data).eq("id", id);
+            } else {
+              await sb.from("tasks").insert([data]);
+            }
+          }
+        } catch (sbErr) {
+          console.warn("Task save Supabase note:", sbErr);
+        }
+      }
 
-        editing ? "PUT" : "POST",
+      // 2. Save to LocalStorage
+      let localTasks = [];
+      try {
+        const raw = localStorage.getItem("tenspick_tasks");
+        if (raw) localTasks = JSON.parse(raw) || [];
+      } catch (e) {}
 
-        data,
-      );
+      if (editing) {
+        const idx = localTasks.findIndex(t => String(t.id) === String(id));
+        if (idx >= 0) {
+          localTasks[idx] = { ...localTasks[idx], ...data };
+        }
+      } else {
+        const newTask = {
+          id: Date.now(),
+          ...data,
+          created_at: new Date().toISOString()
+        };
+        localTasks.unshift(newTask);
+      }
+      localStorage.setItem("tenspick_tasks", JSON.stringify(localTasks));
+
+      // 3. Attempt PHP API request silently
+      try {
+        await requestWithCsrf(
+          editing ? TASKS_ENDPOINT + "/" + encodeURIComponent(id) : TASKS_ENDPOINT,
+          editing ? "PUT" : "POST",
+          data
+        );
+      } catch (apiErr) {
+        console.warn("Tasks API Save note:", apiErr);
+      }
 
       showToast(
-        response.message ||
-          (editing
-            ? "Task updated successfully."
-            : "Task created successfully."),
+        editing ? "Task updated successfully." : "Task created successfully.",
         "success",
       );
 

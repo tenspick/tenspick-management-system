@@ -625,91 +625,41 @@
        ======================================================== */
 
     function calculatePaymentSummary() {
-
         let totalProjectAmount = 0;
-
         let totalPaid = 0;
+        const countedPaymentIds = new Set();
 
+        (payments || []).forEach(function (payment) {
+            if (payment.id) countedPaymentIds.add(String(payment.id));
+            totalPaid += toNumber(payment.amount);
+        });
 
-        projects.forEach(
-            function (
-                project
-            ) {
+        (projects || []).forEach(function (project) {
+            totalProjectAmount += toNumber(project.budget || project.amount_quoted || project.project_amount);
 
-                totalProjectAmount +=
-                    toNumber(
-                        project.budget
-                    );
-
+            if (project.payments && Array.isArray(project.payments)) {
+                project.payments.forEach(function (p) {
+                    if (p.id && !countedPaymentIds.has(String(p.id))) {
+                        countedPaymentIds.add(String(p.id));
+                        totalPaid += toNumber(p.amount);
+                    }
+                });
+            } else if (project.amount_received && (!payments || payments.length === 0)) {
+                totalPaid += toNumber(project.amount_received);
             }
-        );
+        });
 
-
-        payments.forEach(
-            function (
-                payment
-            ) {
-
-                totalPaid +=
-                    toNumber(
-                        payment.amount
-                    );
-
-            }
-        );
-
-
-        const remaining =
-            Math.max(
-                0,
-                totalProjectAmount -
-                totalPaid
-            );
-
-
-        let percentage = 0;
-
-
-        if (
-            totalProjectAmount > 0
-        ) {
-
-            percentage =
-                (
-                    totalPaid /
-                    totalProjectAmount
-                ) *
-                100;
-
-        }
-
+        const remaining = Math.max(0, totalProjectAmount - totalPaid);
+        let percentage = totalProjectAmount > 0 ? (totalPaid / totalProjectAmount) * 100 : 0;
 
         return {
-
-            project_count:
-                projects.length,
-
-            total_project_amount:
-                totalProjectAmount,
-
-            total_paid:
-                totalPaid,
-
-            remaining:
-                remaining,
-
-            balance:
-                remaining,
-
-            payment_progress:
-                clamp(
-                    percentage,
-                    0,
-                    100
-                ),
-
+            project_count: projects.length,
+            total_project_amount: totalProjectAmount,
+            total_paid: totalPaid,
+            remaining: remaining,
+            balance: remaining,
+            payment_progress: clamp(percentage, 0, 100),
         };
-
     }
 
 

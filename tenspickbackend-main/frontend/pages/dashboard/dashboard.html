@@ -303,6 +303,95 @@
 
     </section>
 
+    <!-- ========================================================
+         FINANCE DASHBOARD SUMMARY
+         ======================================================== -->
+    <section class="dashboard-finance-section" style="margin-top: 24px; margin-bottom: 24px;">
+        <div style="background: #ffffff; border-radius: 14px; border: 1px solid #E5E7EB; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid #F3F4F6; padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #111827; display: flex; align-items: center; gap: 8px;">
+                        <span style="display: inline-flex; width: 32px; height: 32px; border-radius: 8px; background: #EEF2FF; color: #4B49AC; align-items: center; justify-content: center; font-size: 16px;">
+                            <i class="bi bi-wallet2"></i>
+                        </span>
+                        Finance & Expenses Dashboard
+                    </h3>
+                    <p style="margin: 2px 0 0; font-size: 12px; color: #6B7280;">Financial health, revenue, staff salaries, expenses and net profit</p>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <a href="#/payments" class="dashboard-view-all" style="font-size: 12px; font-weight: 600; color: #4B49AC; text-decoration: none;">Client Payments &rarr;</a>
+                    <a href="#/staff-payments" class="dashboard-view-all" style="font-size: 12px; font-weight: 600; color: #4B49AC; text-decoration: none;">Staff Payments &rarr;</a>
+                    <a href="#/expenses" class="dashboard-view-all" style="font-size: 12px; font-weight: 600; color: #4B49AC; text-decoration: none;">Expenses &rarr;</a>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+                <div style="background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 10px; padding: 14px;">
+                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: #6B7280;">Total Revenue</span>
+                    <div id="dashFinTotalRevenue" style="font-size: 20px; font-weight: 700; color: #10B981; margin-top: 4px;">₹0</div>
+                    <small style="font-size: 10px; color: #6B7280;">Received Client Payments</small>
+                </div>
+                <div style="background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 10px; padding: 14px;">
+                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: #6B7280;">Pending Revenue</span>
+                    <div id="dashFinPendingRevenue" style="font-size: 20px; font-weight: 700; color: #F59E0B; margin-top: 4px;">₹0</div>
+                    <small style="font-size: 10px; color: #6B7280;">Uncollected Balances</small>
+                </div>
+                <div style="background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 10px; padding: 14px;">
+                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: #6B7280;">Staff Salaries</span>
+                    <div id="dashFinStaffSalaries" style="font-size: 20px; font-weight: 700; color: #EF4444; margin-top: 4px;">₹0</div>
+                    <small style="font-size: 10px; color: #6B7280;">Total Staff Outflow</small>
+                </div>
+                <div style="background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 10px; padding: 14px;">
+                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: #6B7280;">General Expenses</span>
+                    <div id="dashFinExpenses" style="font-size: 20px; font-weight: 700; color: #6366F1; margin-top: 4px;">₹0</div>
+                    <small style="font-size: 10px; color: #6B7280;">Operational Expenses</small>
+                </div>
+                <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: 14px;">
+                    <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #166534;">Net Profit</span>
+                    <div id="dashFinNetProfit" style="font-size: 20px; font-weight: 800; color: #15803D; margin-top: 4px;">₹0</div>
+                    <small style="font-size: 10px; color: #166534;">Revenue - Salaries - Expenses</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================
+         CLIENTS DASHBOARD SUMMARY
+         ======================================================== -->
+    <section class="dashboard-clients-section" style="margin-bottom: 24px;">
+        <div style="background: #ffffff; border-radius: 14px; border: 1px solid #E5E7EB; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid #F3F4F6; padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #111827; display: flex; align-items: center; gap: 8px;">
+                        <span style="display: inline-flex; width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; color: #10B981; align-items: center; justify-content: center; font-size: 16px;">
+                            <i class="bi bi-people-fill"></i>
+                        </span>
+                        Clients Dashboard
+                    </h3>
+                    <p style="margin: 2px 0 0; font-size: 12px; color: #6B7280;">Active clients, assigned projects, and billing overview</p>
+                </div>
+                <a href="#/clients" class="dashboard-view-all" style="font-size: 12px; font-weight: 600; color: #4B49AC; text-decoration: none;">Manage Clients &rarr;</a>
+            </div>
+
+            <div class="dashboard-table-wrapper">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Client Name</th>
+                            <th>Company</th>
+                            <th>Email & Contact</th>
+                            <th>Active Projects</th>
+                            <th>Total Billed</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dashClientsSummaryTableBody">
+                        <tr><td colspan="6" style="text-align:center;padding:15px;color:#9CA3AF;">Loading client summary...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
     <!-- ========================================================
          OVERVIEW SECTION

@@ -70,52 +70,92 @@
             let leadList = [];
             let clientList = [];
 
-            // 1. Try loading from Supabase if configured
+            // 1. Load from Supabase if configured
+            let clientPaymentsList = [];
+            let staffPaymentsList = [];
+            let expensesList = [];
+
             if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
                 try {
                     const sb = window.TenspickSupabase.getClient();
-                    const [leadsRes, clientsRes, projectsRes, paymentsRes, tasksRes] = await Promise.all([
+                    const [leadsRes, clientsRes, projectsRes, clientPaymentsRes, staffPaymentsRes, expensesRes, tasksRes] = await Promise.all([
                         sb.from('leads').select('*').order('created_at', { ascending: false }),
                         sb.from('clients').select('*'),
                         sb.from('projects').select('*'),
                         sb.from('client_payments').select('*'),
+                        sb.from('staff_payments').select('*'),
+                        sb.from('expenses').select('*'),
                         sb.from('tasks').select('*')
                     ]);
 
-                    if (leadsRes.data) leadList = leadsRes.data;
-                    if (clientsRes.data) clientList = clientsRes.data;
-                    if (projectsRes.data) projectList = projectsRes.data;
-                    if (tasksRes.data) taskList = tasksRes.data;
+                    if (leadsRes.data && Array.isArray(leadsRes.data)) leadList = leadsRes.data;
+                    if (clientsRes.data && Array.isArray(clientsRes.data)) clientList = clientsRes.data;
+                    if (projectsRes.data && Array.isArray(projectsRes.data)) projectList = projectsRes.data;
+                    if (clientPaymentsRes.data && Array.isArray(clientPaymentsRes.data)) clientPaymentsList = clientPaymentsRes.data;
+                    if (staffPaymentsRes.data && Array.isArray(staffPaymentsRes.data)) staffPaymentsList = staffPaymentsRes.data;
+                    if (expensesRes.data && Array.isArray(expensesRes.data)) expensesList = expensesRes.data;
+                    if (tasksRes.data && Array.isArray(tasksRes.data)) taskList = tasksRes.data;
                 } catch (e) {
                     console.warn("Supabase live stats note:", e);
                 }
             }
 
-            // 2. LocalStorage Fallback & Sync
-            if (!leadList.length) {
-                try {
-                    const raw = localStorage.getItem("tenspick_leads");
-                    if (raw) leadList = JSON.parse(raw) || [];
-                } catch (e) {}
-            }
-            if (!clientList.length) {
-                try {
-                    const raw = localStorage.getItem("tenspick_clients");
-                    if (raw) clientList = JSON.parse(raw) || [];
-                } catch (e) {}
-            }
-            if (!projectList.length) {
-                try {
-                    const raw = localStorage.getItem("tenspick_projects");
-                    if (raw) projectList = JSON.parse(raw) || [];
-                } catch (e) {}
-            }
-            if (!taskList.length) {
-                try {
-                    const raw = localStorage.getItem("tenspick_tasks");
-                    if (raw) taskList = JSON.parse(raw) || [];
-                } catch (e) {}
-            }
+            // 2. Merge with LocalStorage to avoid missing offline/local additions
+            try {
+                const lsLeads = JSON.parse(localStorage.getItem("tenspick_leads") || "[]");
+                if (Array.isArray(lsLeads)) {
+                    const existingIds = new Set(leadList.map(l => String(l.id)));
+                    lsLeads.forEach(l => { if (!existingIds.has(String(l.id))) leadList.push(l); });
+                }
+            } catch (e) {}
+
+            try {
+                const lsClients = JSON.parse(localStorage.getItem("tenspick_clients") || "[]");
+                if (Array.isArray(lsClients)) {
+                    const existingIds = new Set(clientList.map(c => String(c.id)));
+                    lsClients.forEach(c => { if (!existingIds.has(String(c.id))) clientList.push(c); });
+                }
+            } catch (e) {}
+
+            try {
+                const lsProjects = JSON.parse(localStorage.getItem("tenspick_projects") || "[]");
+                if (Array.isArray(lsProjects)) {
+                    const existingIds = new Set(projectList.map(p => String(p.id)));
+                    lsProjects.forEach(p => { if (!existingIds.has(String(p.id))) projectList.push(p); });
+                }
+            } catch (e) {}
+
+            try {
+                const lsClientPay = JSON.parse(localStorage.getItem("tenspick_client_payments") || "[]");
+                if (Array.isArray(lsClientPay)) {
+                    const existingIds = new Set(clientPaymentsList.map(p => String(p.id)));
+                    lsClientPay.forEach(p => { if (!existingIds.has(String(p.id))) clientPaymentsList.push(p); });
+                }
+            } catch (e) {}
+
+            try {
+                const lsStaffPay = JSON.parse(localStorage.getItem("tenspick_staff_payments") || "[]");
+                if (Array.isArray(lsStaffPay)) {
+                    const existingIds = new Set(staffPaymentsList.map(p => String(p.id)));
+                    lsStaffPay.forEach(p => { if (!existingIds.has(String(p.id))) staffPaymentsList.push(p); });
+                }
+            } catch (e) {}
+
+            try {
+                const lsExp = JSON.parse(localStorage.getItem("tenspick_expenses") || "[]");
+                if (Array.isArray(lsExp)) {
+                    const existingIds = new Set(expensesList.map(x => String(x.id)));
+                    lsExp.forEach(x => { if (!existingIds.has(String(x.id))) expensesList.push(x); });
+                }
+            } catch (e) {}
+
+            try {
+                const lsTasks = JSON.parse(localStorage.getItem("tenspick_tasks") || "[]");
+                if (Array.isArray(lsTasks)) {
+                    const existingIds = new Set(taskList.map(t => String(t.id)));
+                    lsTasks.forEach(t => { if (!existingIds.has(String(t.id))) taskList.push(t); });
+                }
+            } catch (e) {}
 
             totalLeads = leadList.length;
             totalClients = clientList.length;
@@ -130,10 +170,56 @@
                 return sum + remaining;
             }, 0);
 
+            // Calculate Financial Totals
+            const totalRevenue = clientPaymentsList.reduce((sum, cp) => sum + (Number(cp.amount) || 0), 0);
+            const totalStaffSalaries = staffPaymentsList.reduce((sum, sp) => sum + (Number(sp.amount) || 0), 0);
+            const totalExpenses = expensesList.reduce((sum, ex) => sum + (Number(ex.amount) || 0), 0);
+            const netProfit = totalRevenue - totalStaffSalaries - totalExpenses;
+
             if (leadsEl) leadsEl.textContent = totalLeads;
             if (clientsEl) clientsEl.textContent = totalClients;
             if (projectsEl) projectsEl.textContent = totalProjects;
             if (pendingEl) pendingEl.textContent = '₹' + pendingAmount.toLocaleString('en-IN');
+
+            // Finance Dashboard Summary Update
+            const finRevEl = document.getElementById("dashFinTotalRevenue");
+            const finPenEl = document.getElementById("dashFinPendingRevenue");
+            const finSalEl = document.getElementById("dashFinStaffSalaries");
+            const finExpEl = document.getElementById("dashFinExpenses");
+            const finProfEl = document.getElementById("dashFinNetProfit");
+
+            if (finRevEl) finRevEl.textContent = '₹' + totalRevenue.toLocaleString('en-IN');
+            if (finPenEl) finPenEl.textContent = '₹' + pendingAmount.toLocaleString('en-IN');
+            if (finSalEl) finSalEl.textContent = '₹' + totalStaffSalaries.toLocaleString('en-IN');
+            if (finExpEl) finExpEl.textContent = '₹' + totalExpenses.toLocaleString('en-IN');
+            if (finProfEl) finProfEl.textContent = '₹' + netProfit.toLocaleString('en-IN');
+
+            // Render Clients Dashboard Summary Table
+            const clientsTableBody = document.getElementById("dashClientsSummaryTableBody");
+            if (clientsTableBody) {
+                const displayClients = clientList.slice(0, 5);
+                if (!displayClients.length) {
+                    clientsTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:#9CA3AF;">No clients registered yet.</td></tr>`;
+                } else {
+                    clientsTableBody.innerHTML = displayClients.map(c => {
+                        const clientProjects = projectList.filter(p => String(p.client_id) === String(c.id) || p.client_name === c.name || p.client_name === c.client_name);
+                        const clientTotalBilled = clientProjects.reduce((sum, p) => sum + (Number(p.budget || p.amount_quoted || 0)), 0);
+                        return `
+                            <tr>
+                                <td><strong>${c.name || c.client_name || 'Unnamed Client'}</strong></td>
+                                <td>${c.company || c.company_name || '—'}</td>
+                                <td>
+                                    <div>${c.email || '—'}</div>
+                                    <small style="color:#6B7280;">${c.phone || c.phone_number || ''}</small>
+                                </td>
+                                <td><span class="dashboard-status blue">${clientProjects.length} Projects</span></td>
+                                <td><strong>₹${clientTotalBilled.toLocaleString('en-IN')}</strong></td>
+                                <td><a href="#/clients" class="dashboard-more-btn">Manage</a></td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            }
 
             /* ====================================================
                PROJECT OVERVIEW BREAKDOWN

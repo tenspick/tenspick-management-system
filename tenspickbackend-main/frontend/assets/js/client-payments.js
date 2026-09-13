@@ -1057,6 +1057,11 @@
 
         break;
 
+      case "delete":
+        openDeletePayment(paymentId);
+
+        break;
+
       default:
         warn("Unknown payment action:", action);
     }
@@ -1178,6 +1183,27 @@
 
                         <span>
                             Edit Payment
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="cp-payment-action-item cp-payment-action-danger"
+                        data-payment-action="delete"
+                        data-payment-id="${safeId}"
+                        role="menuitem"
+                        style="color: #ef4444;"
+                    >
+
+                        <i
+                            class="bi bi-trash"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span>
+                            Delete Payment
                         </span>
 
                     </button>
@@ -1599,14 +1625,58 @@
 
       updateSummary(data, payments);
     } catch (err) {
-      error("LOAD PAYMENTS:", err);
+      error("LOAD PAYMENTS fallback check (Supabase / LocalStorage):", err);
+
+      try {
+        let list = [];
+
+        // 1. Try Supabase first
+        if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+          try {
+            const sb = window.TenspickSupabase.getClient();
+            if (sb) {
+              const { data: sbData, error: sbErr } = await sb.from("client_payments").select("*");
+              if (!sbErr && Array.isArray(sbData) && sbData.length > 0) {
+                list = sbData;
+              }
+            }
+          } catch (sbErr) {
+            console.warn("[ClientPayments] Supabase load note:", sbErr);
+          }
+        }
+
+        // 2. Merge LocalStorage items
+        try {
+          const raw = localStorage.getItem("tenspick_client_payments") || localStorage.getItem("tenspick_payments");
+          if (raw) {
+            const localItems = JSON.parse(raw) || [];
+            localItems.forEach(item => {
+              if (!list.some(p => String(p.id) === String(item.id))) {
+                list.push(item);
+              }
+            });
+          }
+        } catch (e) {}
+
+        if (list.length > 0) {
+          state.payments = list;
+          state.totalRecords = list.length;
+          state.totalPages = Math.ceil(list.length / state.perPage) || 1;
+          state.currentPage = 1;
+
+          renderPayments(list);
+          updatePaymentRecordCount();
+          renderPagination();
+          updateSummary({}, list);
+          return;
+        }
+      } catch (fallbackErr) {
+        console.warn("[ClientPayments] Fallback error:", fallbackErr);
+      }
 
       state.payments = [];
-
       setTableState("error");
-
       const message = byId("paymentsErrorMessage");
-
       if (message) {
         message.textContent = err.message || "Unable to load payment records.";
       }
@@ -1912,12 +1982,8 @@
         error("LOAD CLIENTS localStorage parse error:", parseErr);
       }
     } finally {
-      if (!state.clients || state.clients.length === 0) {
-        state.clients = [
-          { id: "1", client_code: "CL-001", client_name: "Sri Lakshmi Traders", company_name: "Sri Lakshmi Traders", mobile: "9876543210", email: "ravi@lakshmitraders.com", status: "active" },
-          { id: "2", client_code: "CL-002", client_name: "Puttur Fashion Store", company_name: "Puttur Fashions", mobile: "9876543211", email: "priya@putturfashion.com", status: "active" }
-        ];
-        try { localStorage.setItem("tenspick_clients", JSON.stringify(state.clients)); } catch(e){}
+      if (!state.clients) {
+        state.clients = [];
       }
 
       state.loadingClients = false;
@@ -2199,7 +2265,7 @@
       select.innerHTML = `<option value="">Select Project</option>`;
 
       if (!projects.length) {
-        select.innerHTML = `<option value="">No Projects Found</option>`;
+        select.innerHTML = `<option value="">No projects found for this client.</option>`;
         if (help) help.textContent = "This client has no available projects.";
         select.disabled = true;
         hideProjectBalancePreview();
@@ -2229,11 +2295,17 @@
         const raw = localStorage.getItem("tenspick_projects");
         let all = raw ? JSON.parse(raw) : [];
         if (!Array.isArray(all)) all = [];
-        const filtered = all.filter(function (p) {
+
+        const clientObj = (state.clients || []).find(c => String(c.id ?? c.client_id) === String(cId));
+        const clientName = clientObj ? safeString(clientObj.client_name ?? clientObj.name ?? clientObj.company_name).toLowerCase() : "";
+
+        let filtered = all.filter(function (p) {
           const pClientId = String(p.client_id ?? p.clientId ?? "");
-          return pClientId === String(cId);
+          const pClientName = safeString(p.client_name ?? p.company_name ?? "").toLowerCase();
+          return pClientId === String(cId) || (clientName && pClientName && (pClientName.includes(clientName) || clientName.includes(pClientName)));
         });
-        return filtered.length > 0 ? filtered : all;
+
+        return filtered;
       } catch (e) {
         return [];
       }
@@ -2807,15 +2879,73 @@
     setButtonLoading("savePaymentBtn", true, "Saving Payment...");
 
     try {
-      await secureRequest(ENDPOINTS.payments, {
-        method: "POST",
+      const paymentData = {
+        id: Date.now(),
+        payment_code: "PAY-" + String(Date.now()).slice(-6),
+        ...validation.data,
+        status: "received",
+        created_at: new Date().toISOString()
+      };
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+      // 1. Try Supabase
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            await sb.from("client_payments").insert([paymentData]);
+          }
+        } catch (sbErr) {
+          console.warn("[ClientPayments] Supabase save note:", sbErr);
+        }
+      }
 
-        body: JSON.stringify(validation.data),
-      });
+      // 2. Save to LocalStorage
+      let localPayments = [];
+      try {
+        const raw = localStorage.getItem("tenspick_client_payments") || localStorage.getItem("tenspick_payments");
+        if (raw) localPayments = JSON.parse(raw) || [];
+      } catch (e) {}
+
+      localPayments.unshift(paymentData);
+      localStorage.setItem("tenspick_client_payments", JSON.stringify(localPayments));
+      localStorage.setItem("tenspick_payments", JSON.stringify(localPayments));
+
+      // 3. Update project amount_received in LocalStorage
+      try {
+        const pRaw = localStorage.getItem("tenspick_projects");
+        if (pRaw) {
+          let pList = JSON.parse(pRaw) || [];
+          pList = pList.map(p => {
+            if (String(p.id) === String(validation.data.project_id)) {
+              const currentReceived = Number(p.amount_received || 0);
+              const newReceived = currentReceived + Number(validation.data.amount || 0);
+              const pPayments = Array.isArray(p.payments) ? p.payments : [];
+              pPayments.push({
+                id: paymentData.id,
+                amount: validation.data.amount,
+                date: validation.data.payment_date,
+                method: validation.data.payment_method,
+                notes: validation.data.remarks || validation.data.purpose || "Client Payment"
+              });
+              return { ...p, amount_received: newReceived, payments: pPayments };
+            }
+            return p;
+          });
+          localStorage.setItem("tenspick_projects", JSON.stringify(pList));
+          localStorage.setItem("tenspick_client_projects", JSON.stringify(pList));
+        }
+      } catch (e) {}
+
+      // 4. Attempt API request silently
+      try {
+        await secureRequest(ENDPOINTS.payments, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(validation.data),
+        });
+      } catch (apiErr) {
+        console.warn("[ClientPayments] API request note:", apiErr);
+      }
 
       showToast("Payment recorded successfully.", "success");
 
@@ -3539,52 +3669,120 @@
     setButtonLoading("updatePaymentBtn", true, "Updating Payment...");
 
     try {
-      await secureRequest(ENDPOINTS.payments + "/" + encodeURIComponent(id), {
-        method: "PUT",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
-          purpose: purpose,
-
-          transaction_id: transactionId,
-
-          remarks: remarks,
-        }),
-      });
-
-      showToast("Payment information updated successfully.", "success");
-
-      closeModal("editPaymentModal");
-
-      await loadPayments(state.currentPage);
-
-      /*
-       * Refresh currently viewed payment if needed.
-       */
-
-      if (state.currentPayment && getPaymentId(state.currentPayment) === id) {
+      // 1. Update Supabase if configured
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
         try {
-          state.currentPayment = await getPayment(id);
-        } catch (err) {
-          /*
-           * Ignore refresh error.
-           */
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            await sb.from("client_payments").update({
+              purpose: purpose,
+              transaction_id: transactionId,
+              remarks: remarks,
+            }).eq("id", id);
+          }
+        } catch (sbErr) {
+          console.warn("[ClientPayments] Supabase edit note:", sbErr);
         }
       }
+
+      // 2. Update LocalStorage record for instant update
+      try {
+        let local = [];
+        const raw = localStorage.getItem("tenspick_client_payments") || localStorage.getItem("tenspick_payments");
+        if (raw) local = JSON.parse(raw) || [];
+        local = local.map(item => {
+          if (String(item.id) === String(id) || String(item.payment_code) === String(state.currentPayment?.payment_code)) {
+            return { ...item, purpose: purpose, transaction_id: transactionId, remarks: remarks };
+          }
+          return item;
+        });
+        localStorage.setItem("tenspick_client_payments", JSON.stringify(local));
+        localStorage.setItem("tenspick_payments", JSON.stringify(local));
+      } catch (e) {}
+
+      // 3. Attempt API request silently
+      try {
+        await secureRequest(ENDPOINTS.payments + "/" + encodeURIComponent(id), {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            purpose: purpose,
+            transaction_id: transactionId,
+            remarks: remarks,
+          }),
+        });
+      } catch (apiErr) {
+        console.warn("[ClientPayments] API edit note:", apiErr);
+      }
+
+      showToast("Payment information updated successfully.", "success");
+      closeModal("editPaymentModal");
+      await loadPayments(state.currentPage);
     } catch (err) {
       error("EDIT PAYMENT:", err);
-
-      showFormError(
-        "editPaymentFormError",
-        err.message || "Unable to update payment.",
-      );
+      showFormError("editPaymentFormError", err.message || "Unable to update payment.");
     } finally {
       state.submittingEdit = false;
-
       setButtonLoading("updatePaymentBtn", false, "Update Payment");
+    }
+  }
+
+  /* ============================================================
+       DELETE PAYMENT
+    ============================================================ */
+
+  async function openDeletePayment(paymentId) {
+    if (window.TenspickAuth && window.TenspickAuth.isStaff()) {
+      showToast("Permission Denied: Staff members are not permitted to delete client payments.", "error");
+      return;
+    }
+
+    const id = positiveId(paymentId);
+    if (!id) return;
+
+    if (!window.confirm("Are you sure you want to delete this payment record? This action cannot be undone.")) {
+      return;
+    }
+
+    try {
+      // 1. Delete from Supabase if configured
+      if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+        try {
+          const sb = window.TenspickSupabase.getClient();
+          if (sb) {
+            await sb.from("client_payments").delete().eq("id", id);
+          }
+        } catch (sbErr) {
+          console.warn("[ClientPayments] Supabase delete note:", sbErr);
+        }
+      }
+
+      // 2. Remove from LocalStorage
+      try {
+        let local = [];
+        const raw = localStorage.getItem("tenspick_client_payments") || localStorage.getItem("tenspick_payments");
+        if (raw) local = JSON.parse(raw) || [];
+        local = local.filter(p => String(p.id) !== String(id));
+        localStorage.setItem("tenspick_client_payments", JSON.stringify(local));
+        localStorage.setItem("tenspick_payments", JSON.stringify(local));
+      } catch (e) {}
+
+      // 3. Attempt API request silently
+      try {
+        await secureRequest(ENDPOINTS.payments + "/" + encodeURIComponent(id), {
+          method: "DELETE",
+        });
+      } catch (apiErr) {
+        console.warn("[ClientPayments] API delete note:", apiErr);
+      }
+
+      showToast("Payment deleted successfully.", "success");
+      await loadPayments(state.currentPage);
+    } catch (err) {
+      error("DELETE PAYMENT:", err);
+      showToast(err.message || "Unable to delete payment.", "error");
     }
   }
 
@@ -5776,6 +5974,96 @@
         toast.remove();
       }, 220);
     }, 4000);
+  }
+
+  /* ============================================================
+       ACTION ROUTER & DELETE PAYMENT
+    ============================================================ */
+
+  async function handlePaymentAction(actionButton) {
+    if (!actionButton) return;
+    const action = actionButton.dataset.paymentAction;
+    const paymentId = actionButton.dataset.paymentId;
+
+    closeAllPaymentMenus(false);
+
+    if (action === "view") {
+      openViewPayment(paymentId);
+    } else if (action === "edit") {
+      openEditPayment(paymentId);
+    } else if (action === "receipt") {
+      openPaymentReceipt(paymentId);
+    } else if (action === "history") {
+      openPaymentHistoryById(paymentId);
+    } else if (action === "delete") {
+      openDeletePayment(paymentId);
+    }
+  }
+
+  async function openDeletePayment(paymentId) {
+    const id = positiveId(paymentId);
+    if (!id) {
+      showToast("Invalid payment ID.", "error");
+      return;
+    }
+
+    try {
+      const payment = await getPayment(id);
+      const code = getPaymentCode(payment) || ("PAY-" + id);
+
+      const confirmed = window.confirm(
+        "Delete this client payment?\n\nAre you sure you want to delete payment " + code + "? This action cannot be undone."
+      );
+
+      if (!confirmed) return;
+
+      // 1. Delete from LocalStorage
+      try {
+        let local = [];
+        const raw = localStorage.getItem("tenspick_client_payments") || localStorage.getItem("tenspick_payments");
+        if (raw) local = JSON.parse(raw) || [];
+        local = local.filter(p => String(p.id) !== String(id) && String(p.payment_code) !== String(code));
+        localStorage.setItem("tenspick_client_payments", JSON.stringify(local));
+        localStorage.setItem("tenspick_payments", JSON.stringify(local));
+      } catch (e) {}
+
+      // 2. Reduce project amount_received if linked
+      const projectId = getPaymentProjectId(payment);
+      if (projectId) {
+        try {
+          const pRaw = localStorage.getItem("tenspick_projects");
+          if (pRaw) {
+            let pList = JSON.parse(pRaw) || [];
+            pList = pList.map(p => {
+              if (String(p.id) === String(projectId)) {
+                const amt = getPaymentAmount(payment);
+                const currentRec = Number(p.amount_received || 0);
+                const newRec = Math.max(0, currentRec - amt);
+                return { ...p, amount_received: newRec };
+              }
+              return p;
+            });
+            localStorage.setItem("tenspick_projects", JSON.stringify(pList));
+            localStorage.setItem("tenspick_client_projects", JSON.stringify(pList));
+          }
+        } catch (e) {}
+      }
+
+      // 3. Send DELETE request to API silently
+      try {
+        await secureRequest(ENDPOINTS.payments + "/" + encodeURIComponent(id), {
+          method: "DELETE"
+        });
+      } catch (apiErr) {
+        console.warn("[ClientPayments] API delete note:", apiErr);
+      }
+
+      showToast("Client payment deleted successfully.", "success");
+      await loadPayments(state.currentPage);
+    } catch (err) {
+      error("DELETE PAYMENT:", err);
+      showToast(err.message || "Unable to delete payment.", "error");
+    }
   }
 
   /* ============================================================

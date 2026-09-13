@@ -201,6 +201,10 @@ CREATE TABLE IF NOT EXISTS clients (
     password_hash VARCHAR(255) NOT NULL,
     status client_status NOT NULL DEFAULT 'active',
     internal_notes TEXT,
+    hosting_platform VARCHAR(100),
+    hosting_email VARCHAR(150),
+    domain_registrar VARCHAR(100),
+    domain_expiry_date DATE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -234,6 +238,10 @@ CREATE TABLE IF NOT EXISTS projects (
     live_website_link VARCHAR(500),
     domain_purchased_email VARCHAR(255),
     seo_added_email VARCHAR(255),
+    hosting_platform VARCHAR(100),
+    hosting_email VARCHAR(150),
+    domain_registrar VARCHAR(100),
+    domain_expiry_date DATE,
     project_manager_id BIGINT REFERENCES staff(id) ON DELETE SET NULL ON UPDATE CASCADE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -383,6 +391,112 @@ BEFORE UPDATE ON staff_payments
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- ============================================================
+-- 12. EXPENSES TABLE
+-- ============================================================
+CREATE TABLE IF NOT EXISTS expenses (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    expense_code VARCHAR(40) UNIQUE,
+    title VARCHAR(255) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    amount NUMERIC(15, 2) NOT NULL DEFAULT 0.00,
+    expense_date DATE NOT NULL,
+    expense_type VARCHAR(50) NOT NULL DEFAULT 'company_expense',
+    client_id BIGINT REFERENCES clients(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    client_name VARCHAR(150),
+    project_id BIGINT REFERENCES projects(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    project_name VARCHAR(200),
+    paid_by VARCHAR(50) NOT NULL DEFAULT 'company',
+    staff_id BIGINT REFERENCES staff(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    staff_name VARCHAR(150),
+    payment_method VARCHAR(50) NOT NULL DEFAULT 'upi',
+    transaction_ref VARCHAR(150),
+    status VARCHAR(50) NOT NULL DEFAULT 'paid',
+    notes TEXT,
+    receipt_base64 TEXT,
+    receipt_file_name VARCHAR(255),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_expenses_category ON expenses(category);
+CREATE INDEX IF NOT EXISTS idx_expenses_client ON expenses(client_id);
+CREATE INDEX IF NOT EXISTS idx_expenses_project ON expenses(project_id);
+CREATE INDEX IF NOT EXISTS idx_expenses_status ON expenses(status);
+
+DROP TRIGGER IF EXISTS trg_expenses_updated_at ON expenses;
+CREATE TRIGGER trg_expenses_updated_at
+BEFORE UPDATE ON expenses
+FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================================
+-- 13. DOCUMENTS TABLE
+-- ============================================================
+CREATE TABLE IF NOT EXISTS documents (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    file_type VARCHAR(100),
+    file_size VARCHAR(50),
+    file_url TEXT,
+    file_base64 TEXT,
+    category VARCHAR(100) NOT NULL DEFAULT 'general',
+    project_id BIGINT REFERENCES projects(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    project_name VARCHAR(200),
+    uploaded_by VARCHAR(150),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_documents_project ON documents(project_id);
+
+DROP TRIGGER IF EXISTS trg_documents_updated_at ON documents;
+CREATE TRIGGER trg_documents_updated_at
+BEFORE UPDATE ON documents
+FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================================
+-- 14. ANNOUNCEMENTS TABLE
+-- ============================================================
+CREATE TABLE IF NOT EXISTS announcements (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    text TEXT NOT NULL,
+    author VARCHAR(150) NOT NULL DEFAULT 'Admin',
+    time_str VARCHAR(100),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ============================================================
+-- 15. CHAT MESSAGES TABLE
+-- ============================================================
+CREATE TABLE IF NOT EXISTS chat_messages (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    sender_type VARCHAR(50) NOT NULL DEFAULT 'admin',
+    sender_id BIGINT,
+    sender_name VARCHAR(150),
+    receiver_type VARCHAR(50) NOT NULL DEFAULT 'all',
+    receiver_id BIGINT,
+    message TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ============================================================
+-- 16. WEBSITE CONTENT TABLE
+-- ============================================================
+CREATE TABLE IF NOT EXISTS website_content (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    section_key VARCHAR(100) NOT NULL UNIQUE,
+    content_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+    updated_by VARCHAR(150),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+DROP TRIGGER IF EXISTS trg_website_content_updated_at ON website_content;
+CREATE TRIGGER trg_website_content_updated_at
+BEFORE UPDATE ON website_content
+FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================================
 -- ROW LEVEL SECURITY (RLS) & PUBLIC ACCESS POLICIES
 -- ============================================================
 ALTER TABLE admins ENABLE ROW LEVEL SECURITY;
@@ -396,10 +510,14 @@ ALTER TABLE tasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE task_updates ENABLE ROW LEVEL SECURITY;
 ALTER TABLE client_payments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE staff_payments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE expenses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE documents ENABLE ROW LEVEL SECURITY;
+ALTER TABLE announcements ENABLE ROW LEVEL SECURITY;
+ALTER TABLE chat_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE website_content ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies if re-running script to avoid duplicate policy errors
 DROP POLICY IF EXISTS "Allow public select admins" ON admins;
-DROP POLICY IF EXISTS "Allow public select staff" ON staff;
 DROP POLICY IF EXISTS "Allow public all staff" ON staff;
 DROP POLICY IF EXISTS "Allow public all leads" ON leads;
 DROP POLICY IF EXISTS "Allow public all clients" ON clients;
@@ -410,6 +528,11 @@ DROP POLICY IF EXISTS "Allow public all task_updates" ON task_updates;
 DROP POLICY IF EXISTS "Allow public all client_payments" ON client_payments;
 DROP POLICY IF EXISTS "Allow public all staff_payments" ON staff_payments;
 DROP POLICY IF EXISTS "Allow public all activity_logs" ON activity_logs;
+DROP POLICY IF EXISTS "Allow public all expenses" ON expenses;
+DROP POLICY IF EXISTS "Allow public all documents" ON documents;
+DROP POLICY IF EXISTS "Allow public all announcements" ON announcements;
+DROP POLICY IF EXISTS "Allow public all chat_messages" ON chat_messages;
+DROP POLICY IF EXISTS "Allow public all website_content" ON website_content;
 
 -- Allow anon and authenticated roles full access
 CREATE POLICY "Allow public select admins" ON admins FOR SELECT USING (true);
@@ -423,6 +546,11 @@ CREATE POLICY "Allow public all task_updates" ON task_updates FOR ALL USING (tru
 CREATE POLICY "Allow public all client_payments" ON client_payments FOR ALL USING (true);
 CREATE POLICY "Allow public all staff_payments" ON staff_payments FOR ALL USING (true);
 CREATE POLICY "Allow public all activity_logs" ON activity_logs FOR ALL USING (true);
+CREATE POLICY "Allow public all expenses" ON expenses FOR ALL USING (true);
+CREATE POLICY "Allow public all documents" ON documents FOR ALL USING (true);
+CREATE POLICY "Allow public all announcements" ON announcements FOR ALL USING (true);
+CREATE POLICY "Allow public all chat_messages" ON chat_messages FOR ALL USING (true);
+CREATE POLICY "Allow public all website_content" ON website_content FOR ALL USING (true);
 
 -- ============================================================
 -- SEED DEFAULT ADMIN DATA
@@ -438,3 +566,4 @@ VALUES
 ('LD-20260830-0002', 'Priya Reddy', 'Puttur Fashion Store', '9876543211', 'priya@example.com', 'Digital Marketing', 'referral', 'contacted', 'medium', '2026-09-04', 'Discussed social media marketing.'),
 ('LD-20260830-0003', 'Arun Kumar', 'Tirupati Electronics', '9876543212', 'arun@example.com', 'E-commerce Website', 'whatsapp', 'follow_up', 'high', '2026-09-05', 'Follow up regarding ecommerce quotation.')
 ON CONFLICT (lead_code) DO NOTHING;
+

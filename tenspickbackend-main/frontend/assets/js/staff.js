@@ -2823,33 +2823,31 @@
         try {
             let deletedSuccessfully = false;
 
-            // 1. Try Supabase if configured
+            // 1. Delete from Supabase if configured (both staff & staff_payments)
             if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
                 try {
                     const sb = window.TenspickSupabase.getClient();
                     if (sb) {
-                        const { error: sbErr } = await sb.from("staff").delete().eq("id", id);
-                        if (!sbErr) deletedSuccessfully = true;
+                        await sb.from("staff").delete().eq("id", id);
+                        await sb.from("staff_payments").delete().eq("staff_id", id);
                     }
                 } catch (sbErr) {
                     console.warn("Supabase staff delete note:", sbErr);
                 }
             }
 
-            // 2. Try PHP API backend if Supabase didn't delete
-            if (!deletedSuccessfully) {
-                try {
-                    if (!state.csrfToken) await loadCsrfToken();
-                    const headers = { Accept: "application/json" };
-                    if (state.csrfToken) headers["X-CSRF-Token"] = state.csrfToken;
-                    const endpoint = CONFIG.ENDPOINTS.STAFF + "/" + encodeURIComponent(id);
-                    await request(endpoint, { method: "DELETE", headers });
-                } catch (apiErr) {
-                    console.warn("PHP API staff delete fallback:", apiErr);
-                }
+            // 2. Try PHP API backend
+            try {
+                if (!state.csrfToken) await loadCsrfToken();
+                const headers = { Accept: "application/json" };
+                if (state.csrfToken) headers["X-CSRF-Token"] = state.csrfToken;
+                const endpoint = CONFIG.ENDPOINTS.STAFF + "/" + encodeURIComponent(id);
+                await request(endpoint, { method: "DELETE", headers });
+            } catch (apiErr) {
+                console.warn("PHP API staff delete fallback:", apiErr);
             }
 
-            // 3. Sync with LocalStorage
+            // 3. Sync with LocalStorage (both staff list & staff payments list)
             const targetIdStr = String(id);
             let localList = [];
             try {
@@ -2862,6 +2860,16 @@
             });
             localStorage.setItem("tenspick_staff", JSON.stringify(localList));
             localStorage.setItem("tenspick_staff_initialized", "true");
+
+            // Also remove staff payments for this deleted staff member from LocalStorage
+            try {
+                const pRaw = localStorage.getItem("tenspick_staff_payments");
+                if (pRaw) {
+                    let pList = JSON.parse(pRaw) || [];
+                    pList = pList.filter(p => String(p.staff_id) !== targetIdStr);
+                    localStorage.setItem("tenspick_staff_payments", JSON.stringify(pList));
+                }
+            } catch (e) {}
 
             state.allStaff = state.allStaff.filter(function (item) {
                 return String(getStaffId(item)) !== targetIdStr;

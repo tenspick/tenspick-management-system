@@ -2530,6 +2530,26 @@
 
 
         setField(
+            "clientHostingPlatform",
+            ""
+        );
+
+        setField(
+            "clientHostingEmail",
+            ""
+        );
+
+        setField(
+            "clientDomainRegistrar",
+            ""
+        );
+
+        setField(
+            "clientDomainExpiryDate",
+            ""
+        );
+
+        setField(
             "clientPassword",
             ""
         );
@@ -2648,6 +2668,18 @@
 
             clientWebsite:
                 client.website,
+
+            clientHostingPlatform:
+                client.hosting_platform,
+
+            clientHostingEmail:
+                client.hosting_email,
+
+            clientDomainRegistrar:
+                client.domain_registrar,
+
+            clientDomainExpiryDate:
+                client.domain_expiry_date,
 
             clientAddress:
                 client.address,
@@ -3607,6 +3639,37 @@
                     ${profileItem(
                         "Pincode",
                         client.pincode
+                    )}
+
+                </div>
+
+
+                <div
+                    class="client-profile-section"
+                >
+
+                    <h4>
+                        Web Development & Hosting Details
+                    </h4>
+
+                    ${profileItem(
+                        "Hosting Platform",
+                        client.hosting_platform
+                    )}
+
+                    ${profileItem(
+                        "Hosting Account Email",
+                        client.hosting_email
+                    )}
+
+                    ${profileItem(
+                        "Domain Registrar",
+                        client.domain_registrar
+                    )}
+
+                    ${profileItem(
+                        "Domain Expiry Date",
+                        formatDate(client.domain_expiry_date)
                     )}
 
                 </div>

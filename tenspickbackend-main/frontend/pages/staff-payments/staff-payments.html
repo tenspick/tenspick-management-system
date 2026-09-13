@@ -191,6 +191,29 @@
 
 
     <!-- ======================================================
+         STAFF PAYOUT BREAKDOWN DASHBOARD
+    ======================================================= -->
+    <section class="sp-staff-breakdown-section" style="margin-bottom: 24px; background: #FFFFFF; border-radius: 16px; border: 1px solid #E5E7EB; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: 10px; background: #EEF2FF; color: #4F46E5; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 15px; font-weight: 750; color: #111827;">Total Amount Paid to Each Staff</h3>
+                    <span style="font-size: 12px; color: #6B7280;">Individual breakdown of cumulative payments and salary sent to each team member</span>
+                </div>
+            </div>
+            <span style="font-size: 12px; font-weight: 700; color: #4F46E5; background: #EEF2FF; padding: 4px 12px; border-radius: 20px;" id="spActiveStaffCountTag">0 Active Staff</span>
+        </div>
+
+        <div id="spStaffBreakdownGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;">
+            <!-- Loaded by JS -->
+        </div>
+    </section>
+
+
+    <!-- ======================================================
          FILTER CARD
     ======================================================= -->
 
@@ -885,16 +908,11 @@
 
                         <!-- STAFF -->
 
-                        <div
-                            class="
-                                sp-form-group
-                                sp-field-full
-                            "
-                        >
+                        <div class="sp-form-group">
 
                             <label for="spAddStaff">
 
-                                Staff
+                                Select Staff
 
                                 <span
                                     class="sp-required"
@@ -922,6 +940,38 @@
                             <span
                                 class="sp-field-error"
                                 id="spAddStaffError"
+                                role="alert"
+                            ></span>
+
+                        </div>
+
+
+                        <!-- PROJECT (AMOUNT FOR WHICH PROJECT) -->
+
+                        <div class="sp-form-group">
+
+                            <label for="spAddProject">
+
+                                Amount for Which Project
+
+                            </label>
+
+
+                            <select
+                                id="spAddProject"
+                                class="sp-form-control"
+                            >
+
+                                <option value="">
+                                    General / Office Operations
+                                </option>
+
+                            </select>
+
+
+                            <span
+                                class="sp-field-error"
+                                id="spAddProjectError"
                                 role="alert"
                             ></span>
 
@@ -1767,7 +1817,7 @@
 
 
     <div
-        class="sp-modal-dialog sp-modal-md"
+        class="sp-modal-dialog sp-modal-lg"
         role="dialog"
         aria-modal="true"
         aria-labelledby="spEditPaymentModalTitle"
@@ -1790,11 +1840,11 @@
                 <div>
 
                     <h2 id="spEditPaymentModalTitle">
-                        Edit Payment Remarks
+                        Edit Staff Payment
                     </h2>
 
                     <p>
-                        Only remarks can be changed
+                        Modify payment details for this staff member
                     </p>
 
                 </div>
@@ -1827,7 +1877,7 @@
             autocomplete="off"
         >
 
-            <div class="sp-modal-body">
+            <div class="sp-modal-body" style="max-height: calc(85vh - 120px); overflow-y: auto;">
 
                 <!-- ALERT -->
 
@@ -1848,9 +1898,9 @@
                 </div>
 
 
-                <!-- PAYMENT SUMMARY -->
+                <!-- PAYMENT SUMMARY CODE -->
 
-                <div class="sp-edit-summary">
+                <div class="sp-edit-summary" style="margin-bottom: 1.25rem;">
 
                     <div>
 
@@ -1864,11 +1914,10 @@
 
                     </div>
 
-
                     <div>
 
                         <span>
-                            Staff
+                            Current Staff
                         </span>
 
                         <strong id="spEditStaffName">
@@ -1879,22 +1928,148 @@
 
                 </div>
 
+                <div class="sp-form-grid">
+
+                    <!-- STAFF -->
+                    <div class="sp-form-group">
+                        <label for="spEditStaff">
+                            Select Staff <span class="sp-required">*</span>
+                        </label>
+                        <select id="spEditStaff" class="sp-form-control" required>
+                            <option value="">Select Staff</option>
+                        </select>
+                        <span class="sp-field-error" id="spEditStaffError" role="alert"></span>
+                    </div>
+
+                    <!-- PROJECT -->
+                    <div class="sp-form-group">
+                        <label for="spEditProject">
+                            Amount for Which Project
+                        </label>
+                        <select id="spEditProject" class="sp-form-control">
+                            <option value="">General / Office Operations</option>
+                        </select>
+                        <span class="sp-field-error" id="spEditProjectError" role="alert"></span>
+                    </div>
+
+                    <!-- PAYMENT TYPE -->
+                    <div class="sp-form-group">
+                        <label for="spEditPaymentType">
+                            Payment Type <span class="sp-required">*</span>
+                        </label>
+                        <select id="spEditPaymentType" class="sp-form-control" required>
+                            <option value="">Select Type</option>
+                            <option value="salary">Salary</option>
+                            <option value="advance">Advance</option>
+                            <option value="bonus">Bonus</option>
+                            <option value="incentive">Incentive</option>
+                            <option value="reimbursement">Reimbursement</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <span class="sp-field-error" id="spEditPaymentTypeError" role="alert"></span>
+                    </div>
+
+                    <!-- AMOUNT -->
+                    <div class="sp-form-group">
+                        <label for="spEditAmount">
+                            Amount <span class="sp-required">*</span>
+                        </label>
+                        <div class="sp-input-prefix">
+                            <span aria-hidden="true">₹</span>
+                            <input
+                                type="number"
+                                id="spEditAmount"
+                                class="sp-form-control"
+                                min="0.01"
+                                step="0.01"
+                                inputmode="decimal"
+                                placeholder="0.00"
+                                required
+                            >
+                        </div>
+                        <span class="sp-field-error" id="spEditAmountError" role="alert"></span>
+                    </div>
+
+                    <!-- PAYMENT DATE -->
+                    <div class="sp-form-group">
+                        <label for="spEditPaymentDate">
+                            Payment Date <span class="sp-required">*</span>
+                        </label>
+                        <input
+                            type="date"
+                            id="spEditPaymentDate"
+                            class="sp-form-control"
+                            required
+                        >
+                        <span class="sp-field-error" id="spEditPaymentDateError" role="alert"></span>
+                    </div>
+
+                    <!-- MONTH / PERIOD -->
+                    <div class="sp-form-group">
+                        <label for="spEditPaymentPeriod">
+                            Month / Period <span class="sp-required">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="spEditPaymentPeriod"
+                            class="sp-form-control"
+                            maxlength="50"
+                            placeholder="e.g. September 2026"
+                            required
+                        >
+                        <span class="sp-field-error" id="spEditPaymentPeriodError" role="alert"></span>
+                    </div>
+
+                    <!-- PAYMENT METHOD -->
+                    <div class="sp-form-group">
+                        <label for="spEditPaymentMethod">
+                            Payment Method <span class="sp-required">*</span>
+                        </label>
+                        <select id="spEditPaymentMethod" class="sp-form-control" required>
+                            <option value="">Select Method</option>
+                            <option value="cash">Cash</option>
+                            <option value="upi">UPI</option>
+                            <option value="bank_transfer">Bank Transfer</option>
+                            <option value="card">Card</option>
+                            <option value="cheque">Cheque</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <span class="sp-field-error" id="spEditPaymentMethodError" role="alert"></span>
+                    </div>
+
+                    <!-- TRANSACTION ID -->
+                    <div class="sp-form-group">
+                        <label for="spEditTransactionId">
+                            Transaction ID / Reference
+                        </label>
+                        <input
+                            type="text"
+                            id="spEditTransactionId"
+                            class="sp-form-control"
+                            maxlength="150"
+                            placeholder="e.g. UPI/123456789"
+                        >
+                        <span class="sp-field-error" id="spEditTransactionIdError" role="alert"></span>
+                    </div>
+
+                </div>
+
 
                 <!-- REMARKS -->
 
-                <div class="sp-form-group">
+                <div class="sp-form-group" style="margin-top: 1rem;">
 
                     <label for="spEditRemarks">
-                        Remarks
+                        Description / Notes
                     </label>
 
 
                     <textarea
                         id="spEditRemarks"
                         class="sp-form-control sp-textarea"
-                        rows="6"
+                        rows="3"
                         maxlength="5000"
-                        placeholder="Enter payment remarks..."
+                        placeholder="Enter payment description or notes..."
                         spellcheck="true"
                     ></textarea>
 
@@ -1902,7 +2077,7 @@
                     <div class="sp-textarea-footer">
 
                         <span>
-                            Only remarks are editable
+                            Optional notes
                         </span>
 
                         <span>
@@ -1951,7 +2126,7 @@
                 >
 
                     <span class="sp-btn-text">
-                        Update Remarks
+                        Save Payment Changes
                     </span>
 
 
@@ -2019,17 +2194,17 @@
                     "
                     aria-hidden="true"
                 >
-                    <i class="bi bi-shield-lock"></i>
+                    <i class="bi bi-trash3-fill"></i>
                 </div>
 
                 <div>
 
                     <h2 id="spDeletePaymentModalTitle">
-                        Payment Record Protected
+                        Delete Staff Payment?
                     </h2>
 
                     <p>
-                        Financial record protection
+                        Confirm payment removal
                     </p>
 
                 </div>
@@ -2041,7 +2216,7 @@
                 type="button"
                 class="sp-modal-close"
                 data-sp-close-modal="spDeletePaymentModal"
-                aria-label="Close Payment Protection"
+                aria-label="Close Delete Payment"
             >
 
                 <i
@@ -2063,26 +2238,19 @@
                 <div
                     class="sp-delete-icon"
                     aria-hidden="true"
+                    style="color: #ef4444;"
                 >
-                    <i class="bi bi-shield-exclamation"></i>
+                    <i class="bi bi-exclamation-triangle-fill" style="font-size: 2.5rem;"></i>
                 </div>
 
 
-                <h3>
-                    This payment cannot be deleted
+                <h3 style="margin-top: 0.75rem; margin-bottom: 0.5rem; font-size: 1.1rem; color: #f8fafc;">
+                    Are you sure you want to delete this payment?
                 </h3>
 
 
-                <p>
-                    Staff payment records are financial records
-                    and cannot be removed from the system.
-                </p>
-
-
-                <p class="sp-delete-warning">
-                    If a payment was entered incorrectly,
-                    contact the administrator instead of deleting
-                    the financial record.
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.5;">
+                    This action cannot be undone. The staff payment record will be permanently removed and staff totals will be updated.
                 </p>
 
 
@@ -2111,32 +2279,19 @@
                 type="button"
                 class="sp-btn sp-btn-secondary"
                 data-sp-close-modal="spDeletePaymentModal"
+                id="spCancelDeleteBtn"
             >
-                Close
+                Cancel
             </button>
 
-
-            <!--
-                Kept for JavaScript compatibility.
-                Backend protection will reject deletion with HTTP 409.
-            -->
 
             <button
                 type="button"
                 class="sp-btn sp-btn-danger"
                 id="spConfirmDeletePaymentBtn"
-                title="Payment records cannot be deleted"
             >
-
-                <i
-                    class="bi bi-shield-lock"
-                    aria-hidden="true"
-                ></i>
-
-                <span>
-                    Delete Protected
-                </span>
-
+                <i class="bi bi-trash" aria-hidden="true"></i>
+                <span>Delete Payment</span>
             </button>
 
         </div>

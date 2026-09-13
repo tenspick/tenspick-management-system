@@ -1,0 +1,511 @@
+<script>
+    if (!document.getElementById('app-content') && window.top === window.self) {
+        var pageRoute = window.location.pathname.split('/').slice(-2, -1)[0] || 'expenses';
+        window.location.replace('../../index.html#/' + pageRoute);
+    }
+</script>
+
+<section class="expenses-page" id="expensesPage">
+
+    <!-- PAGE HEADER -->
+    <div class="expenses-page-header">
+        <div class="expenses-page-heading">
+            <div class="expenses-breadcrumb">
+                <span>CRM</span>
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                <span>Finance</span>
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                <span>Expenses</span>
+            </div>
+            <h1>Expenses Management</h1>
+            <p>Track, manage, and audit all company operational & project expenses.</p>
+        </div>
+
+        <div class="expenses-page-actions">
+            <button type="button" class="expenses-btn expenses-btn-outline" id="expensesExportBtn">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span>Export CSV</span>
+            </button>
+            <button type="button" class="expenses-btn expenses-btn-primary" id="expensesAddBtn">
+                <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                <span>+ Add Expense</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- STATS GRID (6 TOP KPI CARDS) -->
+    <div class="expenses-stats-grid">
+        <!-- 1. Total Expenses -->
+        <div class="expenses-stat-card">
+            <div class="expenses-stat-icon expenses-stat-icon-total">
+                <i class="bi bi-wallet2"></i>
+            </div>
+            <div class="expenses-stat-content">
+                <span class="expenses-stat-label">Total Expenses</span>
+                <strong id="expensesTotalAmount" class="expenses-stat-value">₹0</strong>
+                <small class="expenses-stat-sub">All-time record</small>
+            </div>
+        </div>
+
+        <!-- 2. This Month -->
+        <div class="expenses-stat-card">
+            <div class="expenses-stat-icon expenses-stat-icon-month">
+                <i class="bi bi-calendar-event"></i>
+            </div>
+            <div class="expenses-stat-content">
+                <span class="expenses-stat-label">This Month</span>
+                <strong id="expensesMonthAmount" class="expenses-stat-value">₹0</strong>
+                <small class="expenses-stat-sub">Current month spend</small>
+            </div>
+        </div>
+
+        <!-- 3. Project Expenses -->
+        <div class="expenses-stat-card">
+            <div class="expenses-stat-icon expenses-stat-icon-project">
+                <i class="bi bi-kanban"></i>
+            </div>
+            <div class="expenses-stat-content">
+                <span class="expenses-stat-label">Project Expenses</span>
+                <strong id="expensesProjectAmount" class="expenses-stat-value">₹0</strong>
+                <small class="expenses-stat-sub">Client projects spend</small>
+            </div>
+        </div>
+
+        <!-- 4. Operational Expenses -->
+        <div class="expenses-stat-card">
+            <div class="expenses-stat-icon expenses-stat-icon-operational">
+                <i class="bi bi-building"></i>
+            </div>
+            <div class="expenses-stat-content">
+                <span class="expenses-stat-label">Operational Expenses</span>
+                <strong id="expensesOperationalAmount" class="expenses-stat-value">₹0</strong>
+                <small class="expenses-stat-sub">Company & office spend</small>
+            </div>
+        </div>
+
+        <!-- 5. Pending Reimbursements -->
+        <div class="expenses-stat-card">
+            <div class="expenses-stat-icon expenses-stat-icon-reimburse">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+            <div class="expenses-stat-content">
+                <span class="expenses-stat-label">Reimbursements</span>
+                <strong id="expensesReimbursementsAmount" class="expenses-stat-value">₹0</strong>
+                <small class="expenses-stat-sub">Pending staff payout</small>
+            </div>
+        </div>
+
+        <!-- 6. Highest Category -->
+        <div class="expenses-stat-card">
+            <div class="expenses-stat-icon expenses-stat-icon-category">
+                <i class="bi bi-pie-chart-fill"></i>
+            </div>
+            <div class="expenses-stat-content">
+                <span class="expenses-stat-label">Highest Category</span>
+                <strong id="expensesTopCategory" class="expenses-stat-value">—</strong>
+                <small id="expensesTopCategoryAmount" class="expenses-stat-sub">₹0 spend</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="expenses-filter-card">
+        <div class="expenses-filter-header">
+            <h3>Search & Filters</h3>
+            <p>Filter expense records by date, category, client, project, paid by, or status.</p>
+        </div>
+
+        <div class="expenses-filter-grid">
+            <!-- Search -->
+            <div class="expenses-search-wrapper">
+                <i class="bi bi-search"></i>
+                <input type="search" id="expensesSearch" placeholder="Search title, client, project, transaction ID..." autocomplete="off" />
+            </div>
+
+            <!-- Date Range -->
+            <select id="expensesDateFilter" class="expenses-filter-control">
+                <option value="">All Time</option>
+                <option value="today">Today</option>
+                <option value="this_week">This Week</option>
+                <option value="this_month">This Month</option>
+                <option value="last_month">Last Month</option>
+                <option value="custom">Custom Date Range</option>
+            </select>
+
+            <!-- Custom Date Inputs (hidden by default) -->
+            <div id="expensesCustomDateContainer" class="expenses-custom-date-group" style="display: none;">
+                <input type="date" id="expensesStartDate" class="expenses-filter-control" title="Start Date" />
+                <span>to</span>
+                <input type="date" id="expensesEndDate" class="expenses-filter-control" title="End Date" />
+            </div>
+
+            <!-- Category Filter -->
+            <select id="expensesCategoryFilter" class="expenses-filter-control">
+                <option value="">All Categories</option>
+                <option value="hosting">Hosting</option>
+                <option value="domain">Domain</option>
+                <option value="software">Software</option>
+                <option value="marketing">Marketing</option>
+                <option value="advertising">Advertising</option>
+                <option value="office">Office</option>
+                <option value="travel">Travel</option>
+                <option value="equipment">Equipment</option>
+                <option value="internet">Internet</option>
+                <option value="salary">Salary</option>
+                <option value="freelancer">Freelancer</option>
+                <option value="client_project">Client Project</option>
+                <option value="maintenance">Maintenance</option>
+                <option value="other">Other</option>
+            </select>
+
+            <!-- Expense Type Filter -->
+            <select id="expensesTypeFilter" class="expenses-filter-control">
+                <option value="">All Expense Types</option>
+                <option value="project_expense">Project Expense</option>
+                <option value="company_expense">Company Expense</option>
+            </select>
+
+            <!-- Client Filter (Populated dynamically) -->
+            <select id="expensesClientFilter" class="expenses-filter-control">
+                <option value="">All Clients</option>
+            </select>
+
+            <!-- Project Filter (Populated dynamically) -->
+            <select id="expensesProjectFilter" class="expenses-filter-control">
+                <option value="">All Projects</option>
+            </select>
+
+            <!-- Paid By Filter -->
+            <select id="expensesPaidByFilter" class="expenses-filter-control">
+                <option value="">All Paid By</option>
+                <option value="company">Company</option>
+                <option value="staff">Staff</option>
+                <option value="founder">Founder / Owner</option>
+                <option value="other">Other</option>
+            </select>
+
+            <!-- Status Filter -->
+            <select id="expensesStatusFilter" class="expenses-filter-control">
+                <option value="">All Statuses</option>
+                <option value="paid">Paid</option>
+                <option value="pending">Pending</option>
+                <option value="reimbursable">Reimbursable</option>
+                <option value="reimbursed">Reimbursed</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+
+            <!-- Reset Button -->
+            <button type="button" id="expensesResetFilters" class="expenses-btn expenses-btn-outline">
+                <i class="bi bi-arrow-counterclockwise"></i>
+                <span>Reset Filters</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- EXPENSES TABLE -->
+    <div class="expenses-table-card">
+        <div class="expenses-table-header">
+            <div>
+                <h3>Expense List</h3>
+                <p>Detailed breakdown of all recorded business expenses</p>
+            </div>
+            <span id="expensesResultInfo" class="expenses-result-info">0 records</span>
+        </div>
+
+        <div class="expenses-table-wrapper">
+            <table class="expenses-table" id="expensesTable">
+                <thead>
+                    <tr>
+                        <th>DATE</th>
+                        <th>EXPENSE TITLE</th>
+                        <th>CATEGORY</th>
+                        <th>CLIENT</th>
+                        <th>PROJECT</th>
+                        <th>AMOUNT</th>
+                        <th>PAID BY</th>
+                        <th>STATUS</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody id="expensesTableBody">
+                    <tr>
+                        <td colspan="9" class="expenses-empty-cell">
+                            <div class="expenses-loading-state">
+                                <span class="expenses-spinner"></span>
+                                <span>Loading expenses...</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="expenses-pagination" id="expensesPagination"></div>
+    </div>
+
+    <!-- ANALYTICS SECTION (CATEGORY BREAKDOWN & PROJECT PROFITABILITY) -->
+    <div class="expenses-analytics-grid">
+        <!-- Expenses by Category Card -->
+        <div class="expenses-analytics-card">
+            <div class="expenses-analytics-header">
+                <h3><i class="bi bi-pie-chart-fill" style="color:#4B49AC;"></i> Expenses by Category</h3>
+                <p>Distribution of total company expenditures</p>
+            </div>
+            <div id="expensesCategoryBreakdownList" class="expenses-category-list">
+                <p style="color:#9CA3AF; text-align:center; padding:15px;">Loading breakdown...</p>
+            </div>
+        </div>
+
+        <!-- Project Profitability Card -->
+        <div class="expenses-analytics-card">
+            <div class="expenses-analytics-header">
+                <h3><i class="bi bi-graph-up-arrow" style="color:#10B981;"></i> Project Profitability</h3>
+                <p>Calculate Gross Profit: Revenue − Project Expenses</p>
+            </div>
+            <div class="expenses-profitability-body">
+                <div style="margin-bottom: 14px;">
+                    <label for="profitabilityProjectSelect" style="font-size: 12px; font-weight: 600; color: #374151; display: block; margin-bottom: 4px;">Select Project</label>
+                    <select id="profitabilityProjectSelect" class="expenses-filter-control" style="width: 100%;">
+                        <option value="">Select a Project...</option>
+                    </select>
+                </div>
+                <div class="expenses-profit-grid">
+                    <div class="expenses-profit-box green">
+                        <span>Project Revenue</span>
+                        <strong id="profitRevenue">₹0</strong>
+                    </div>
+                    <div class="expenses-profit-box red">
+                        <span>Project Expenses</span>
+                        <strong id="profitExpenses">₹0</strong>
+                    </div>
+                    <div class="expenses-profit-box blue">
+                        <span>Gross Profit</span>
+                        <strong id="profitGross">₹0</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         ADD / EDIT EXPENSE MODAL
+         ============================================================ -->
+    <div class="expenses-modal" id="expenseModal" aria-hidden="true" inert>
+        <div class="expenses-modal-overlay" data-close-expense-modal></div>
+        <div class="expenses-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
+            <div class="expenses-modal-header">
+                <div>
+                    <span class="expenses-modal-eyebrow">Finance & Accounting</span>
+                    <h2 id="expenseModalTitle">Add Expense</h2>
+                    <p style="margin: 2px 0 0; font-size: 12px; color: #6B7280;">Fill in the expense details below</p>
+                </div>
+                <button type="button" class="expenses-modal-close" id="expenseModalClose" aria-label="Close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <form id="expenseForm" class="expenses-form" novalidate>
+                <input type="hidden" id="expenseFormId" value="" />
+
+                <div class="expenses-modal-body">
+                    <!-- SECTION 1: BASIC INFORMATION -->
+                    <div class="expenses-form-section">
+                        <div class="expenses-form-section-title">
+                            <i class="bi bi-info-circle-fill"></i> 01. Basic Information
+                        </div>
+                        <div class="expenses-form-grid">
+                            <div class="expenses-form-group full-width">
+                                <label for="expenseTitle">Expense Title <span>*</span></label>
+                                <input type="text" id="expenseTitle" name="title" required placeholder="e.g. Domain Renewal – Client ABC" />
+                            </div>
+
+                            <div class="expenses-form-group">
+                                <label for="expenseCategory">Expense Category <span>*</span></label>
+                                <select id="expenseCategory" name="category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="hosting">Hosting</option>
+                                    <option value="domain">Domain</option>
+                                    <option value="software">Software</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="advertising">Advertising</option>
+                                    <option value="office">Office</option>
+                                    <option value="travel">Travel</option>
+                                    <option value="equipment">Equipment</option>
+                                    <option value="internet">Internet</option>
+                                    <option value="salary">Salary</option>
+                                    <option value="freelancer">Freelancer</option>
+                                    <option value="client_project">Client Project</option>
+                                    <option value="maintenance">Maintenance</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="expenses-form-group">
+                                <label for="expenseAmount">Amount (₹) <span>*</span></label>
+                                <input type="number" id="expenseAmount" name="amount" required step="0.01" min="0" placeholder="e.g. 4500" />
+                            </div>
+
+                            <div class="expenses-form-group full-width">
+                                <label for="expenseDate">Expense Date <span>*</span></label>
+                                <input type="date" id="expenseDate" name="expense_date" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: PROJECT ASSOCIATION -->
+                    <div class="expenses-form-section">
+                        <div class="expenses-form-section-title">
+                            <i class="bi bi-diagram-3-fill"></i> 02. Expense Type & Project Link
+                        </div>
+                        <div class="expenses-form-grid">
+                            <div class="expenses-form-group full-width">
+                                <label>Expense Type <span>*</span></label>
+                                <div class="expenses-radio-group">
+                                    <label class="expenses-radio-label">
+                                        <input type="radio" name="expense_type" id="expenseTypeProject" value="project_expense" checked />
+                                        <span>Project Expense (Linked to Client & Project)</span>
+                                    </label>
+                                    <label class="expenses-radio-label">
+                                        <input type="radio" name="expense_type" id="expenseTypeCompany" value="company_expense" />
+                                        <span>Company / Operational Expense</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Client Dropdown (Real Clients Only) -->
+                            <div class="expenses-form-group" id="expenseClientContainer">
+                                <label for="expenseClient">Client <span>*</span></label>
+                                <select id="expenseClient" name="client_id">
+                                    <option value="">Select Client...</option>
+                                </select>
+                            </div>
+
+                            <!-- Project Dropdown (Filtered by Client) -->
+                            <div class="expenses-form-group" id="expenseProjectContainer">
+                                <label for="expenseProject">Project <span>*</span></label>
+                                <select id="expenseProject" name="project_id">
+                                    <option value="">Select Client First...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: PAYMENT & REIMBURSEMENT -->
+                    <div class="expenses-form-section">
+                        <div class="expenses-form-section-title">
+                            <i class="bi bi-credit-card-fill"></i> 03. Payment & Status
+                        </div>
+                        <div class="expenses-form-grid">
+                            <div class="expenses-form-group">
+                                <label for="expensePaidBy">Paid By <span>*</span></label>
+                                <select id="expensePaidBy" name="paid_by" required>
+                                    <option value="company">Company Account</option>
+                                    <option value="staff">Staff Member</option>
+                                    <option value="founder">Founder / Owner</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <!-- Staff Dropdown (Shown if Paid By = Staff) -->
+                            <div class="expenses-form-group" id="expenseStaffContainer" style="display: none;">
+                                <label for="expenseStaff">Staff Member <span>*</span></label>
+                                <select id="expenseStaff" name="staff_id">
+                                    <option value="">Select Staff Member...</option>
+                                </select>
+                            </div>
+
+                            <div class="expenses-form-group">
+                                <label for="expensePaymentMethod">Payment Method <span>*</span></label>
+                                <select id="expensePaymentMethod" name="payment_method">
+                                    <option value="upi">UPI</option>
+                                    <option value="bank_transfer">Bank Transfer</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="card">Credit / Debit Card</option>
+                                    <option value="cheque">Cheque</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="expenses-form-group">
+                                <label for="expenseTransactionRef">Transaction Reference / Ref No.</label>
+                                <input type="text" id="expenseTransactionRef" name="transaction_ref" placeholder="e.g. TXN9817231 / UTR" />
+                            </div>
+
+                            <div class="expenses-form-group">
+                                <label for="expenseStatus">Expense Status <span>*</span></label>
+                                <select id="expenseStatus" name="status" required>
+                                    <option value="paid">Paid</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="reimbursable">Reimbursable (Staff Out of Pocket)</option>
+                                    <option value="reimbursed">Reimbursed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 4: RECEIPT & NOTES -->
+                    <div class="expenses-form-section">
+                        <div class="expenses-form-section-title">
+                            <i class="bi bi-paperclip"></i> 04. Receipt & Description
+                        </div>
+                        <div class="expenses-form-grid">
+                            <div class="expenses-form-group full-width">
+                                <label for="expenseReceiptFile">Upload Receipt (Optional)</label>
+                                <input type="file" id="expenseReceiptFile" accept="image/jpeg,image/png,image/webp,application/pdf" class="expenses-file-control" />
+                                <small style="color: #6B7280; font-size: 11px;">Supported formats: JPG, PNG, PDF. Max 5MB.</small>
+                                <div id="expenseReceiptPreview" class="expenses-receipt-preview" style="display: none; margin-top: 8px;"></div>
+                            </div>
+
+                            <div class="expenses-form-group full-width">
+                                <label for="expenseNotes">Notes / Remarks</label>
+                                <textarea id="expenseNotes" name="notes" rows="3" placeholder="Additional details, invoice description, or reimbursement notes..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="expenses-modal-footer">
+                    <button type="button" class="expenses-btn expenses-btn-outline" id="expenseCancelBtn">Cancel</button>
+                    <button type="submit" class="expenses-btn expenses-btn-primary" id="expenseSaveBtn">
+                        <i class="bi bi-check-lg"></i>
+                        <span>Save Expense</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         EXPENSE DETAILS VIEW MODAL (DRAWER)
+         ============================================================ -->
+    <div class="expenses-modal" id="expenseViewModal" aria-hidden="true" inert>
+        <div class="expenses-modal-overlay" data-close-expense-view></div>
+        <div class="expenses-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="expenseViewTitle">
+            <div class="expenses-modal-header">
+                <div>
+                    <span class="expenses-modal-eyebrow">Expense Details</span>
+                    <h2 id="expenseViewTitle">Hosting Renewal</h2>
+                </div>
+                <button type="button" class="expenses-modal-close" id="expenseViewClose" aria-label="Close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <div class="expenses-modal-body" id="expenseViewBody">
+                <!-- Populated dynamically by expenses.js -->
+            </div>
+
+            <div class="expenses-modal-footer">
+                <button type="button" class="expenses-btn expenses-btn-outline" id="expenseViewCloseBtn">Close</button>
+                <button type="button" class="expenses-btn expenses-btn-danger" id="expenseViewDeleteBtn">
+                    <i class="bi bi-trash"></i> Delete Expense
+                </button>
+                <button type="button" class="expenses-btn expenses-btn-primary" id="expenseViewEditBtn">
+                    <i class="bi bi-pencil"></i> Edit Expense
+                </button>
+            </div>
+        </div>
+    </div>
+
+</section>

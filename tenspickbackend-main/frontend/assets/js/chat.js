@@ -64,6 +64,47 @@
             } catch (e) {}
         }
 
+        async function syncSupabaseMessage(msgObj, audience) {
+            if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+                try {
+                    const sb = window.TenspickSupabase.getClient();
+                    if (sb) {
+                        let recType = "all";
+                        let recId = null;
+                        if (audience && audience.startsWith("client_")) {
+                            recType = "client";
+                            recId = audience.replace("client_", "");
+                        } else if (audience && audience.startsWith("staff_")) {
+                            recType = "staff";
+                            recId = audience.replace("staff_", "");
+                        } else if (audience === "all_clients") {
+                            recType = "all_clients";
+                        } else if (audience === "all_staff") {
+                            recType = "all_staff";
+                        }
+
+                        await sb.from("chat_messages").insert([{
+                            sender_type: "admin",
+                            sender_name: "Tenspick Admin",
+                            receiver_type: recType,
+                            receiver_id: recId ? parseInt(recId, 10) : null,
+                            message: msgObj.message || msgObj.text || ""
+                        }]);
+
+                        if (audience === "all_clients" || audience === "all_staff") {
+                            await sb.from("announcements").insert([{
+                                text: msgObj.message || msgObj.text || "",
+                                author: "Tenspick Admin",
+                                time_str: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                            }]);
+                        }
+                    }
+                } catch (err) {
+                    console.warn("[Chat] Supabase sync note:", err);
+                }
+            }
+        }
+
         function getUnreadCount(storageKey, participantType) {
             const msgs = getMessages(storageKey);
             return msgs.filter(function (m) {
@@ -422,6 +463,8 @@
                 msgs.push(newMsg);
                 saveMessages(activeParticipant.storageKey, msgs);
             }
+
+            syncSupabaseMessage(newMsg, audience);
 
             renderConversation();
             renderSidebar(chatSearchInput ? chatSearchInput.value.trim() : "");

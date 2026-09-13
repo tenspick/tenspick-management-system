@@ -14,24 +14,64 @@
 
     const GLOBAL_DOCS_KEY = "tenspick_global_documents";
 
-    function loadDocuments() {
+    const INITIAL_DEFAULT_DOCS = [
+        { id: "doc-1", name: "Client Services Agreement & Proposal", category: "contract", project: "Tenspick CRM", type: "pdf", size: "2.4 MB", date: "2026-09-10", url: "#" },
+        { id: "doc-2", name: "System Architecture & API Spec", category: "specification", project: "Vanatvam Website", type: "docx", size: "1.8 MB", date: "2026-09-12", url: "#" },
+        { id: "doc-3", name: "Brand Guidelines & Design System Asset", category: "design", project: "Brand Strategy", type: "zip", size: "14.5 MB", date: "2026-09-13", url: "#" }
+    ];
+
+    async function loadDocuments() {
+        let docs = [];
+
+        // 1. Try Supabase
+        if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+            try {
+                const sb = window.TenspickSupabase.getClient();
+                if (sb) {
+                    const { data, error } = await sb.from("documents").select("*");
+                    if (!error && Array.isArray(data) && data.length > 0) {
+                        docs = data;
+                    }
+                }
+            } catch (sbErr) {
+                console.warn("[Documents] Supabase load note:", sbErr);
+            }
+        }
+
+        // 2. Try LocalStorage
         try {
             const cached = localStorage.getItem(GLOBAL_DOCS_KEY);
             if (cached) {
                 const parsed = JSON.parse(cached);
-                if (Array.isArray(parsed)) {
-                    allDocuments = parsed;
-                    return;
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    parsed.forEach(localDoc => {
+                        if (!docs.some(d => String(d.id) === String(localDoc.id))) {
+                            docs.push(localDoc);
+                        }
+                    });
                 }
             }
         } catch (e) {}
 
-        allDocuments = [];
+        // 3. Fallback to initial defaults if empty
+        if (!docs.length) {
+            docs = [...INITIAL_DEFAULT_DOCS];
+        }
+
+        allDocuments = docs;
         saveDocuments();
     }
 
     function saveDocuments() {
         try { localStorage.setItem(GLOBAL_DOCS_KEY, JSON.stringify(allDocuments)); } catch (e) {}
+    }
+
+    function showToast(message, type = "success") {
+        if (typeof window.showToast === "function") {
+            window.showToast(message, type);
+        } else {
+            console.log(`[Toast ${type}]: ${message}`);
+        }
     }
 
     function getFileIcon(type) {
@@ -65,11 +105,21 @@
         });
     }
 
-    function deleteDocument(id) {
+    async function deleteDocument(id) {
         if (!confirm("Are you sure you want to delete this document?")) return;
         allDocuments = allDocuments.filter(d => String(d.id) !== String(id));
         saveDocuments();
+
+        // Delete from Supabase
+        if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+            try {
+                const sb = window.TenspickSupabase.getClient();
+                if (sb) await sb.from("documents").delete().eq("id", id);
+            } catch (e) {}
+        }
+
         renderDocuments();
+        showToast("Document deleted successfully.", "success");
     }
 
     function renderDocuments() {
@@ -160,10 +210,10 @@
         }
 
         if (form) {
-            form.addEventListener("submit", function (e) {
+            form.addEventListener("submit", async function (e) {
                 e.preventDefault();
                 const newDoc = {
-                    id: Date.now(),
+                    id: "doc-" + Date.now(),
                     name: document.getElementById("docName")?.value || "Requested Document",
                     category: document.getElementById("docCategory")?.value || "specification",
                     project: document.getElementById("docProject")?.value || "General",
@@ -175,17 +225,26 @@
 
                 allDocuments.unshift(newDoc);
                 saveDocuments();
+
+                // Save to Supabase if available
+                if (window.TenspickSupabase && window.TenspickSupabase.isConfigured()) {
+                    try {
+                        const sb = window.TenspickSupabase.getClient();
+                        if (sb) await sb.from("documents").insert([newDoc]);
+                    } catch (e) {}
+                }
+
                 renderDocuments();
                 form.reset();
                 if (formBox) formBox.style.display = "none";
-                alert("Document saved / requested successfully!");
+                showToast("Document saved & assigned successfully!", "success");
             });
         }
     }
 
-    function init() {
+    async function init() {
         currentFilter = { search: "", category: "" };
-        loadDocuments();
+        await loadDocuments();
         renderDocuments();
         bindEvents();
     }

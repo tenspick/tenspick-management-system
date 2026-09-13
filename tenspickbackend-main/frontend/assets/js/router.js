@@ -54,6 +54,9 @@
         "staff-payments":
             "pages/staff-payments/staff-payments.html",
 
+        expenses:
+            "pages/expenses/expenses.html",
+
         chat:
             "pages/chat/chat.html",
 
@@ -116,6 +119,9 @@
 
         "staff-payments":
             "assets/css/staff-payments.css",
+
+        expenses:
+            "assets/css/expenses.css",
 
         chat:
             "assets/css/chat.css",
@@ -202,6 +208,12 @@
             title: "Staff Payments",
             subtitle:
                 "Record and manage staff payments"
+        },
+
+        expenses: {
+            title: "Expenses Management",
+            subtitle:
+                "Track, manage, and audit operating & project expenses"
         },
 
         chat: {
@@ -831,6 +843,9 @@
 
             case "staff-payments":
                 return window.TenspickStaffPayments;
+
+            case "expenses":
+                return window.TenspickExpenses;
 
             case "chat":
                 return window.TenspickChat;
